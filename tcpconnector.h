@@ -27,6 +27,8 @@
 #include <netinet/in.h>
 #include "tcpstream.h"
 
+namespace unix_tcp {
+
 class TCPConnector
 {
   public:
@@ -36,5 +38,7 @@ class TCPConnector
   private:
     int resolveHostName(const char* host, struct in_addr* addr);
 };
+
+}//namespace
 
 #endif

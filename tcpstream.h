@@ -31,6 +31,8 @@
 
 using namespace std;
 
+namespace unix_tcp {
+
 class TCPStream
 {
     int     m_sd;
@@ -62,5 +64,7 @@ class TCPStream
     TCPStream();
     TCPStream(const TCPStream& stream);
 };
+
+} //namespace
 
 #endif

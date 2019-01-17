@@ -29,6 +29,9 @@
 #include <errno.h>
 #include "tcpconnector.h"
 
+namespace unix_tcp {
+
+
 TCPStream* TCPConnector::connect(const char* server, int port)
 {
     struct sockaddr_in address;
@@ -142,3 +145,5 @@ int TCPConnector::resolveHostName(const char* hostname, struct in_addr* addr)
     }
     return result;
 }
+
+} //namespace
