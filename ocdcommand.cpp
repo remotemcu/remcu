@@ -8,7 +8,7 @@
 
 #include "netwrapper.h"
 #include "ocdcommand.h"
-
+#include "logger.h"
 
 using namespace std;
 
@@ -74,7 +74,7 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
 
         assert(respN < buffer.size());
 
-        printf("> %d - %s\n", respN, buffer.data());
+        ADIN_PRINTF(_DEBUG, "> %d - %s\n", respN, buffer.data());
 
         if(strchr(p, COMMAND_TOKEN) != NULL){
             break;
