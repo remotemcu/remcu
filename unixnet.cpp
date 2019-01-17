@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <stdint.h>
-
+#include "logger.h"
 #include "tcpconnector.h"
 
 using namespace std;
@@ -18,34 +18,33 @@ static TCPStream* stream = NULL;
 bool connect2OpenOcd(std::string host, uint16_t port, int timeout_sec){
 
     if(connector == NULL){
-        cout << "internal error" << endl;
+        ADIN_LOG(_ERROR) << "internal error";
         return false;
     }
 
     if(stream != NULL){
-        cout << "close connection" << endl;
+        ADIN_LOG(_INFO) << "close connection";
         delete stream;
     }
 
     stream = connector->connect(host.c_str(), port, timeout_sec);
 
     if(stream == NULL){
-        cout << "Connection failed " << host << endl;
+        ADIN_LOG(_ERROR) << "Failed " << host << ", port : " << port ;
         return false;
     }
 
-    cout << "Connection success " << host << endl;
+     ADIN_LOG(_INFO) << "Connection success " << host << ", port : " << port ;
     return true;
 }
 
 
-//bool sendTCLMessage2OCD(std::vector<char> & message){
 bool sendTCLMessage2OCD(char * buffer, size_t lenBuffer){
 
-    cout << "-> " << " len: " << lenBuffer << " : " << buffer  << endl;
+    ADIN_LOG(_DEBUG) << "-> " << " len: " << lenBuffer << " : " << buffer;
 
     if(stream == NULL){
-        cout << "Connection close yet "  << endl;
+        ADIN_LOG(_ERROR) << "Connection close yet ";
         return false;
     }
 
@@ -54,7 +53,7 @@ bool sendTCLMessage2OCD(char * buffer, size_t lenBuffer){
         return true;
     }
 
-    cout << "sendTCLMessage2OCD failed " << len << endl;
+    ADIN_LOG(_ERROR) << "send message failed " << len;
 
     return false;
 }
@@ -62,7 +61,7 @@ bool sendTCLMessage2OCD(char * buffer, size_t lenBuffer){
 bool receiveOCDResponse(char * buffer, size_t & lenBuffer, int timeout_sec){
 
     if(stream == NULL){
-        cout << "Connection close yet "  << endl;
+        ADIN_LOG(_ERROR) << "Connection close yet ";
         return false;
     }
 
@@ -73,7 +72,7 @@ bool receiveOCDResponse(char * buffer, size_t & lenBuffer, int timeout_sec){
         return true;
     }
 
-    cout << "receiveOCDResponse failed " << len  << endl;
+    ADIN_LOG(_ERROR) << "receive response failed, len:" << len ;
     return false;
 }
 

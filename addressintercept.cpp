@@ -94,7 +94,7 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
 
 void __adin_store_(llvm_pass_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    adin::ADIN_PRINTF(adin::_DEBUG, "__store__ : pointer = %p, value %d, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    adin::ADIN_PRINTF(adin::_ERROR, "__store__ : pointer = %p, value %d, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     adin::store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 }
