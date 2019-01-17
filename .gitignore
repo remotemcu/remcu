@@ -3,3 +3,7 @@ OCDlib.includes
 OCDlib.files
 OCDlib.creator
 OCDlib.config
+OCDlib.creator.user
+test
+
+*.o
