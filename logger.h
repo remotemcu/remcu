@@ -33,7 +33,7 @@ public:
 
     static void setGLevel(const LevelDebug level) { gLevel = level; }
 
-    static void loggerf (const LevelDebug level, const std::string &fileName,
+    static int loggerf (const LevelDebug level, const std::string &fileName,
                  const std::string &funcName, const int line,
                  const char *__restrict __format, ...);
 };
