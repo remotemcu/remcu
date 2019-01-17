@@ -72,6 +72,8 @@ static bool getMaskAndSize(llvm_pass_t sizeVal, llvm_pass_t & mask, char & sizeO
         respN += lenResp;
         buffer.at(respN) = '\0';
 
+        assert(respN < buffer.size());
+
         printf("> %d - %s\n", respN, buffer.data());
 
         if(strchr(p, COMMAND_TOKEN) != NULL){
@@ -111,6 +113,8 @@ static bool commandSendAndResponse(char * data, size_t lenData,
     assert(readBeforeToken(bufferReceiv, lenResp));
 
     bufferReceiv.at(lenResp) = '\0';
+
+    return true;
 }
 
 
@@ -118,8 +122,6 @@ bool store2RemoteAddr(llvm_pass_t addr, llvm_pass_t value, llvm_pass_t sizeVal){
 
     llvm_pass_t mask = 0;
     char sizeOp = 0;
-
-    bool success = false;
 
     assert(getMaskAndSize(sizeVal, mask, sizeOp));
 
@@ -132,15 +134,13 @@ bool store2RemoteAddr(llvm_pass_t addr, llvm_pass_t value, llvm_pass_t sizeVal){
     size_t lenBuf;
     commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
 
-    return success;
+    return true;
 }
 
 bool loadFromRemoteAddr(llvm_pass_t addr, llvm_pass_t & value, llvm_pass_t sizeVal){
 
     llvm_pass_t mask = 0;
     char sizeOp = 0;
-
-    bool success = false;
 
     assert(getMaskAndSize(sizeVal, mask, sizeOp));
 
@@ -154,7 +154,7 @@ bool loadFromRemoteAddr(llvm_pass_t addr, llvm_pass_t & value, llvm_pass_t sizeV
 
     assert(parseValue(bufferReceiv, value));
 
-    return success;
+    return true;
 }
 
 
