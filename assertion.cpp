@@ -3,9 +3,9 @@
 
 namespace adin {
 
-static error_function_t callback = NULL;
+static ErrorFunction_t callback = NULL;
 
-void setErrorFunction(error_function_t fun){
+void setErrorFunction(ErrorFunction_t fun){
     callback = fun;
 }
 
