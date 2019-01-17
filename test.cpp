@@ -29,42 +29,34 @@
 
 #include "ocdcommand.h"
 #include "netwrapper.h"
-
+#include "AddressInterceptPass.h"
+#include "ocdlib.h"
 
 
 using namespace ocd_lib;
 using namespace std;
 
+llvm_pass_arg v = 0x87654321;
 
 int main(int argc, char** argv)
 {
+
     connect2OpenOcd("192.168.0.111",6666);
 
-   cout << "store2RemoteAddr : " <<  store2RemoteAddr(0x20000008, 0xFF1, 32) << endl;
 
-   cout << "---------------------------" << endl;
+    addInterceptAddress2Interval(0x20000000, 0x20000000 + 128*1024);
 
-   llvm_pass_t v;
-   loadFromRemoteAddr(0x20000008, v, 32);
-   cout << "loadFromRemoteAddr : " << v << endl;
+    __adin_store_((llvm_pass_addr)0x20000000, 0, 32, 0);
 
- cout << "---------------------------" << endl;
+    __adin_store_((llvm_pass_addr)0x20000000, 0x12345678, 32, 0);
 
- loadFromRemoteAddr(0x20000000, v, 32);
+    cout << "__adin_load_ : " << std::hex
+         << __adin_load_((llvm_pass_addr)0x20000000, 8, 0) << endl;
 
- cout << "loadFromRemoteAddr : " << v << endl;
+    cout << "__adin_load_ : " << std::hex
+         << __adin_load_((llvm_pass_addr)0x20000003, 16, 0) << endl;
 
- cout << "---------------------------" << endl;
-
- store2RemoteAddr(0x2000000C, 111, 32);
-
- cout << "---------------------------" << endl;
-
- loadFromRemoteAddr(0x2000000C, v, 32);
-
- cout << "loadFromRemoteAddr : " << v << endl;
-
- cout << "---------------------------" << endl;
-
+    cout << "__adin_load_ : " << std::hex
+         << __adin_load_((llvm_pass_addr)&v, 32, 0) << endl;
 
 }

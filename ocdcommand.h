@@ -3,13 +3,13 @@
 
 #include <vector>
 
-#include "llvm.h"
+#include "AddressInterceptPass.h"
 
 namespace ocd_lib {
 
-bool store2RemoteAddr(llvm_pass_t addr, llvm_pass_t value, llvm_pass_t sizeVal);
+bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal);
 
-bool loadFromRemoteAddr(llvm_pass_t addr, llvm_pass_t & value, llvm_pass_t sizeVal);
+bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal);
 
 } //namespace
 

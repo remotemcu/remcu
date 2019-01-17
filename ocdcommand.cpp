@@ -33,7 +33,7 @@ static vector<char> bufferSend(0x100,'\0');
 static vector<char> bufferReceiv(0x100,'\0');
 
 
-static bool getMaskAndSize(llvm_pass_t sizeVal, llvm_pass_t & mask, char & sizeOp){
+static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & sizeOp){
     switch (sizeVal) {
     case 1:
         mask = 0x1;
@@ -86,7 +86,7 @@ static bool getMaskAndSize(llvm_pass_t sizeVal, llvm_pass_t & mask, char & sizeO
     return true;
 }
 
-static bool parseValue(vector<char> & buffer, llvm_pass_t & value){
+static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
 
     char * p = buffer.data();
 
@@ -118,14 +118,14 @@ static bool commandSendAndResponse(char * data, size_t lenData,
 }
 
 
-bool store2RemoteAddr(llvm_pass_t addr, llvm_pass_t value, llvm_pass_t sizeVal){
+bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal){
 
-    llvm_pass_t mask = 0;
+    llvm_pass_arg mask = 0;
     char sizeOp = 0;
 
     assert(getMaskAndSize(sizeVal, mask, sizeOp));
 
-    const llvm_pass_t sendValue = value & mask;
+    const llvm_pass_arg sendValue = value & mask;
 
     const int len = snprintf(bufferSend.data(), bufferSend.size(),
                     storeTempCommand,
@@ -137,9 +137,9 @@ bool store2RemoteAddr(llvm_pass_t addr, llvm_pass_t value, llvm_pass_t sizeVal){
     return true;
 }
 
-bool loadFromRemoteAddr(llvm_pass_t addr, llvm_pass_t & value, llvm_pass_t sizeVal){
+bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal){
 
-    llvm_pass_t mask = 0;
+    llvm_pass_arg mask = 0;
     char sizeOp = 0;
 
     assert(getMaskAndSize(sizeVal, mask, sizeOp));
