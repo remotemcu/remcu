@@ -2,7 +2,7 @@
 #define LOGGER_H
 
 #include <iostream>
-#include "ocdlib.h"
+#include "adin.h"
 
 namespace adin {
 
