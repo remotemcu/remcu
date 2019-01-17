@@ -25,70 +25,46 @@
 #include <string>
 #include <iostream>
 #include <cstring>
-#include "tcpconnector.h"
+#include <assert.h>
 
+#include "ocdcommand.h"
+#include "netwrapper.h"
+
+
+
+using namespace ocd_lib;
 using namespace std;
+
 
 int main(int argc, char** argv)
 {
-    if (argc != 3) {
-        printf("usage: %s <port> <ip>\n", argv[0]);
-        exit(1);
-    }
+    connect2OpenOcd("192.168.0.111",6666);
 
-    int len;
-    string message;
-    char line[256] = "ocd_mdw 0x20000008\x1a\0";
-    TCPConnector* connector = new TCPConnector();
-    TCPStream* stream = connector->connect(argv[2], atoi(argv[1]));
-    for (int i = 0; stream && i < 0xF; i+=1 ) {
-        
-      #if 1
+   cout << "store2RemoteAddr : " <<  store2RemoteAddr(0x20000008, 0xFF1, 32) << endl;
 
-      //int n = sprintf(line,"ocd_mdw 0x2000000%d\x1a\0", i);
-      int n = sprintf(line,"ocd_mdw 0x2000000%x\x1a",i);      
+   cout << "---------------------------" << endl;
 
-        cout << "message: " << line  << endl;
-        if(n<0)
-          cout << "if(n<0)" << endl;
+   llvm_pass_t v;
+   loadFromRemoteAddr(0x20000008, v, 32);
+   cout << "loadFromRemoteAddr : " << v << endl;
 
-        stream->send(line, strlen(line));
+ cout << "---------------------------" << endl;
 
-        #else
+ loadFromRemoteAddr(0x20000000, v, 32);
 
-        message = "ocd_mdw 0x20000008\x1a";
-        printf("sent - %s\n", message.c_str());
-        cout << "message:= " << message  << endl;
-        stream->send(message.c_str(), message.size());
-        //
+ cout << "loadFromRemoteAddr : " << v << endl;
 
-        #endif
+ cout << "---------------------------" << endl;
+
+ store2RemoteAddr(0x2000000C, 111, 32);
+
+ cout << "---------------------------" << endl;
+
+ loadFromRemoteAddr(0x2000000C, v, 32);
+
+ cout << "loadFromRemoteAddr : " << v << endl;
+
+ cout << "---------------------------" << endl;
 
 
-        len = stream->receive(line, sizeof(line));
-        while(len == 1){
-          cout << "-> " << endl;
-          len = stream->receive(line, sizeof(line));
-
-        }
-        line[len] = 0;
-        printf("received len %d - %s\n", len, line);
-        
-    }
-
-    delete stream;
-#if 0
-    stream = connector->connect(argv[2], atoi(argv[1]));
-    if (stream) {
-        int n = sprintf("mdw 0x2000000%x\x1a", ;
-        message = 
-        stream->send(message.c_str(), message.size());
-        printf("sent - %s\n", message.c_str());
-        len = stream->receive(line, sizeof(line));
-        line[len] = 0;
-        printf("received - %s\n", line);
-        delete stream;
-    }
-    #endif
-    exit(0);
 }

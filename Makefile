@@ -1,7 +1,7 @@
 CC		= g++
 CFLAGS		= -g -c -Wall
 LDFLAGS		= 
-SOURCES		= client.cpp tcpstream.cpp tcpconnector.cpp
+SOURCES		= client.cpp tcpstream.cpp tcpconnector.cpp ocdcommand.cpp unixnet.cpp
 INCLUDES	= -I.
 OBJECTS		= $(SOURCES:.cpp=.o)
 TARGET		= client
