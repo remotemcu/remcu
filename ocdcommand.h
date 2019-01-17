@@ -5,7 +5,7 @@
 
 #include "AddressInterceptPass.h"
 
-namespace ocd_lib {
+namespace adin {
 
 bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal);
 

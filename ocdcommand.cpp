@@ -13,7 +13,7 @@
 using namespace std;
 
 
-namespace ocd_lib {
+namespace adin {
 
 #define COMMAND_TOKEN '\x1a'
 

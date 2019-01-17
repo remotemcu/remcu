@@ -8,19 +8,14 @@
 using namespace std;
 using namespace unix_tcp;
 
-namespace ocd_lib {
+namespace adin {
 
 static TCPConnector* connector = new TCPConnector();
 
 static TCPStream* stream = NULL;
 
-static LevelDebug _LEVEL;
 
-
-void setConnectionVerboseLevel(LevelDebug level);
-
-
-bool connect2OpenOcd(std::string host, uint16_t port, int timeout_sec, bool verbose){
+bool connect2OpenOcd(std::string host, uint16_t port, int timeout_sec){
 
     if(connector == NULL){
         cout << "internal error" << endl;

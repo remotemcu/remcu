@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace ocd_lib {
+namespace adin {
 
 typedef struct {
     llvm_ocd_addr startAddr;
@@ -94,7 +94,7 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
 void __adin_store_(llvm_pass_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
     printf("__store__ : pointer = %p, value %d, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
-    ocd_lib::store(reinterpret_cast<llvm_ocd_addr>(pointer),
+    adin::store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 }
 
@@ -103,6 +103,6 @@ void __adin_store_(llvm_pass_addr pointer, llvm_pass_arg value, llvm_pass_arg Ty
 llvm_pass_arg __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
     printf("__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
-    return ocd_lib::load(reinterpret_cast<llvm_ocd_addr>(pointer),
+    return adin::load(reinterpret_cast<llvm_ocd_addr>(pointer),
                   TypeSizeArg, AlignmentArg);
 }

@@ -32,8 +32,10 @@
 #include "AddressInterceptPass.h"
 #include "ocdlib.h"
 
+int mcu();
+void global();
 
-using namespace ocd_lib;
+using namespace adin;
 using namespace std;
 
 llvm_pass_arg v = 0x87654321;
@@ -45,7 +47,7 @@ int main(int argc, char** argv)
 
 
     addInterceptAddress2Interval(0x20000000, 0x20000000 + 128*1024);
-
+#if 0
     __adin_store_((llvm_pass_addr)0x20000000, 0, 32, 0);
 
     __adin_store_((llvm_pass_addr)0x20000000, 0x12345678, 32, 0);
@@ -58,5 +60,7 @@ int main(int argc, char** argv)
 
     cout << "__adin_load_ : " << std::hex
          << __adin_load_((llvm_pass_addr)&v, 32, 0) << endl;
-
+#endif
+    mcu();
+    global();
 }
