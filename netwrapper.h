@@ -1,5 +1,6 @@
 #ifndef NETWRAPPER_H
 #define NETWRAPPER_H
+
 #include <vector>
 #include <string>
 #include <stdint.h>

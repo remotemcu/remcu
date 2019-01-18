@@ -25,6 +25,7 @@
 #define __tcpconnector_h__
 
 #include <netinet/in.h>
+
 #include "tcpstream.h"
 
 namespace unix_tcp {

@@ -2,6 +2,7 @@
 #define LOGGER_H
 
 #include <iostream>
+
 #include "adin.h"
 
 namespace adin {

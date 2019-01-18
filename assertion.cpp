@@ -1,5 +1,7 @@
-#include "assertion.h"
 #include <assert.h>
+
+#include "assertion.h"
+
 
 namespace adin {
 

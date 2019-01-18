@@ -30,7 +30,10 @@
 #include "ocdcommand.h"
 #include "netwrapper.h"
 #include "AddressInterceptPass.h"
-#include "ocdlib.h"
+#include "adin.h"
+#include "logger.h"
+#include "assertion.h"
+
 
 int mcu();
 void global();
@@ -38,12 +41,28 @@ void global();
 using namespace adin;
 using namespace std;
 
+static bool callback(const char *__assertion, const char *__file,
+                unsigned int __line, const char *__function){
+    cout << "------------------ " << endl;
+    return true;
+}
+
 llvm_pass_arg v = 0x87654321;
 
 int main(int argc, char** argv)
 {
 
     connect2OpenOcd("192.168.0.111",6666);
+
+
+    ADIN_PRINTF(_DEBUG, "!!!!!!!!!!!!!!!!!\n",1);
+
+    ADIN_LOG(_DEBUG) << "]]]]]]]]]]]]]]]]]]]]]]]]]]]";
+
+    setVerboseLevel(_ALL_LOG);
+    asser_1line(true);
+    setVerboseLevel(_ERROR);
+    setErrorFunction(callback);
 
 
     addInterceptAddress2Interval(0x20000000, 0x20000000 + 128*1024);
@@ -63,4 +82,6 @@ int main(int argc, char** argv)
 #endif
     mcu();
     global();
+
+    asser_1line(false);
 }

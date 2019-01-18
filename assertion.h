@@ -1,6 +1,8 @@
 #ifndef ASSERTION_H
 #define ASSERTION_H
+
 #include <assert.h>
+
 #include "logger.h"
 
 namespace adin {
