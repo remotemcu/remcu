@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
-#include <assert.h>
 #include <cstring>
 
-
+#include "assertion.h"
 #include "netwrapper.h"
 #include "ocdcommand.h"
 #include "logger.h"
@@ -52,7 +51,7 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
         sizeOp = WORD;
         break;
     default:
-        assert(!"Unrichable size!");
+        asser_1line(!"Unrichable size!");
         break;
     }
 
@@ -67,12 +66,12 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
 
     while(true){
         lenResp = buffer.size();
-        assert(receiveOCDResponse(p + respN, lenResp));
+        asser_1line(receiveOCDResponse(p + respN, lenResp));
 
         respN += lenResp;
         buffer.at(respN) = '\0';
 
-        assert(respN < buffer.size());
+        asser_1line(respN < buffer.size());
 
         ADIN_PRINTF(_DEBUG, "> %d - %s\n", respN, buffer.data());
 
@@ -106,11 +105,11 @@ static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
 
 static bool commandSendAndResponse(char * data, size_t lenData,
                                    vector<char> & bufferResp, size_t & lenResp){
-    assert(lenData > 0 || !"buffer size less");
+    asser_1line(lenData > 0 || !"buffer size less");
 
-    assert(sendTCLMessage2OCD(data, lenData));
+    asser_1line(sendTCLMessage2OCD(data, lenData));
 
-    assert(readBeforeToken(bufferReceiv, lenResp));
+    asser_1line(readBeforeToken(bufferReceiv, lenResp));
 
     bufferReceiv.at(lenResp) = '\0';
 
@@ -123,7 +122,7 @@ bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg siz
     llvm_pass_arg mask = 0;
     char sizeOp = 0;
 
-    assert(getMaskAndSize(sizeVal, mask, sizeOp));
+    asser_1line(getMaskAndSize(sizeVal, mask, sizeOp));
 
     const llvm_pass_arg sendValue = value & mask;
 
@@ -142,7 +141,7 @@ bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg
     llvm_pass_arg mask = 0;
     char sizeOp = 0;
 
-    assert(getMaskAndSize(sizeVal, mask, sizeOp));
+    asser_1line(getMaskAndSize(sizeVal, mask, sizeOp));
 
 
     const int len = snprintf(bufferSend.data(), bufferSend.size(),
@@ -152,7 +151,7 @@ bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg
     size_t lenBuf = 0;
     commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
 
-    assert(parseValue(bufferReceiv, value));
+    asser_1line(parseValue(bufferReceiv, value));
 
     return true;
 }

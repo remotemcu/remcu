@@ -10,6 +10,7 @@
 #include "AddressInterceptPass.h"
 #include "ocdcommand.h"
 #include "logger.h"
+#include "assertion.h"
 
 
 using namespace std;
@@ -59,7 +60,7 @@ static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pas
         ret = (*reinterpret_cast<uint32_t*>(pointer)) & 0xFFFFFFFF;
         break;
     default:
-        assert("Size issue!");
+        asser_1line(!"Size issue!");
         break;
     }
 
@@ -73,7 +74,7 @@ static inline void store(llvm_ocd_addr pointer, llvm_pass_arg value, llvm_pass_a
         return;
     }
 
-    assert(store2RemoteAddr(pointer, value, TypeSizeArg));
+    asser_1line(store2RemoteAddr(pointer, value, TypeSizeArg));
 }
 
 static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
@@ -82,7 +83,7 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
 
     llvm_pass_arg  value;
-    assert(loadFromRemoteAddr(pointer, value, TypeSizeArg));
+    asser_1line(loadFromRemoteAddr(pointer, value, TypeSizeArg));
 
     return value;
 }
@@ -94,7 +95,7 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    adin::ADIN_PRINTF(adin::_ERROR, "__store__ : pointer = %p, value %d, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    adin::ADIN_PRINTF(adin::_DEBUG, "__store__ : pointer = %p, value %d, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     adin::store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 }
