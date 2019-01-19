@@ -59,7 +59,6 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
 }
 
  static bool readBeforeToken(vector<char> & buffer, size_t & len){
-    bool success = false;
     size_t lenResp;
     size_t respN = 0;
     char * p = buffer.data();
@@ -109,7 +108,7 @@ static bool commandSendAndResponse(char * data, size_t lenData,
 
     asser_1line(sendTCLMessage2OCD(data, lenData));
 
-    asser_1line(readBeforeToken(bufferReceiv, lenResp));
+    asser_1line(readBeforeToken(bufferResp, lenResp));
 
     bufferReceiv.at(lenResp) = '\0';
 

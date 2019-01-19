@@ -1,6 +1,6 @@
 #CC		= g++
 CC		= clang-6.0
-CFLAGS		= -g -c -Wall -std=c++11
+CFLAGS		= -g -c -std=c++11 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
 SOURCES		= test.cpp tcpstream.cpp tcpconnector.cpp ocdcommand.cpp unixnet.cpp addressintercept.cpp logger.cpp assertion.cpp
 #llvm.cpp

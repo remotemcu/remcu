@@ -43,7 +43,7 @@ static bool isEntryHalfInterval(llvm_ocd_addr addr){
     return false;
 }
 
-static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg){
+static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg __attribute__((unused)) AlignmentArg){
 
     llvm_pass_arg ret = 0;
     switch (TypeSizeArg) {
@@ -68,7 +68,7 @@ static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pas
 }
 
 
-static inline void store(llvm_ocd_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
+static inline void store(llvm_ocd_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg __attribute__((unused)) AlignmentArg)
 {
     if(isEntryHalfInterval(pointer) == false){
         return;

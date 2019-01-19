@@ -34,6 +34,8 @@
 #include "logger.h"
 #include "assertion.h"
 
+#pragma clang diagnostic ignored "-Wall"
+#pragma clang diagnostic ignored "-Wextra"
 
 int mcu();
 void global();
