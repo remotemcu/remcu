@@ -1,8 +1,6 @@
 #ifndef OCDCOMMAND_H
 #define OCDCOMMAND_H
 
-#include <vector>
-
 #include "AddressInterceptPass.h"
 
 namespace adin {
