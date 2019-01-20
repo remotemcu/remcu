@@ -10,9 +10,6 @@ namespace adin {
 
 #define TIMEOUT_OCD_RESPONSE 1
 
-
-bool connect2OpenOcd(std::string, uint16_t port, int timeout_sec = TIMEOUT_OCD_RESPONSE);
-
 bool sendTCLMessage2OCD(char * buffer, size_t lenBuffer);
 
 inline bool sendTCLMessage2OCD(std::string message){
