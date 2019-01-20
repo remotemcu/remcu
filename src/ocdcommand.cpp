@@ -8,6 +8,7 @@
 #include "netwrapper.h"
 #include "ocdcommand.h"
 #include "logger.h"
+#include "client.h"
 
 using namespace std;
 
@@ -65,7 +66,7 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
 
     while(true){
         lenResp = buffer.size();
-        asser_1line(receiveOCDResponse(p + respN, lenResp));
+        asser_1line(receiveResponseFromServer(p + respN, lenResp));
 
         respN += lenResp;
         buffer.at(respN) = '\0';
@@ -106,7 +107,7 @@ static bool commandSendAndResponse(char * data, size_t lenData,
                                    vector<char> & bufferResp, size_t & lenResp){
     asser_1line(lenData > 0 || !"buffer size less");
 
-    asser_1line(sendTCLMessage2OCD(data, lenData));
+    asser_1line(sendMessage2Server(data, lenData));
 
     asser_1line(readBeforeToken(bufferResp, lenResp));
 
@@ -115,8 +116,16 @@ static bool commandSendAndResponse(char * data, size_t lenData,
     return true;
 }
 
+bool ClientOpenOCD::connect(std::string host, uint16_t port, int timeout){
+    return connectTCP(host, port, timeout);
+}
 
-bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal){
+bool ClientOpenOCD::close(){
+    return closeTCP();
+}
+
+
+bool ClientOpenOCD::store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal){
 
     llvm_pass_arg mask = 0;
     char sizeOp = 0;
@@ -135,7 +144,7 @@ bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg siz
     return true;
 }
 
-bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal){
+bool ClientOpenOCD::loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal){
 
     llvm_pass_arg mask = 0;
     char sizeOp = 0;

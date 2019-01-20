@@ -17,19 +17,16 @@ static TCPConnector* connector = new TCPConnector();
 static TCPStream* stream = NULL;
 
 
-bool connect2OpenOcd(std::string host, uint16_t port, int timeout_sec){
+bool connectTCP(std::string host, uint16_t port, int timeout){
 
     if(connector == NULL){
         ADIN_LOG(_ERROR) << "internal error";
         return false;
     }
 
-    if(stream != NULL){
-        ADIN_LOG(_INFO) << "close connection";
-        delete stream;
-    }
+    closeTCP();
 
-    stream = connector->connect(host.c_str(), port, timeout_sec);
+    stream = connector->connect(host.c_str(), port, timeout);
 
     if(stream == NULL){
         ADIN_LOG(_ERROR) << "Failed " << host << ", port : " << port ;
@@ -40,8 +37,17 @@ bool connect2OpenOcd(std::string host, uint16_t port, int timeout_sec){
     return true;
 }
 
+bool closeTCP(){
+    if(stream != NULL){
+        ADIN_LOG(_INFO) << "close connection";
+        delete stream;
+    }
 
-bool sendTCLMessage2OCD(char * buffer, size_t lenBuffer){
+    return true;
+}
+
+
+bool sendMessage2Server(char * buffer, size_t lenBuffer){
 
     ADIN_LOG(_DEBUG) << "-> " << " len: " << lenBuffer << " : " << buffer;
 
@@ -60,7 +66,7 @@ bool sendTCLMessage2OCD(char * buffer, size_t lenBuffer){
     return false;
 }
 
-bool receiveOCDResponse(char * buffer, size_t & lenBuffer, int timeout_sec){
+bool receiveResponseFromServer(char * buffer, size_t & lenBuffer, int timeout_sec){
 
     if(stream == NULL){
         ADIN_LOG(_ERROR) << "Connection close yet ";

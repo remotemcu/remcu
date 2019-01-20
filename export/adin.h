@@ -7,7 +7,17 @@
 
 namespace adin {
 
-bool connect2OpenOcd(std::string, uint16_t port, int timeout_sec = 0);
+enum ServerType {
+    _DUMMY_SERVVER = 0,
+    _OPENOCD_SERVER,
+    _GDB_SERVER
+};
+
+bool connect2Server(std::string host, uint16_t port, ServerType server = _DUMMY_SERVVER, bool logo = false, int timeout = 0);
+
+inline bool connect2OpenOCD(std::string host, uint16_t port, bool logo = true, int timeout = 0){
+    return connect2Server(host, port, _OPENOCD_SERVER, logo, timeout);
+}
 
 void addInterceptAddress2Interval(llvm_ocd_addr start, llvm_ocd_addr end);
 

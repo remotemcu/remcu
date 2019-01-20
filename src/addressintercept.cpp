@@ -11,6 +11,7 @@
 #include "ocdcommand.h"
 #include "logger.h"
 #include "assertion.h"
+#include "client.h"
 
 
 using namespace std;
@@ -23,6 +24,11 @@ typedef struct {
 } AddrInterval;
 
 static vector<AddrInterval> intervals;
+
+static ClientDummy dummy;
+static ClientOpenOCD openocd;
+
+static ClientBase * client = static_cast<ClientBase*>(&dummy);
 
 void addInterceptAddress2Interval(llvm_ocd_addr start, llvm_ocd_addr end){
     AddrInterval st = {start, end};
@@ -41,6 +47,29 @@ static bool isEntryHalfInterval(llvm_ocd_addr addr){
             return true;
     }
     return false;
+}
+
+bool connect2Server(std::string host, uint16_t port, ServerType server, bool logo, int timeout){
+
+    client->close();
+
+    if(server == _DUMMY_SERVVER){
+        client = static_cast<ClientBase*>(&dummy);
+    } else if (server == _OPENOCD_SERVER) {
+        client = static_cast<ClientBase*>(&openocd);
+    } else if(server == _GDB_SERVER) {
+        assert(!"GDB client not implementet");
+    } else {
+        assert(!"unknown client");
+    }
+
+    const bool success = client->connect(host,port, timeout);
+
+    if(success && logo){
+
+    }
+
+    return success;
 }
 
 static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg __attribute__((unused)) AlignmentArg){
@@ -74,7 +103,7 @@ static inline void store(llvm_ocd_addr pointer, llvm_pass_arg value, llvm_pass_a
         return;
     }
 
-    asser_1line(store2RemoteAddr(pointer, value, TypeSizeArg));
+    asser_1line(client->store2RemoteAddr(pointer, value, TypeSizeArg));
 }
 
 static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
@@ -83,7 +112,7 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
 
     llvm_pass_arg  value;
-    asser_1line(loadFromRemoteAddr(pointer, value, TypeSizeArg));
+    asser_1line(client->loadFromRemoteAddr(pointer, value, TypeSizeArg));
 
     return value;
 }
