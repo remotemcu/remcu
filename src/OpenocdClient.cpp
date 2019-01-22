@@ -6,7 +6,7 @@
 
 #include "assertion.h"
 #include "netwrapper.h"
-#include "ocdcommand.h"
+#include "OpenocdClient.h"
 #include "logger.h"
 #include "client.h"
 
