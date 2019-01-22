@@ -117,6 +117,13 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
     return value;
 }
 
+bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size){
+    return client->fastWrite2RemoteMem(addr, sink, size);
+}
+
+bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist){
+    return client->fastLoadFromRemoteMem(addr, size, dist);
+}
 
 } //namespace
 

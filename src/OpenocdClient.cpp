@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <iostream>
@@ -160,6 +161,104 @@ bool ClientOpenOCD::loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value
     commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
 
     asser_1line(parseValue(bufferReceiv, value));
+
+    return true;
+}
+
+static const char * array2memTemplate = "array unset MASS; array set MASS { %s }; array2mem MASS %d 0x%x %d\x1a";
+static const char * arrayFirstPart = "array unset MASS; array set MASS {";
+static const char * arraySecondPart = " }; array2mem MASS 8 0x%x %d\x1a";
+static const char * elementTemplate = " %d 0x%x";
+const size_t sizeBuf = 200;
+static char buf[sizeBuf];
+
+static vector<char> arrayBuffer(100);
+
+bool ClientOpenOCD::fastWrite2RemoteMem(uintptr_t addr,const char* sink, size_t size){
+
+    const size_t potential_array_size = size*6;
+    const size_t _ADD = 100;
+
+    int len = -1;
+    size_t usedBufferBytes = 0;
+
+    if(arrayBuffer.size() < potential_array_size){
+        arrayBuffer.resize(potential_array_size);
+    }
+
+    for(size_t i =0; i < size; i++){
+        len = snprintf(buf, sizeBuf, elementTemplate, i, sink[i]);
+        asser_1line(len > 0);
+        const size_t future_size = usedBufferBytes + len;
+        if(arrayBuffer.size() <= future_size){
+            arrayBuffer.resize(future_size + _ADD);
+        }
+        strncpy(arrayBuffer.data() + usedBufferBytes, buf, len);
+        usedBufferBytes += len;
+    }
+
+    const size_t potential_size_buffer = arrayBuffer.size() + strlen(array2memTemplate) + _ADD;
+    if(bufferSend.size() < potential_size_buffer){
+        bufferSend.resize(potential_size_buffer + _ADD);
+    }
+
+    strncpy(bufferSend.data(), arrayFirstPart, strlen(arrayFirstPart));
+
+    size_t pos = strlen(arrayFirstPart);
+
+    strncpy(bufferSend.data() + pos, arrayBuffer.data(), usedBufferBytes);
+
+    pos += usedBufferBytes;
+
+    len = snprintf(buf, sizeBuf, arraySecondPart, addr, size);
+    asser_1line(len > 0);
+    strncpy(bufferSend.data() + pos, buf, len);
+
+    pos += len;
+
+    size_t lenBufReceiv;
+    commandSendAndResponse(bufferSend.data(), pos, bufferReceiv, lenBufReceiv);
+
+    return true;
+}
+
+static const char * loadArrayTempCommand = "ocd_mdb 0x%lX %d\x1a";
+static const size_t qty_value_in_row = 32;
+static const size_t qty_service_bytes = 12;
+static const size_t _GAP = 100;
+static const char _SEPARATOR_LOAD = ' ';
+
+bool ClientOpenOCD::fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist){
+
+    const size_t potential_size_receive = size*3 +
+        (size/qty_value_in_row)*qty_service_bytes + _GAP;
+
+    if(bufferReceiv.size() < potential_size_receive){
+        bufferReceiv.resize(potential_size_receive + _GAP);
+    }
+
+    const int len = snprintf(bufferSend.data(), bufferSend.size(),
+                             loadArrayTempCommand,
+                             addr, size);
+
+    size_t lenBuf = 0;
+    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
+
+    char * point = bufferReceiv.data();
+
+    char buf[10];
+    size_t pos = 0;
+
+    for(size_t i = 0; i < size; i++){
+        for( ; point[pos] != _SEPARATOR_LOAD; pos++);
+        pos++;
+        buf[0] = point[pos];
+        pos++;
+        buf[1] = point[pos];
+        pos++;
+        buf[2] = '\0';
+        dist[i] = strtoul(buf, NULL, 16) & 0xFF;
+    }
 
     return true;
 }

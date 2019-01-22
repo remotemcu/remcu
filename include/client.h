@@ -17,6 +17,10 @@ struct ClientBase {
 
     virtual bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal);
 
+    virtual bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size);
+
+    virtual bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist);
+
     virtual bool close();
 };
 
@@ -28,6 +32,10 @@ struct ClientDummy: ClientBase {
 
     bool loadFromRemoteAddr(llvm_ocd_addr __attribute__((unused)), llvm_pass_arg & value, llvm_pass_arg __attribute__((unused))){value = 0; return true;}
 
+    bool fastWrite2RemoteMem(uintptr_t __attribute__((unused)), const char* __attribute__((unused)), size_t __attribute__((unused))){return true;}
+
+    bool fastLoadFromRemoteMem(uintptr_t __attribute__((unused)), size_t __attribute__((unused)), char* __attribute__((unused))){return true;}
+
     bool close(){return true;}
 };
 
@@ -38,6 +46,10 @@ struct ClientOpenOCD: ClientBase {
     bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal);
 
     bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal);
+
+    bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size);
+
+    bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist);
 
     bool close();
 };

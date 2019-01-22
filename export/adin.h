@@ -32,5 +32,9 @@ void setErrorFunction(ErrorFunction_t callback);
 
 void setVerboseLevel(LevelDebug level);
 
+bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size);
+
+bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist);
+
 } //namespace
 #endif // OCDLIB_H

@@ -57,7 +57,22 @@ int main(int argc, char** argv)
 
     addInterceptAddress2Interval(address, address + 4*2);
 
-    int ret = irTest((int*)address);
+    int ret = irTest(reinterpret_cast<int*>(address));
+
+    assert(ret == 0);
+
+    const char * testMessage = "test message";
+
+    const size_t _SIZE = strlen(testMessage);
+
+    char dist[100] = {'\0'};
+
+
+    fastWrite2RemoteMem(address, testMessage, _SIZE);
+
+    fastLoadFromRemoteMem(address, _SIZE + 100, dist);
+
+    ret = strncmp(testMessage, dist, _SIZE);
 
     assert(ret == 0);
 
