@@ -21,6 +21,9 @@ TEST		= test
 TEST_SOURCE = test/test.cpp
 TEST_OBJECTS= $(TEST_SOURCE:.cpp=.o)
 
+TEST_IR_SOURCE = test/IrTest.cpp
+TEST_IR_LL = $(TEST_IR_SOURCE:.cpp=.ll)
+
 LIB_NAME 	= adin
 
 STATIC_LIB 	= $(LIB_NAME).a
@@ -50,15 +53,19 @@ $(BUILD_DIR):
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJECTS) $(TARGET) $(TEST_OBJECTS) $(BUILD_DIR)
+	rm -rf $(OBJECTS) $(TARGET) $(TEST_OBJECTS) $(BUILD_DIR) $(TEST_IR_LL)
 
 .PHONY: test
 test: $(SOURCES) $(TEST_SOURCE) $(TEST)
 
+$(TEST): $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL) $(BUILD_DIR)
+	$(CC) $(LDFLAGS) $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL) -o $(BUILD_DIR)/$@
 
-$(TEST): $(OBJECTS) $(TEST_OBJECTS) $(BUILD_DIR)
-	$(CC) $(LDFLAGS) $(OBJECTS) $(TEST_OBJECTS) llvm.ll -o $(BUILD_DIR)/$@
 
+.PHONY: ir-test
+ir-test: $(TEST_IR_SOURCE) $(TEST_IR_LL) $(BUILD_DIR)
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+$(TEST_IR_LL): $(TEST_IR_SOURCE)
+	$(CC) -S -emit-llvm -Xclang -load -Xclang \
+	../AddressInterceptorPass/build/AddressInterceptPass/libAddressInterceptPass.so \
+	$< -o $@
