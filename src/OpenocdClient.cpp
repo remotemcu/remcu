@@ -60,16 +60,16 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
     return true;
 }
 
- static bool readBeforeToken(vector<char> & buffer, size_t & len){
-    size_t lenResp;
+ static bool readBeforeToken(vector<char> & buffer, size_t & lenResp){
+    size_t len = 0;
     size_t respN = 0;
     char * p = buffer.data();
 
     while(true){
-        lenResp = buffer.size();
-        asser_1line(receiveResponseFromServer(p + respN, lenResp));
+        len = buffer.size();
+        asser_1line(receiveResponseFromServer(p + respN, len));
 
-        respN += lenResp;
+        respN += len;
         buffer.at(respN) = '\0';
 
         asser_1line(respN < buffer.size());
@@ -81,7 +81,7 @@ static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & s
         }
     }
 
-    len = respN;
+    lenResp = respN;
 
     return true;
 }
@@ -139,8 +139,8 @@ bool ClientOpenOCD::store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, ll
                     storeTempCommand,
                              STORE, sizeOp, addr, sendValue);
 
-    size_t lenBuf;
-    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
+    size_t lenReceiv;
+    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenReceiv);
 
     return true;
 }
@@ -157,8 +157,8 @@ bool ClientOpenOCD::loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value
                              loadTempCommand,
                              LOAD, sizeOp, addr);
 
-    size_t lenBuf = 0;
-    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
+    size_t lenReceiv = 0;
+    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenReceiv);
 
     asser_1line(parseValue(bufferReceiv, value));
 
