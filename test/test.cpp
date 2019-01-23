@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 
     fastWrite2RemoteMem(address, testMessage, _SIZE);
 
-    fastLoadFromRemoteMem(address, _SIZE + 100, dist);
+    fastLoadFromRemoteMem(address, 100, dist);
 
     ret = strncmp(testMessage, dist, _SIZE);
 
