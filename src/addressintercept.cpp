@@ -30,7 +30,7 @@ static ClientOpenOCD openocd;
 
 static ClientBase * client = static_cast<ClientBase*>(&dummy);
 
-void addInterceptAddress2Interval(llvm_ocd_addr start, llvm_ocd_addr end){
+void addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end){
     AddrInterval st = {start, end};
     intervals.push_back(st);
 }
@@ -39,7 +39,7 @@ void clearAllInterceptAddressInterval(){
     intervals.clear();
 }
 
-static bool isEntryHalfInterval(llvm_ocd_addr addr){
+static bool isEntryHalfInterval(const llvm_ocd_addr addr){
     for( const AddrInterval & i : intervals ){
         bool isEntry = addr >= i.startAddr;
         isEntry &= addr < i.endAddr;
@@ -49,7 +49,8 @@ static bool isEntryHalfInterval(llvm_ocd_addr addr){
     return false;
 }
 
-bool connect2Server(std::string host, uint16_t port, ServerType server, bool logo, int timeout){
+bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
+                    const bool logo, const int timeout){
 
     client->close();
 
@@ -72,7 +73,7 @@ bool connect2Server(std::string host, uint16_t port, ServerType server, bool log
     return success;
 }
 
-static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg __attribute__((unused)) AlignmentArg){
+static inline llvm_pass_arg loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg){
 
     llvm_pass_arg ret = 0;
     switch (TypeSizeArg) {
@@ -97,7 +98,7 @@ static inline llvm_pass_arg loadLocalReturnValue(llvm_ocd_addr pointer, llvm_pas
 }
 
 
-static inline void store(llvm_ocd_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg __attribute__((unused)) AlignmentArg)
+static inline void store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg)
 {
     if(isEntryHalfInterval(pointer) == false){
         return;
@@ -106,7 +107,7 @@ static inline void store(llvm_ocd_addr pointer, llvm_pass_arg value, llvm_pass_a
     asser_1line(client->store2RemoteAddr(pointer, value, TypeSizeArg));
 }
 
-static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
+static inline llvm_pass_arg load(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
 {
     if(isEntryHalfInterval(pointer) == false)
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
@@ -117,11 +118,11 @@ static inline llvm_pass_arg load(llvm_ocd_addr pointer, llvm_pass_arg TypeSizeAr
     return value;
 }
 
-bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size){
+bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
     return client->fastWrite2RemoteMem(addr, sink, size);
 }
 
-bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist){
+bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
     return client->fastLoadFromRemoteMem(addr, size, dist);
 }
 

@@ -17,7 +17,7 @@ static TCPConnector* connector = new TCPConnector();
 static TCPStream* stream = NULL;
 
 
-bool connectTCP(std::string host, uint16_t port, int timeout){
+bool connectTCP(const std::string host, const uint16_t port, const int timeout){
 
     if(connector == NULL){
         ADIN_LOG(_ERROR) << "internal error";
@@ -47,7 +47,7 @@ bool closeTCP(){
 }
 
 
-bool sendMessage2Server(char * buffer, size_t lenBuffer){
+bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
 
     ADIN_LOG(_DEBUG) << "-> " << " len: " << lenBuffer << " : " << buffer;
 
@@ -66,7 +66,7 @@ bool sendMessage2Server(char * buffer, size_t lenBuffer){
     return false;
 }
 
-bool receiveResponseFromServer(char * buffer, size_t & lenBuffer, int timeout_sec){
+bool receiveResponseFromServer(char * buffer, size_t & lenBuffer, const int timeout_sec){
 
     if(stream == NULL){
         ADIN_LOG(_ERROR) << "Connection close yet ";

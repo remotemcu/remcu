@@ -11,47 +11,47 @@ namespace adin {
 
 struct ClientBase {
 
-    virtual bool connect(std::string, uint16_t port, int timeout_sec);
+    virtual bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
-    virtual bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal);
+    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
 
-    virtual bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal);
+    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
 
-    virtual bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size);
+    virtual bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
-    virtual bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist);
+    virtual bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
 
-    virtual bool close();
+    virtual bool close() const ;
 };
 
 struct ClientDummy: ClientBase {
 
-    bool connect(std::string __attribute__((unused)), uint16_t __attribute__((unused)), int __attribute__((unused))){return true;}
+    bool connect(const std::string __attribute__((unused)), const uint16_t __attribute__((unused)), int __attribute__((unused))) const {return true;}
 
-    bool store2RemoteAddr(llvm_ocd_addr __attribute__((unused)), llvm_pass_arg __attribute__((unused)), llvm_pass_arg __attribute__((unused))){return true;}
+    bool store2RemoteAddr(const llvm_ocd_addr __attribute__((unused)), const llvm_pass_arg __attribute__((unused)), const llvm_pass_arg __attribute__((unused))) const {return true;}
 
-    bool loadFromRemoteAddr(llvm_ocd_addr __attribute__((unused)), llvm_pass_arg & value, llvm_pass_arg __attribute__((unused))){value = 0; return true;}
+    bool loadFromRemoteAddr(const llvm_ocd_addr __attribute__((unused)), llvm_pass_arg & value, const llvm_pass_arg __attribute__((unused))) const {value = 0; return true;}
 
-    bool fastWrite2RemoteMem(uintptr_t __attribute__((unused)), const char* __attribute__((unused)), size_t __attribute__((unused))){return true;}
+    bool fastWrite2RemoteMem(const uintptr_t __attribute__((unused)), const char* __attribute__((unused)), const size_t __attribute__((unused))) const {return true;}
 
-    bool fastLoadFromRemoteMem(uintptr_t __attribute__((unused)), size_t __attribute__((unused)), char* __attribute__((unused))){return true;}
+    bool fastLoadFromRemoteMem(const uintptr_t __attribute__((unused)), const size_t __attribute__((unused)), char* __attribute__((unused))) const {return true;}
 
-    bool close(){return true;}
+    bool close() const {return true;}
 };
 
 struct ClientOpenOCD: ClientBase {
 
-    bool connect(std::string, uint16_t port, int timeout_sec);
+    bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
-    bool store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal);
+    bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
 
-    bool loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal);
+    bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
 
-    bool fastWrite2RemoteMem(uintptr_t addr, const char* sink, size_t size);
+    bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
-    bool fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist);
+    bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
 
-    bool close();
+    bool close() const ;
 };
 
 

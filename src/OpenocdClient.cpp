@@ -34,7 +34,7 @@ static vector<char> bufferSend(0x100,'\0');
 static vector<char> bufferReceiv(0x100,'\0');
 
 
-static bool getMaskAndSize(llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & sizeOp){
+static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & sizeOp){
     switch (sizeVal) {
     case 1:
         mask = 0x1;
@@ -104,7 +104,7 @@ static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
 }
 
 
-static bool commandSendAndResponse(char * data, size_t lenData,
+static bool commandSendAndResponse(const char * data, const size_t lenData,
                                    vector<char> & bufferResp, size_t & lenResp){
     asser_1line(lenData > 0 || !"buffer size less");
 
@@ -117,16 +117,16 @@ static bool commandSendAndResponse(char * data, size_t lenData,
     return true;
 }
 
-bool ClientOpenOCD::connect(std::string host, uint16_t port, int timeout){
+bool ClientOpenOCD::connect(const std::string host, const uint16_t port, const int timeout) const {
     return connectTCP(host, port, timeout);
 }
 
-bool ClientOpenOCD::close(){
+bool ClientOpenOCD::close() const {
     return closeTCP();
 }
 
 
-bool ClientOpenOCD::store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, llvm_pass_arg sizeVal){
+bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const {
 
     llvm_pass_arg mask = 0;
     char sizeOp = 0;
@@ -145,7 +145,7 @@ bool ClientOpenOCD::store2RemoteAddr(llvm_ocd_addr addr, llvm_pass_arg value, ll
     return true;
 }
 
-bool ClientOpenOCD::loadFromRemoteAddr(llvm_ocd_addr addr, llvm_pass_arg & value, llvm_pass_arg sizeVal){
+bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const {
 
     llvm_pass_arg mask = 0;
     char sizeOp = 0;
@@ -174,7 +174,7 @@ static char buf[sizeBuf];
 
 static vector<char> arrayBuffer(100);
 
-bool ClientOpenOCD::fastWrite2RemoteMem(uintptr_t addr,const char* sink, size_t size){
+bool ClientOpenOCD::fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const {
 
     const size_t potential_array_size = size*6;
     const size_t _ADD = 100;
@@ -228,7 +228,7 @@ static const size_t qty_service_bytes = 12;
 static const size_t _GAP = 100;
 static const char _SEPARATOR_LOAD = ' ';
 
-bool ClientOpenOCD::fastLoadFromRemoteMem(uintptr_t addr, size_t size, char* dist){
+bool ClientOpenOCD::fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const {
 
     const size_t potential_size_receive = size*3 +
         (size/qty_value_in_row)*qty_service_bytes + _GAP;

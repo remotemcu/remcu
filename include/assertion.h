@@ -13,10 +13,10 @@ void __ASSERT_DEBUG(const char *);
 bool existErrorCallback();
 
 bool __callback(const char *__assertion, const char *__file,
-                unsigned int __line, const char *__function);
+                const unsigned int __line, const char *__function);
 
 bool __assertionF (const char *__assertion, const char *__file,
-                  unsigned int __line, const char *__function);
+                  const unsigned int __line, const char *__function);
 
 
 

@@ -24,7 +24,7 @@ using namespace adin;
 using namespace std;
 
 static bool callback(const char *__assertion, const char *__file,
-                unsigned int __line, const char *__function){
+               const unsigned int __line, const char *__function){
     cout << "test custom error callback " << endl;
     return true;
 }
