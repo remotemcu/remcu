@@ -73,6 +73,10 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
     return success;
 }
 
+bool resetRemoteUnit(const ResetType type){
+    return client->resetRemoteUnit(type);
+}
+
 static inline llvm_pass_arg loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg){
 
     llvm_pass_arg ret = 0;

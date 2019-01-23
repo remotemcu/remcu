@@ -13,6 +13,12 @@ enum ServerType {
     _GDB_SERVER
 };
 
+enum ResetType {
+    __RUN = 0,
+    __HALT,
+    __INIT
+};
+
 bool connect2Server(const std::string host, const uint16_t port,
                     const ServerType server = _DUMMY_SERVVER, const bool logo = false,
                     const int timeout = 0);
@@ -21,6 +27,8 @@ inline bool connect2OpenOCD(const std::string host, const uint16_t port,
                             const bool logo = true, const int timeout = 0){
     return connect2Server(host, port, _OPENOCD_SERVER, logo, timeout);
 }
+
+bool resetRemoteUnit(const ResetType type);
 
 void addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end);
 

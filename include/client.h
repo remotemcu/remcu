@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include "AddressInterceptPass.h"
-
+#include "adin.h"
 
 namespace adin {
 
@@ -20,6 +20,8 @@ struct ClientBase {
     virtual bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
     virtual bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
+
+    virtual bool resetRemoteUnit(const ResetType) const ;
 
     virtual bool close() const ;
 };
@@ -36,6 +38,8 @@ struct ClientDummy: ClientBase {
 
     bool fastLoadFromRemoteMem(const uintptr_t __attribute__((unused)), const size_t __attribute__((unused)), char* __attribute__((unused))) const {return true;}
 
+    bool resetRemoteUnit(const ResetType __attribute__((unused))) const {return true;}
+
     bool close() const {return true;}
 };
 
@@ -50,6 +54,8 @@ struct ClientOpenOCD: ClientBase {
     bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
     bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
+
+    bool resetRemoteUnit(const ResetType) const ;
 
     bool close() const ;
 };

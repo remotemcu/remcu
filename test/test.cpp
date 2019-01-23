@@ -50,6 +50,8 @@ int main(int argc, char** argv)
 
     connect2OpenOCD(host, port);
 
+    resetRemoteUnit(ResetType::__HALT);
+
     setVerboseLevel(_ALL_LOG);
     asser_1line("print line");
     setVerboseLevel(_ERROR);

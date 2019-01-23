@@ -125,6 +125,28 @@ bool ClientOpenOCD::close() const {
     return closeTCP();
 }
 
+bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
+    string reset_message("reset ");
+
+    switch (type) {
+    case ResetType::__RUN:
+        reset_message.append("run");
+        break;
+    case ResetType::__HALT:
+        reset_message.append("halt");
+        break;
+    case ResetType::__INIT:
+        reset_message.append("init");
+        break;
+    default:
+        return false;
+    }
+
+    reset_message.push_back('\x1a');
+
+    size_t lenReceiv;
+    return commandSendAndResponse(reset_message.c_str(), reset_message.size(), bufferReceiv, lenReceiv);
+}
 
 bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const {
 
