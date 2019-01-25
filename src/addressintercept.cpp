@@ -77,9 +77,9 @@ bool resetRemoteUnit(const ResetType type){
     return client->resetRemoteUnit(type);
 }
 
-static inline llvm_return_load_type loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg){
+static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg){
 
-    llvm_return_load_type ret = 0;
+    llvm_value_type ret = 0;
     switch (TypeSizeArg) {
     case 1:
         ret = (*reinterpret_cast<uint8_t*>(pointer)) & 0x1;
@@ -114,7 +114,7 @@ static inline void store(const llvm_ocd_addr pointer, const llvm_pass_arg value,
     asser_1line(client->store2RemoteAddr(pointer, value, TypeSizeArg));
 }
 
-static inline llvm_return_load_type load(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
+static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
 {
     if(isEntryHalfInterval(pointer) == false)
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
@@ -122,7 +122,7 @@ static inline llvm_return_load_type load(const llvm_ocd_addr pointer, const llvm
     llvm_pass_arg  value;
     asser_1line(client->loadFromRemoteAddr(pointer, value, TypeSizeArg));
 
-    return static_cast<llvm_return_load_type>(value);
+    return static_cast<llvm_value_type>(value);
 }
 
 bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
@@ -137,7 +137,7 @@ bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
 
 
 
-extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_pass_arg value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
+extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
     adin::ADIN_PRINTF(adin::_DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     adin::store(reinterpret_cast<llvm_ocd_addr>(pointer),
@@ -146,7 +146,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_pass_arg value, llvm_
 
 
 
-extern "C" llvm_return_load_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
+extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
     adin::ADIN_PRINTF(adin::_DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
     return adin::load(reinterpret_cast<llvm_ocd_addr>(pointer),
