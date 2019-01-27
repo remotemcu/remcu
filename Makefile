@@ -1,8 +1,15 @@
+OS := $(shell uname)
+
 CC			= clang
 AR 			= llvm-ar
 CFLAGS		= -g -c -std=c++11 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
-#-fPIC
 LDFLAGS		= -lstdc++
+
+ifeq ($(OS),Linux)
+CFLAGS		+= -fPIC
+LDFLAGS		+= -fPIC
+SHARED_FLAGS = -shared
+endif
 
 BUILD_DIR 	= build
 
@@ -17,53 +24,52 @@ OBJECTS		= $(SOURCES:.cpp=.o)
 
 INCLUDES	= -I. -I include/ -I export/
 
-TEST		= test
 TEST_SOURCE = test/test.cpp
 TEST_OBJECTS= $(TEST_SOURCE:.cpp=.o)
 
 TEST_IR_SOURCE = test/IrTest.cpp
 TEST_IR_LL = $(TEST_IR_SOURCE:.cpp=.ll)
 
-LIB_NAME 	= adin
+LIB_NAME 	= libadin
 
+ifeq ($(OS),Linux)
 STATIC_LIB 	= $(LIB_NAME).a
-
 SHARED_LIB 	= $(LIB_NAME).so
+endif
 
-.PHONY: lib
-lib: $(SOURCES) $(STATIC_LIB)
+print-%  : ; @echo $* = $($*)
 
 
-$(STATIC_LIB): $(OBJECTS) $(BUILD_DIR)
-	$(AR) -rcs $(BUILD_DIR)/$@ $(OBJECTS)
+.PHONY: objects
+objects: $(BUILD_DIR) $(OBJECTS)
 
+
+.PHONY: static
+static: $(BUILD_DIR) $(OBJECTS)
+	$(AR) -rcs $(BUILD_DIR)/$(STATIC_LIB) $(BUILD_DIR)/*.o
 
 .PHONY: shared
-shared: $(SOURCES) $(SHARED_LIB)
-
-$(SHARED_LIB): $(OBJECTS) $(BUILD_DIR)
-	$(CC) -shared $(LDFLAGS) $(OBJECTS) -o $(BUILD_DIR)/$@
+shared: $(BUILD_DIR) $(OBJECTS)
+	$(CC) $(SHARED_FLAGS) $(LDFLAGS) $(BUILD_DIR)/*.o -o $(BUILD_DIR)/$(SHARED_LIB)
 
 
 $(BUILD_DIR):
-	@mkdir -p build/
+	mkdir -p $@
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $< -o $(BUILD_DIR)/$(notdir $@)
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJECTS) $(TARGET) $(TEST_OBJECTS) $(BUILD_DIR) $(TEST_IR_LL)
+	rm -rf $(BUILD_DIR) $(TEST_IR_LL)
 
 .PHONY: test
-test: $(SOURCES) $(TEST_SOURCE) $(TEST)
-
-$(TEST): $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL) $(BUILD_DIR)
-	$(CC) $(LDFLAGS) $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL) -o $(BUILD_DIR)/$@
+test: $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL)
+	$(CC) $(LDFLAGS) $(BUILD_DIR)/*.o $(TEST_IR_LL) -o $(BUILD_DIR)/$@
 
 
-.PHONY: ir-test
-ir-test: $(TEST_IR_SOURCE) $(TEST_IR_LL) $(BUILD_DIR)
+.PHONY: ir_pass
+ir_pass: $(TEST_IR_SOURCE) $(TEST_IR_LL)
 
 $(TEST_IR_LL): $(TEST_IR_SOURCE)
 	$(CC) -S -emit-llvm -Xclang -load -Xclang \
