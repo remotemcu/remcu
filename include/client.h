@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdint.h>
+#include <vector>
 
 #include "AddressInterceptPass.h"
 #include "adin.h"
@@ -11,7 +12,7 @@ namespace adin {
 
 struct ClientBase {
 
-    virtual bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
+    bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
     virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
 
@@ -23,7 +24,11 @@ struct ClientBase {
 
     virtual bool resetRemoteUnit(const ResetType) const ;
 
-    virtual bool close() const ;
+    bool close() const ;
+
+protected:
+    static std::vector<char> bufferSend;
+    static std::vector<char> bufferReceiv;
 };
 
 struct ClientDummy: ClientBase {
@@ -45,7 +50,7 @@ struct ClientDummy: ClientBase {
 
 struct ClientOpenOCD: ClientBase {
 
-    bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
+    //bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
     bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
 
@@ -57,9 +62,25 @@ struct ClientOpenOCD: ClientBase {
 
     bool resetRemoteUnit(const ResetType) const ;
 
-    bool close() const ;
+    //bool close() const ;
 };
 
+struct ClientGDB: ClientBase {
+
+    //bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
+
+    bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
+
+    bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
+
+    bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
+
+    bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
+
+    bool resetRemoteUnit(const ResetType) const ;
+
+    //bool close() const ;
+};
 
 } //namespace
 

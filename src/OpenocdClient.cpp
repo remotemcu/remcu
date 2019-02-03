@@ -28,10 +28,10 @@ enum TypeOperation_t {
 enum SizeOperation_t {
     BYTE = 'b', HALF_WORD = 'h', WORD = 'w'
 };
-
+#if 0
 static vector<char> bufferSend(0x100,'\0');
 static vector<char> bufferReceiv(0x100,'\0');
-
+#endif
 
 static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & sizeOp){
     switch (sizeVal) {
@@ -75,7 +75,7 @@ static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, ch
 
         ADIN_PRINTF(_DEBUG, "> %d - %s\n", respN, buffer.data());
 
-        if(strchr(p, COMMAND_TOKEN) != NULL){
+        if(strchr(p, COMMAND_TOKEN) != nullptr){
             break;
         }
     }
@@ -111,17 +111,9 @@ static bool commandSendAndResponse(const char * data, const size_t lenData,
 
     asser_1line(readBeforeToken(bufferResp, lenResp));
 
-    bufferReceiv.at(lenResp) = '\0';
+    bufferResp.at(lenResp) = '\0';
 
     return true;
-}
-
-bool ClientOpenOCD::connect(const std::string host, const uint16_t port, const int timeout_sec) const {
-    return connectTCP(host, port, timeout_sec);
-}
-
-bool ClientOpenOCD::close() const {
-    return closeTCP();
 }
 
 bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {

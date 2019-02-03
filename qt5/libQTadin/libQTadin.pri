@@ -4,7 +4,9 @@ SOURCES += \
     ../../src/logger.cpp \
     ../../src/assertion.cpp \
     ../../src/addressintercept.cpp \
-    ../../src/OpenocdClient.cpp
+    ../../src/OpenocdClient.cpp \
+    ../../src/gdbclient.cpp        \
+    ../../src/BaseClient.cpp
 
 HEADERS += \
     ../../export/adin.h \
