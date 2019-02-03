@@ -28,10 +28,6 @@ enum TypeOperation_t {
 enum SizeOperation_t {
     BYTE = 'b', HALF_WORD = 'h', WORD = 'w'
 };
-#if 0
-static vector<char> bufferSend(0x100,'\0');
-static vector<char> bufferReceiv(0x100,'\0');
-#endif
 
 static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, char & sizeOp){
     switch (sizeVal) {
@@ -89,11 +85,11 @@ static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
 
     char * p = buffer.data();
 
-    if(strtok(p,":") == NULL)
+    if(strtok(p,":") == nullptr)
         return false;
-    const char * valp = strtok(NULL,": ");
+    const char * valp = strtok(nullptr,": ");
 
-    if(valp == NULL){
+    if(valp == nullptr){
         return false;
     }
 
@@ -103,9 +99,9 @@ static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
 }
 
 
-static bool commandSendAndResponse(const char * data, const size_t lenData,
+static bool commandSendAndGetResponse(const char * data, const size_t lenData,
                                    vector<char> & bufferResp, size_t & lenResp){
-    asser_1line(lenData > 0 || !"buffer size less");
+    asser_1line(lenData > 0 || !"transmitted buffer is empty");
 
     asser_1line(sendMessage2Server(data, lenData));
 
@@ -136,7 +132,7 @@ bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
     reset_message.push_back('\x1a');
 
     size_t lenReceiv;
-    return commandSendAndResponse(reset_message.c_str(), reset_message.size(), bufferReceiv, lenReceiv);
+    return commandSendAndGetResponse(reset_message.c_str(), reset_message.size(), bufferReceiv, lenReceiv);
 }
 
 bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const {
@@ -153,7 +149,7 @@ bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_a
                              STORE, sizeOp, addr, sendValue);
 
     size_t lenReceiv;
-    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenReceiv);
+    commandSendAndGetResponse(bufferSend.data(), len, bufferReceiv, lenReceiv);
 
     return true;
 }
@@ -171,7 +167,7 @@ bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg &
                              LOAD, sizeOp, addr);
 
     size_t lenReceiv = 0;
-    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenReceiv);
+    commandSendAndGetResponse(bufferSend.data(), len, bufferReceiv, lenReceiv);
 
     asser_1line(parseValue(bufferReceiv, value));
 
@@ -230,7 +226,7 @@ bool ClientOpenOCD::fastWrite2RemoteMem(const uintptr_t addr, const char* sink, 
     pos += len;
 
     size_t lenBufReceiv;
-    commandSendAndResponse(bufferSend.data(), pos, bufferReceiv, lenBufReceiv);
+    commandSendAndGetResponse(bufferSend.data(), pos, bufferReceiv, lenBufReceiv);
 
     return true;
 }
@@ -255,7 +251,7 @@ bool ClientOpenOCD::fastLoadFromRemoteMem(const uintptr_t addr, const size_t siz
                              addr, size);
 
     size_t lenBuf = 0;
-    commandSendAndResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
+    commandSendAndGetResponse(bufferSend.data(), len, bufferReceiv, lenBuf);
 
     char * point = bufferReceiv.data();
 
@@ -270,7 +266,7 @@ bool ClientOpenOCD::fastLoadFromRemoteMem(const uintptr_t addr, const size_t siz
         buf[1] = point[pos];
         pos++;
         buf[2] = '\0';
-        dist[i] = strtoul(buf, NULL, 16) & 0xFF;
+        dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
     }
 
     return true;
