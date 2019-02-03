@@ -23,12 +23,16 @@ bool __assertionF (const char *__assertion, const char *__file,
 //ADIN_PRINTF(_ALL_LOG,"%s",#expr)
 } //namespace
 
-# define asser_1line(expr)							\
-  ((expr)								\
-   ? 	ADIN_PRINTF(_ALL_LOG,"%s\n", #expr)			\
-   :  existErrorCallback()   \
-    ?  __callback(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION) \
-    : __assertionF(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))    \
-
+# define asser_1line(expr)                                              \
+  if(expr){                                                             \
+        ADIN_PRINTF(_ALL_LOG,"%s\n", #expr);                            \
+    } else {                                                            \
+       if(existErrorCallback()) {   \
+          __callback(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION);     \
+        } else {                                                        \
+         __assertionF(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION);   \
+        }                                                               \
+        return false;                                                   \
+    }                                                                   \
 
 #endif // ASSERTION_H
