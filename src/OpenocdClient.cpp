@@ -7,7 +7,6 @@
 
 #include "assertion.h"
 #include "netwrapper.h"
-#include "OpenocdClient.h"
 #include "logger.h"
 #include "client.h"
 
@@ -98,7 +97,7 @@ static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
         return false;
     }
 
-    value = strtoul(valp, NULL, 16);
+    value = strtoul(valp, nullptr, 16);
 
     return true;
 }

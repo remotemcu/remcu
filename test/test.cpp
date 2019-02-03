@@ -7,7 +7,6 @@
 #include <cstring>
 #include <assert.h>
 
-#include "OpenocdClient.h"
 #include "netwrapper.h"
 #include "AddressInterceptPass.h"
 #include "adin.h"

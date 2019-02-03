@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "AddressInterceptPass.h"
-#include "OpenocdClient.h"
 #include "logger.h"
 #include "assertion.h"
 #include "client.h"

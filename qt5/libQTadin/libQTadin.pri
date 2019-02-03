@@ -12,8 +12,7 @@ HEADERS += \
     ../../include/client.h \
     ../../include/netwrapper.h \
     ../../include/assertion.h \
-    ../../include/logger.h \
-    ../../include/OpenocdClient.h
+    ../../include/logger.h
 
 INCLUDEPATH += ../../include/
 INCLUDEPATH += ../../export/
