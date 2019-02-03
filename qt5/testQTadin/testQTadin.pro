@@ -1,4 +1,4 @@
-QT -= gui
+QT -= core gui
 
 QT       += network
 
@@ -18,29 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 QMAKE_CXXFLAGS += -fno-rtti -std=c++11
 
-SOURCES += \
-    ../src/qtnet.cpp \
-    ../../src/logger.cpp \
-    ../../src/assertion.cpp \
-    ../../src/addressintercept.cpp \
-    ../../src/OpenocdClient.cpp \
-    ../../test/test.cpp
+HEADERS += ../../test/IrTest.h
+
+SOURCES += ../../test/test.cpp
+
+include(../libQTadin/libQTadin.pri)
+
+TARGET = qttest
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-HEADERS += \
-    ../../export/adin.h \
-    ../../export/AddressInterceptPass.h \
-    ../../include/client.h \
-    ../../include/netwrapper.h \
-    ../../include/assertion.h \
-    ../../include/logger.h \
-    ../../include/OpenocdClient.h \
-    ../../test/IrTest.h
-
 
 INCLUDEPATH += ../../include/
 INCLUDEPATH += ../../export/
