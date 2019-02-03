@@ -117,8 +117,8 @@ static bool commandSendAndResponse(const char * data, const size_t lenData,
     return true;
 }
 
-bool ClientOpenOCD::connect(const std::string host, const uint16_t port, const int timeout) const {
-    return connectTCP(host, port, timeout);
+bool ClientOpenOCD::connect(const std::string host, const uint16_t port, const int timeout_sec) const {
+    return connectTCP(host, port, timeout_sec);
 }
 
 bool ClientOpenOCD::close() const {

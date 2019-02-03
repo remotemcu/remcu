@@ -16,8 +16,10 @@ static TCPConnector* connector = new TCPConnector();
 
 static TCPStream* stream = NULL;
 
+static int current_timeout_sec = -1;
 
-bool connectTCP(const std::string host, const uint16_t port, const int timeout){
+
+bool connectTCP(const std::string host, const uint16_t port, const int timeout_sec){
 
     if(connector == NULL){
         ADIN_LOG(_ERROR) << "internal error";
@@ -26,7 +28,9 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout){
 
     closeTCP();
 
-    stream = connector->connect(host.c_str(), port, timeout);
+    current_timeout_sec = timeout_sec;
+
+    stream = connector->connect(host.c_str(), port, current_timeout_sec);
 
     if(stream == NULL){
         ADIN_LOG(_ERROR) << "Failed " << host << ", port : " << port ;
@@ -49,7 +53,7 @@ bool closeTCP(){
 
 bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
 
-    ADIN_LOG(_DEBUG) << "-> " << " len: " << lenBuffer << " : " << buffer;
+    ADIN_LOG(_DEBUG) << "-> " << lenBuffer << " : '" << buffer <<"'";
 
     if(stream == NULL){
         ADIN_LOG(_ERROR) << "Connection close yet ";
@@ -66,22 +70,31 @@ bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
     return false;
 }
 
-bool receiveResponseFromServer(char * buffer, size_t & lenBuffer, const int timeout_sec){
+bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
 
     if(stream == NULL){
         ADIN_LOG(_ERROR) << "Connection close yet ";
         return false;
     }
 
-    const ssize_t len = stream->receive(buffer, lenBuffer, timeout_sec);
+    const ssize_t lenSocket = stream->receive(buffer, lenBuffer, current_timeout_sec);
 
-    if(len > 0){
-        lenBuffer = len;
-        return true;
+    if(lenSocket <= 0){
+        ADIN_LOG(_ERROR) << "receive response failed, len:" << lenSocket ;
+        return false;
     }
 
-    ADIN_LOG(_ERROR) << "receive response failed, len:" << len ;
-    return false;
+    if(lenSocket > static_cast<ssize_t>(lenBuffer - 1)){
+        ADIN_LOG(_ERROR) << "readable buffer is small";
+        return false;
+    }
+
+    buffer[lenSocket] = '\0';
+
+    lenBuffer = lenSocket;
+    ADIN_LOG(_DEBUG) << "<- " << lenBuffer << " : '" << buffer <<"'";
+
+    return true;
 }
 
 } //namespace

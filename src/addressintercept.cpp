@@ -50,7 +50,7 @@ static bool isEntryHalfInterval(const llvm_ocd_addr addr){
 }
 
 bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
-                    const bool logo, const int timeout){
+                    const bool logo, const int timeout_sec){
 
     client->close();
 
@@ -64,10 +64,10 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
         assert(!"unknown client");
     }
 
-    const bool success = client->connect(host,port, timeout);
+    const bool success = client->connect(host,port, timeout_sec);
 
     if(success && logo){
-
+        ADIN_LOG(_INFO) << "logo!!";
     }
 
     return success;
@@ -105,13 +105,14 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
 }
 
 
-static inline void store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg)
+static inline bool store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg)
 {
     if(isEntryHalfInterval(pointer) == false){
-        return;
+        return true;
     }
 
     asser_1line(client->store2RemoteAddr(pointer, value, TypeSizeArg));
+    return true;
 }
 
 static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)

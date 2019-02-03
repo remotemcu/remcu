@@ -18,7 +18,7 @@ public:
         const std::string &funcName, const int line) {
         cLevel = level;
         if (cLevel <= gLevel)
-            std::cout << fileName << "/" << funcName << ":" << line << ": ";
+            std::cout << level << "$" << fileName << "/" << funcName << ":" << line << ": ";
     }
 
     template <class T> Log &operator<<(const T &v) {
