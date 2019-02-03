@@ -25,7 +25,9 @@ using namespace std;
 
 static bool callback(const char *__assertion, const char *__file,
                const unsigned int __line, const char *__function){
-    cout << "test custom error callback " << endl;
+    std::cout << "test custom error callback : " << endl;
+    std::cout << "$" << __file << "/" << __function << ":" << __line
+              << ": " << __assertion << endl;
     return true;
 }
 
@@ -52,11 +54,6 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    setVerboseLevel(_ALL_LOG);
-    asser_1line("print line");
-    setVerboseLevel(_ERROR);
-    setErrorFunction(callback);
-
     addInterceptAddress2Interval(address, address + 4*2);
 
     int ret = irTest(reinterpret_cast<int*>(address));
@@ -78,5 +75,11 @@ int main(int argc, char** argv)
 
     assert(ret == 0);
 
-    asser_1line(false);
+    closeTCP();
+    setErrorFunction(callback);
+
+    std::cout << "-----------------------" << endl;
+
+    //asser_1line(false);
+    fastWrite2RemoteMem(address,dist,1);
 }
