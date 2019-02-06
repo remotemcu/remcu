@@ -85,7 +85,7 @@ bool resetRemoteUnit(const ResetType type){
     return true;
 }
 
-static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg){
+static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg){
 
     llvm_value_type ret = 0;
     switch (TypeSizeArg) {
@@ -114,7 +114,7 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
 }
 
 
-static inline bool store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg)
+static inline bool store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
 {
     if(isEntryHalfInterval(pointer) == false){
         return true;

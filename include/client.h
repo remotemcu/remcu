@@ -7,6 +7,7 @@
 
 #include "AddressInterceptPass.h"
 #include "adin.h"
+#include "defines.h"
 
 namespace adin {
 
@@ -14,15 +15,15 @@ struct ClientBase {
 
     bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
-    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
+    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
+    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
+    virtual bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
+    virtual bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool resetRemoteUnit(const ResetType) const ;
+    virtual bool resetRemoteUnit(const ResetType) const DECL_BODY_VIRTUAL_FUNCTION
 
     bool close() const ;
 
@@ -33,17 +34,17 @@ protected:
 
 struct ClientDummy: ClientBase {
 
-    bool connect(const std::string __attribute__((unused)), const uint16_t __attribute__((unused)), int __attribute__((unused))) const {return true;}
+    bool connect(const std::string DECL_UNUSED, const uint16_t DECL_UNUSED, int DECL_UNUSED) const {return true;}
 
-    bool store2RemoteAddr(const llvm_ocd_addr __attribute__((unused)), const llvm_pass_arg __attribute__((unused)), const llvm_pass_arg __attribute__((unused))) const {return true;}
+    bool store2RemoteAddr(const llvm_ocd_addr DECL_UNUSED, const llvm_pass_arg DECL_UNUSED, const llvm_pass_arg DECL_UNUSED) const {return true;}
 
-    bool loadFromRemoteAddr(const llvm_ocd_addr __attribute__((unused)), llvm_pass_arg & value, const llvm_pass_arg __attribute__((unused))) const {value = 0; return true;}
+    bool loadFromRemoteAddr(const llvm_ocd_addr DECL_UNUSED, llvm_pass_arg & value, const llvm_pass_arg DECL_UNUSED) const {value = 0; return true;}
 
-    bool fastWrite2RemoteMem(const uintptr_t __attribute__((unused)), const char* __attribute__((unused)), const size_t __attribute__((unused))) const {return true;}
+    bool fastWrite2RemoteMem(const uintptr_t DECL_UNUSED, const char* DECL_UNUSED, const size_t DECL_UNUSED) const {return true;}
 
-    bool fastLoadFromRemoteMem(const uintptr_t __attribute__((unused)), const size_t __attribute__((unused)), char* __attribute__((unused))) const {return true;}
+    bool fastLoadFromRemoteMem(const uintptr_t DECL_UNUSED, const size_t DECL_UNUSED, char* DECL_UNUSED) const {return true;}
 
-    bool resetRemoteUnit(const ResetType __attribute__((unused))) const {return true;}
+    bool resetRemoteUnit(const ResetType DECL_UNUSED) const {return true;}
 
     bool close() const {return true;}
 };
