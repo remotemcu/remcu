@@ -8,7 +8,7 @@
 namespace adin {
 
 #if 0
-void __ASSERT_DEBUG(const char *);
+void __ASSERT__DEBUG(const char *);
 
 bool existErrorCallback();
 
@@ -21,18 +21,18 @@ bool __assertionF (const char *__assertion, const char *__file,
 
 # define assert_1message(expr, msg)                                      \
   if(expr){                                                             \
-        ADIN_PRINTF(_ALL_LOG,"%s\n", #expr);                            \
+        ADIN_PRINTF(__ALL_LOG,"%s\n", #expr);                            \
     } else {                                                            \
-        ADIN_LOG(_ERROR) << msg;                                        \
+        ADIN_LOG(__ERROR) << msg;                                        \
         return false;                                                   \
     }                                                                   \
 
 
 # define assert_printf(expr, msg,...)                                      \
   if(expr){                                                             \
-        ADIN_PRINTF(_ALL_LOG,"%s\n", #expr);                            \
+        ADIN_PRINTF(__ALL_LOG,"%s\n", #expr);                            \
     } else {                                                            \
-        ADIN_PRINTF(_ERROR, msg, __VA_ARGS__);                          \
+        ADIN_PRINTF(__ERROR, msg, __VA_ARGS__);                          \
         return false;                                                   \
     }                                                                   \
 

@@ -26,7 +26,7 @@ static const char * RESPONSE_OK = "$OK#";
 bool ClientGDB::resetRemoteUnit(const ResetType type) const {
 
     if(ResetType::__HALT != type){
-        ADIN_LOG(_ERROR) << "GDB supports only halt reset ";
+        ADIN_LOG(__ERROR) << "GDB supports only halt reset ";
         return false;
     }
 
@@ -50,7 +50,7 @@ static uint8_t getQtyBytes(const llvm_pass_arg sizeValBits ){
     case 32:
         return 4;
     default:
-        ADIN_LOG(_ERROR) << "Unrichable size of type: " << sizeValBits << "-bits";
+        ADIN_LOG(__ERROR) << "Unrichable size of type: " << sizeValBits << "-bits";
         return 0;
     }
 }
@@ -64,7 +64,7 @@ bool ClientGDB::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg v
 
     const char *p = reinterpret_cast<const char *>(&value);
 
-    return fastWrite2RemoteMem(addr, p, size);
+    return this->fastWrite2RemoteMem(addr, p, size);
 }
 
 bool ClientGDB::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const {
@@ -76,7 +76,7 @@ bool ClientGDB::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & val
 
     char *p = reinterpret_cast<char *>(&value);
 
-    return fastLoadFromRemoteMem(addr, size, p);
+    return this->fastLoadFromRemoteMem(addr, size, p);
 }
 
 
@@ -160,8 +160,8 @@ bool ClientGDB::fastWrite2RemoteMem(const uintptr_t addr, const char* sink, cons
         (strncmp(start, RESPONSE_OK, strlen(RESPONSE_OK)) != 0))
     {
         const string resp(bufferReceiv.data(), lenBufReceiv);
-        ADIN_LOG(_ERROR) << "GDB server error respose: " << resp;
-        ADIN_LOG(_ERROR) << "len of response : " << lenBufReceiv;
+        ADIN_LOG(__ERROR) << "GDB server error respose: " << resp;
+        ADIN_LOG(__ERROR) << "len of response : " << lenBufReceiv;
         return false;
     }
 
@@ -201,8 +201,8 @@ bool ClientGDB::fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, c
         (strlen(start) != size_receive))
     {
         const string resp(bufferReceiv.data(), lenBufReceiv);
-        ADIN_LOG(_ERROR) << "GDB server error respose: "  << resp;
-        ADIN_LOG(_ERROR) << "len of response : " << size_receive << " [ " << lenBufReceiv << " ]";
+        ADIN_LOG(__ERROR) << "GDB server error respose: "  << resp;
+        ADIN_LOG(__ERROR) << "len of response : " << size_receive << " [ " << lenBufReceiv << " ]";
         return false;
     }
 

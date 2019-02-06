@@ -62,19 +62,19 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
         client = static_cast<ClientBase*>(&gdb);
         //assert(!"GDB client not implementet");
     } else {
-        ADIN_LOG(_ERROR) << "unknown client, please choice _OPENOCD_SERVER or _GDB_SERVER";
+        ADIN_LOG(__ERROR) << "unknown client, please choice _OPENOCD_SERVER or _GDB_SERVER";
         return false;
     }
 
     const bool success = client->connect(host,port, timeout_sec);
 
     if(success && logo){
-        ADIN_LOG(_INFO) << "logo!!";
+        ADIN_LOG(__INFO) << "logo!!";
     }
 
     if(success == false){
-        ADIN_LOG(_ERROR) << "Connecting failed!";
-        ADIN_LOG(_ERROR) << "Please check server and try again...";
+        ADIN_LOG(__ERROR) << "Connecting failed!";
+        ADIN_LOG(__ERROR) << "Please check server and try again...";
     }
 
     return success;
@@ -105,8 +105,8 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
         ret = (*reinterpret_cast<uint64_t*>(pointer));
         break;
     default:
-        ADIN_LOG(_ERROR) << "Unknown size of type: " << TypeSizeArg;
-        ADIN_PRINTF(_ERROR, "at the pointer: %p\n", pointer);
+        ADIN_LOG(__ERROR) << "Unknown size of type: " << TypeSizeArg;
+        ADIN_PRINTF(__ERROR, "at the pointer: %p\n", pointer);
         break;
     }
 
@@ -133,7 +133,7 @@ static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_
     llvm_pass_arg  value;
     if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
         value = 0;
-        ADIN_PRINTF(_ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);
+        ADIN_PRINTF(__ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);
     }
 
     return static_cast<llvm_value_type>(value);
@@ -159,7 +159,7 @@ bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    adin::ADIN_PRINTF(adin::_DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    adin::ADIN_PRINTF(adin::__DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     adin::store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 }
@@ -168,7 +168,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    adin::ADIN_PRINTF(adin::_DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
+    adin::ADIN_PRINTF(adin::__DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
     return adin::load(reinterpret_cast<llvm_ocd_addr>(pointer),
                   TypeSizeArg, AlignmentArg);
 }

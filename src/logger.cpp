@@ -6,7 +6,7 @@
 
 namespace adin {
 
-LevelDebug Log::gLevel = _ERROR;
+LevelDebug Log::gLevel = __ERROR;
 
 
 void setVerboseLevel(LevelDebug level){
@@ -16,15 +16,15 @@ void setVerboseLevel(LevelDebug level){
 const char * Log::getNameOfLevel(const LevelDebug level){
 
     switch (level) {
-    case LevelDebug::_ERROR:
+    case LevelDebug::__ERROR:
         return "(ERROR)";
-    case LevelDebug::_INFO:
+    case LevelDebug::__INFO:
         return "(INFO)";
-    case LevelDebug::_WARNING:
+    case LevelDebug::__WARNING:
         return "(WARNING)";
-    case LevelDebug::_DEBUG:
+    case LevelDebug::__DEBUG:
         return "(DEBUG)";
-    case LevelDebug::_ALL_LOG:
+    case LevelDebug::__ALL_LOG:
         return "(DEBUG)";
     default:
         return "! It's very strangly !";

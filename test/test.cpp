@@ -48,10 +48,10 @@ int main(int argc, char** argv)
     const string host(argv[1]);
     const uint32_t address = strtoul(argv[2], NULL, 16) & 0xFFFFFFFF;
 
-    setVerboseLevel(_INFO);
-    ADIN_LOG(_INFO) << "host: " << host;
-    ADIN_LOG(_INFO) << "address: 0x" << hex<< address;
-    setVerboseLevel(_ERROR);
+    setVerboseLevel(__INFO);
+    ADIN_LOG(__INFO) << "host: " << host;
+    ADIN_LOG(__INFO) << "address: 0x" << hex<< address;
+    setVerboseLevel(__ERROR);
 
     std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
 

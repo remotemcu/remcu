@@ -19,9 +19,9 @@ enum ResetType {
     __INIT
 };
 
-enum LevelDebug { _ERROR = 0,
-                  _WARNING, _INFO,
-                  _DEBUG, _ALL_LOG };
+enum LevelDebug { __ERROR = 0,
+                  __WARNING, __INFO,
+                  __DEBUG, __ALL_LOG };
 
 #define _DEFAULT_TIMEOUT_SEC 3
 

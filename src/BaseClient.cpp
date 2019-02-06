@@ -44,7 +44,7 @@ static bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char 
         assert_printf(respN < buffer.size(),
                       "receive buffer is small: %d > %d\n", respN , buffer.size());
 
-        ADIN_PRINTF(_DEBUG, "> %d - %s\n", respN, buffer.data());
+        ADIN_PRINTF(__DEBUG, "> %d - %s\n", respN, buffer.data());
 
         if(strchr(p, token) != nullptr){
             break;

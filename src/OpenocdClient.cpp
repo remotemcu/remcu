@@ -48,7 +48,7 @@ static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, ch
         sizeOp = WORD;
         break;
     default:
-        ADIN_LOG(_ERROR) << "Unknown typesize: " << sizeVal;
+        ADIN_LOG(__ERROR) << "Unknown typesize: " << sizeVal;
         return false;
     }
 
@@ -87,7 +87,7 @@ bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
         reset_message.append("init");
         break;
     default:
-        ADIN_LOG(_ERROR) << "Unknown reset type: " << type;
+        ADIN_LOG(__ERROR) << "Unknown reset type: " << type;
         return false;
     }
 
