@@ -38,6 +38,7 @@ int main(int argc, char** argv)
         assert("test requare 3 arguments: host port 32bit_hex_address");
     }
 
+    int ret = 0;
 
     const string host(argv[1]);
     const uint16_t port = atoi(argv[2]) & 0xFFFF;
@@ -55,7 +56,7 @@ int main(int argc, char** argv)
 
     addInterceptAddress2Interval(address, address + 4*2);
 
-    int ret = irTest(reinterpret_cast<int*>(address));
+    ret = irTest(reinterpret_cast<int*>(address));
 
     assert(ret == 0);
 
@@ -65,7 +66,6 @@ int main(int argc, char** argv)
 
     char dist[100] = {'\0'};
 
-
     fastWrite2RemoteMem(address, testMessage, _SIZE);
 
     fastLoadFromRemoteMem(address, 100, dist);
@@ -74,11 +74,30 @@ int main(int argc, char** argv)
 
     assert(ret == 0);
 
+    connect2Server(host, 3333, _GDB_SERVER);
+
+    addInterceptAddress2Interval(address, address + 4*4);
+
+    #define QQQ 33
+    uint8_t q[QQQ];
+    for(int i =0; i < QQQ; i++)
+        q[i] = i;
+    fastWrite2RemoteMem(0x20000000, (const char *)&q, 10);
+
+    char  buf[QQQ] = {'@'};
+
+    fastLoadFromRemoteMem(0x20000000, 10, buf);
+
+    assert(std::strncmp((char*)q,buf,10) == 0);
+
+    ret = irTest(reinterpret_cast<int*>(0x20000000));
+
+    assert(ret == 0);
+
     closeTCP();
     setErrorFunction(callback);
 
     std::cout << "-----------------------" << endl;
 
-    //asser_1line(false);
     fastWrite2RemoteMem(address,dist,1);
 }

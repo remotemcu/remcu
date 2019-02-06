@@ -26,6 +26,7 @@ static vector<AddrInterval> intervals;
 
 static ClientDummy dummy;
 static ClientOpenOCD openocd;
+static ClientGDB gdb;
 
 static ClientBase * client = static_cast<ClientBase*>(&dummy);
 
@@ -58,7 +59,8 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
     } else if (server == _OPENOCD_SERVER) {
         client = static_cast<ClientBase*>(&openocd);
     } else if(server == _GDB_SERVER) {
-        assert(!"GDB client not implementet");
+        client = static_cast<ClientBase*>(&gdb);
+        //assert(!"GDB client not implementet");
     } else {
         assert(!"unknown client");
     }

@@ -5,8 +5,8 @@ SOURCES += \
     ../../src/assertion.cpp \
     ../../src/addressintercept.cpp \
     ../../src/OpenocdClient.cpp \
-    ../../src/gdbclient.cpp        \
-    ../../src/BaseClient.cpp
+    ../../src/BaseClient.cpp \
+    $$PWD/../../src/GdbClient.cpp
 
 HEADERS += \
     ../../export/adin.h \
