@@ -28,7 +28,7 @@ bool ClientBase::close() const {
     return closeTCP();
 }
 
-bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char token){
+static bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char token){
     size_t len = 0;
     size_t respN = 0;
     char * p = buffer.data();

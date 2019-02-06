@@ -50,8 +50,6 @@ struct ClientDummy: ClientBase {
 
 struct ClientOpenOCD: ClientBase {
 
-    //bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
-
     bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
 
     bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
@@ -62,13 +60,10 @@ struct ClientOpenOCD: ClientBase {
 
     bool resetRemoteUnit(const ResetType) const ;
 
-    //bool close() const ;
 };
 
 struct ClientGDB: ClientBase {
 
-    //bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
-
     bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
 
     bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
@@ -79,10 +74,7 @@ struct ClientGDB: ClientBase {
 
     bool resetRemoteUnit(const ResetType) const ;
 
-    //bool close() const ;
 };
-
-bool readBeforeToken(std::vector<char> & buffer, size_t & lenResp, const char token);
 
 bool commandSendAndGetResponse(const char * data, const size_t lenData,
                                std::vector<char> & bufferResp, size_t & lenResp, const char token);
