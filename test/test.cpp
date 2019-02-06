@@ -55,6 +55,7 @@ int main(int argc, char** argv)
 
     std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
 
+
     connect2OpenOCD(host, PORT_TCL);
 
     resetRemoteUnit(ResetType::__HALT);
@@ -80,13 +81,12 @@ int main(int argc, char** argv)
     assert(ret == 0);
 
     closeTCP();
-    setErrorFunction(callback);
 
-    std::cout << "Callback function:" << endl;
+    std::cout << "Errors:" << endl;
 
     fastWrite2RemoteMem(address,dist,1);
-
-    setErrorFunction(nullptr);
+    fastWrite2RemoteMem(address,nullptr,1);
+    fastLoadFromRemoteMem(address, 10, nullptr);
 
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
@@ -96,27 +96,27 @@ int main(int argc, char** argv)
 
     addInterceptAddress2Interval(address, address + 4*4);
 
-    #define QQQ 33
-    uint8_t q[QQQ];
-    for(int i =0; i < QQQ; i++)
-        q[i] = i;
-    fastWrite2RemoteMem(0x20000000, (const char *)&q, 10);
+    #define _SIZE 33
+    uint8_t test_msg[_SIZE];
+    for(int i =0; i < _SIZE; i++)
+        test_msg[i] = i;
+    fastWrite2RemoteMem(address, (const char *)&test_msg, 10);
 
-    char  buf[QQQ] = {'@'};
+    char  buf[_SIZE] = {'@'};
 
-    fastLoadFromRemoteMem(0x20000000, 10, buf);
+    fastLoadFromRemoteMem(address, 10, buf);
 
-    assert(std::strncmp((char*)q,buf,10) == 0);
+    assert(std::strncmp((char*)test_msg,buf,10) == 0);
 
     ret = irTest(reinterpret_cast<int*>(0x20000000));
 
     assert(ret == 0);
 
     closeTCP();
-    setErrorFunction(callback);
-
-    std::cout << "Callback function:" << endl;
+    std::cout << "Errors:" << endl;
 
     fastWrite2RemoteMem(address,dist,1);
+    fastWrite2RemoteMem(address,nullptr,1);
+    fastLoadFromRemoteMem(address, 10, nullptr);
 }
 

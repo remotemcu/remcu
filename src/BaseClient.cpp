@@ -35,12 +35,14 @@ static bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char 
 
     while(true){
         len = buffer.size();
-        asser_1line(receiveResponseFromServer(p + respN, len));
+        assert_1message(receiveResponseFromServer(p + respN, len),
+                        "server failed - timeout");
 
         respN += len;
         buffer.at(respN) = '\0';
 
-        asser_1line(respN < buffer.size());
+        assert_printf(respN < buffer.size(),
+                      "receive buffer is small: %d > %d\n", respN , buffer.size());
 
         ADIN_PRINTF(_DEBUG, "> %d - %s\n", respN, buffer.data());
 
@@ -57,11 +59,11 @@ static bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char 
 
 bool commandSendAndGetResponse(const char * data, const size_t lenData,
                                       vector<char> & bufferResp, size_t & lenResp, const char token){
-    asser_1line(lenData > 0 || !"transmitted buffer is empty");
+    assert_1message(lenData > 0, "transmitted buffer is empty");
 
-    asser_1line(sendMessage2Server(data, lenData));
+    assert_1message(sendMessage2Server(data, lenData), "can't transmite to server");
 
-    asser_1line(readBeforeToken(bufferResp, lenResp, token));
+    assert_1message(readBeforeToken(bufferResp, lenResp, token), "server don't respond");
 
     bufferResp.at(lenResp) = '\0';
 

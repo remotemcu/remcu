@@ -62,7 +62,8 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
         client = static_cast<ClientBase*>(&gdb);
         //assert(!"GDB client not implementet");
     } else {
-        assert(!"unknown client");
+        ADIN_LOG(_ERROR) << "unknown client, please choice _OPENOCD_SERVER or _GDB_SERVER";
+        return false;
     }
 
     const bool success = client->connect(host,port, timeout_sec);
@@ -71,11 +72,17 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
         ADIN_LOG(_INFO) << "logo!!";
     }
 
+    if(success == false){
+        ADIN_LOG(_ERROR) << "Connecting failed!";
+        ADIN_LOG(_ERROR) << "Please check server and try again...";
+    }
+
     return success;
 }
 
 bool resetRemoteUnit(const ResetType type){
-    return client->resetRemoteUnit(type);
+    assert_1message(client->resetRemoteUnit(type), "can't reset remote unit");
+    return true;
 }
 
 static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg __attribute__((unused)) AlignmentArg){
@@ -98,7 +105,8 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
         ret = (*reinterpret_cast<uint64_t*>(pointer));
         break;
     default:
-        asser_1line(!"Size issue!");
+        ADIN_LOG(_ERROR) << "Unknown size of type: " << TypeSizeArg;
+        ADIN_PRINTF(_ERROR, "at the pointer: %p\n", pointer);
         break;
     }
 
@@ -112,7 +120,8 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_pass_arg value,
         return true;
     }
 
-    asser_1line(client->store2RemoteAddr(pointer, value, TypeSizeArg));
+    assert_printf(client->store2RemoteAddr(pointer, value, TypeSizeArg),
+                  "Can't write value to address: %p, size: %d\n", pointer, TypeSizeArg);
     return true;
 }
 
@@ -122,17 +131,26 @@ static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
 
     llvm_pass_arg  value;
-    asser_1line(client->loadFromRemoteAddr(pointer, value, TypeSizeArg));
+    if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
+        value = 0;
+        ADIN_PRINTF(_ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);
+    }
 
     return static_cast<llvm_value_type>(value);
 }
 
 bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
-    return client->fastWrite2RemoteMem(addr, sink, size);
+    assert_1message(sink != nullptr, "sink buffer is NULL. Check please.")
+    assert_printf(client->fastWrite2RemoteMem(addr, sink, size),
+                  "can't write array bytes [%d] to address: %p\n", size, addr);
+    return true;
 }
 
 bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
-    return client->fastLoadFromRemoteMem(addr, size, dist);
+    assert_1message(dist != nullptr, "distination buffer is NULL. Check please.")
+    assert_printf(client->fastLoadFromRemoteMem(addr, size, dist),
+                  "can't read array bytes [%d] from address: %p\n", size, addr);
+    return true;
 }
 
 } //namespace

@@ -129,7 +129,7 @@ bool ClientGDB::fastWrite2RemoteMem(const uintptr_t addr, const char* sink, cons
                              storeTempCommand,
                              addr, size);
 
-    asser_1line(len > 0);
+    assert_1message(len > 0, "can't create packet for server");
 
     char * data = packet + len;
 
@@ -150,8 +150,9 @@ bool ClientGDB::fastWrite2RemoteMem(const uintptr_t addr, const char* sink, cons
     const size_t size_packet = strlen(packet);
 
     size_t lenBufReceiv;
-    commandSendAndGetResponse(packet, size_packet,
-                              bufferReceiv, lenBufReceiv, TOKEN_CHECKSUM);
+    assert_1message(commandSendAndGetResponse(packet, size_packet,
+                              bufferReceiv, lenBufReceiv, TOKEN_CHECKSUM),
+    "Server error^");
 
     const char * start = strchr(bufferReceiv.data(), TOKEN_START_PACKET);
 
@@ -164,7 +165,7 @@ bool ClientGDB::fastWrite2RemoteMem(const uintptr_t addr, const char* sink, cons
         return false;
     }
 
-    sendAck(TOKEN_ACK_SUCCESS);
+    assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");
 
     return true;
 }
@@ -185,11 +186,14 @@ bool ClientGDB::fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, c
                              loadTempCommand,
                              addr, size);
 
+    assert_1message(len > 0, "can't create packet for server");
+
     appendSum(packet + 1, packet + len - 1, packet + len);
 
     size_t lenBufReceiv;
-    commandSendAndGetResponse(packet, strlen(packet),
-                              bufferReceiv, lenBufReceiv, TOKEN_CHECKSUM);
+    assert_1message(commandSendAndGetResponse(packet, strlen(packet),
+                                              bufferReceiv, lenBufReceiv, TOKEN_CHECKSUM)
+                        , "Server error^");
 
     const char * start = strchr(bufferReceiv.data(), TOKEN_START_PACKET);
 
@@ -211,7 +215,7 @@ bool ClientGDB::fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, c
         dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
     }
 
-    sendAck(TOKEN_ACK_SUCCESS);
+    assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");
 
     return true;
 }
