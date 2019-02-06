@@ -13,12 +13,15 @@ class Log {
 
     LevelDebug cLevel;
 
+    static const char * getNameOfLevel(const LevelDebug);
+
 public:
     Log(const LevelDebug level, const std::string &fileName,
         const std::string &funcName, const int line) {
         cLevel = level;
         if (cLevel <= gLevel)
-            std::cout << level << "$" << fileName << "/" << funcName << ":" << line << ": ";
+            std::cout << getNameOfLevel(level) << "$" << fileName
+                      << "/" << funcName << ":" << line << ": ";
     }
 
     template <class T> Log &operator<<(const T &v) {

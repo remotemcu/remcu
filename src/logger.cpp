@@ -13,6 +13,24 @@ void setVerboseLevel(LevelDebug level){
     Log::setGLevel(level);
 }
 
+const char * Log::getNameOfLevel(const LevelDebug level){
+
+    switch (level) {
+    case LevelDebug::_ERROR:
+        return "(ERROR)";
+    case LevelDebug::_INFO:
+        return "(INFO)";
+    case LevelDebug::_WARNING:
+        return "(WARNING)";
+    case LevelDebug::_DEBUG:
+        return "(DEBUG)";
+    case LevelDebug::_ALL_LOG:
+        return "(DEBUG)";
+    default:
+        return "! It's very strangly !";
+    }
+}
+
 
 int Log::loggerf (const LevelDebug level, const std::string &fileName,
              const std::string &funcName, const int line,
@@ -21,7 +39,8 @@ int Log::loggerf (const LevelDebug level, const std::string &fileName,
     if (level > gLevel)
         return 0;
 
-    std::cout << fileName << "/" << funcName << ":" << line << ": ";
+    std::cout << getNameOfLevel(level) << "$"
+              << fileName << "/" << funcName << ":" << line << ": ";
 
     va_list args;
     va_start(args, __format);
