@@ -45,6 +45,7 @@ bool closeTCP(){
     if(stream != NULL){
         ADIN_LOG(_INFO) << "close connection";
         delete stream;
+        stream = NULL;
     }
 
     return true;
