@@ -32,25 +32,30 @@ static bool callback(const char *__assertion, const char *__file,
 
 llvm_pass_arg v = 0x87654321;
 
+static const uint16_t PORT_TCL = 6666;
+static const uint16_t PORT_GDB = 3333;
+
 int main(int argc, char** argv)
 {
+
     if(argc != 3){
-        assert("test requare 3 arguments: host port 32bit_hex_address");
+        printf("test requare 2 arguments: host 32bit_hex_address\n");
+        return -1;
     }
 
     int ret = 0;
 
     const string host(argv[1]);
-    const uint16_t port = atoi(argv[2]) & 0xFFFF;
-    const uint32_t address = strtoul(argv[3], NULL, 16) & 0xFFFFFFFF;
+    const uint32_t address = strtoul(argv[2], NULL, 16) & 0xFFFFFFFF;
 
     setVerboseLevel(_INFO);
     ADIN_LOG(_INFO) << "host: " << host;
-    ADIN_LOG(_INFO) << "port: " << port;
     ADIN_LOG(_INFO) << "address: 0x" << hex<< address;
     setVerboseLevel(_ERROR);
 
-    connect2OpenOCD(host, port);
+    std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
+
+    connect2OpenOCD(host, PORT_TCL);
 
     resetRemoteUnit(ResetType::__HALT);
 
@@ -74,7 +79,18 @@ int main(int argc, char** argv)
 
     assert(ret == 0);
 
-    connect2Server(host, 3333, _GDB_SERVER);
+    closeTCP();
+    setErrorFunction(callback);
+
+    std::cout << "Callback function:" << endl;
+
+    fastWrite2RemoteMem(address,dist,1);
+
+    setErrorFunction(nullptr);
+
+    std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
+
+    connect2Server(host, PORT_GDB, _GDB_SERVER);
 
     addInterceptAddress2Interval(address, address + 4*4);
 
@@ -97,7 +113,8 @@ int main(int argc, char** argv)
     closeTCP();
     setErrorFunction(callback);
 
-    std::cout << "-----------------------" << endl;
+    std::cout << "Callback function:" << endl;
 
     fastWrite2RemoteMem(address,dist,1);
 }
+
