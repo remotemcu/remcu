@@ -3,6 +3,7 @@
 
 #if (defined(_MSC_VER))
 
+#define DECL_UNUSED
 #define DECL_BODY_VIRTUAL_FUNCTION {return false;}
 
 #else

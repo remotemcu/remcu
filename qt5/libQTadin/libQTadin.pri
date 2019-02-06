@@ -14,7 +14,8 @@ HEADERS += \
     ../../include/client.h \
     ../../include/netwrapper.h \
     ../../include/assertion.h \
-    ../../include/logger.h
+    ../../include/logger.h \
+    ../../include/defines.h
 
 INCLUDEPATH += ../../include/
 INCLUDEPATH += ../../export/

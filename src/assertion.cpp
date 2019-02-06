@@ -4,7 +4,7 @@
 
 
 namespace adin {
-
+#if 0
 static ErrorFunction_t callback = NULL;
 
 void setErrorFunction(const ErrorFunction_t fun){
@@ -26,5 +26,5 @@ bool __assertionF (const char *__assertion, const char *__file,
     __assert_fail (__assertion, __file, __line, __function);
     return true;
 }
-
+#endif
 } //namespace
