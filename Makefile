@@ -1,6 +1,6 @@
 OS := $(shell uname)
 
-CC			= clang
+CC			= clang++
 AR 			= llvm-ar
 CFLAGS		= -g -c -std=c++11 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++

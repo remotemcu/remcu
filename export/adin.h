@@ -43,8 +43,6 @@ void clearAllInterceptAddressInterval();
 typedef bool (*ErrorFunction_t)(const char *__assertion, const char *__file,
                                 const unsigned int __line, const char *__function);
 
-void setErrorFunction(const ErrorFunction_t callback);
-
 void setVerboseLevel(const LevelDebug level);
 
 bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size);
