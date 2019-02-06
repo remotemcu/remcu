@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    addInterceptAddress2Interval(address, address + 4*2);
+    addInterceptAddress2Interval(address, address + 4*4);
 
     ret = irTest(reinterpret_cast<int*>(address));
 
@@ -91,6 +91,8 @@ int main(int argc, char** argv)
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
     connect2Server(host, PORT_GDB, _GDB_SERVER);
+
+    resetRemoteUnit(ResetType::__HALT);
 
     addInterceptAddress2Interval(address, address + 4*4);
 

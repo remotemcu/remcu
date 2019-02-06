@@ -25,9 +25,18 @@ static const char * RESPONSE_OK = "$OK#";
 
 bool ClientGDB::resetRemoteUnit(const ResetType type) const {
 
-    (void)type;
-    (void)loadTempCommand;
-    return false;
+    if(ResetType::__HALT != type){
+        ADIN_LOG(_ERROR) << "GDB supports only halt reset ";
+        return false;
+    }
+
+    static const char * RESET_COMMAND = "$R#52";
+    const size_t size = strlen(RESET_COMMAND);
+
+    size_t lenReceiv;
+    commandSendAndGetResponse(RESET_COMMAND, size, bufferReceiv, lenReceiv, *TOKEN_ACK_SUCCESS);
+
+    return true;
 }
 
 static uint8_t getQtyBytes(const llvm_pass_arg sizeValBits ){
