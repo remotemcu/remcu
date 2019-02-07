@@ -17,16 +17,16 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
 
     int ret;
     WSADATA wsaData;
-    SOCKADDR_IN          ServerAddr;
+    SOCKADDR_IN          ServerAddr = {0};
 
     // Initialize Winsock
     ret = WSAStartup(MAKEWORD(2,2), &wsaData);
     if (ret != 0) {
-        printf("WSAStartup failed: %d\n", ret);
+        ADIN_PRINTF(__ERROR, "Startup failed: %d\n", ret);
         return false;
     }
 
-    ADIN_PRINTF(__INFO, "Client: Winsock DLL status is %s.\n", wsaData.szSystemStatus);
+    ADIN_PRINTF(__INFO, "Client: VVsock status is %s.\n", wsaData.szSystemStatus);
 
     ConnectSocket = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 
@@ -57,14 +57,26 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
            // Exit with error
            return -1;
      }
-     ADIN_LOG(__DEBUG) << "Client: connect() is OK, got connected...";
-     ADIN_LOG(__DEBUG) << "Client: Ready for sending and/or receiving data...";
+     ADIN_LOG(__INFO) << "Client: connect() is OK, got connected...";
+     ADIN_LOG(__INFO) << "Client: Ready for sending and/or receiving data...";
      // At this point you can start sending or receiving data on
     // the socket SendingSocket.
     // Some info on the receiver side...
      getsockname(ConnectSocket, (SOCKADDR *)&ServerAddr, (int *)sizeof(ServerAddr));
      ADIN_PRINTF(__INFO, "Client: Receiver IP(s) used: %s\n", inet_ntoa(ServerAddr.sin_addr));
      ADIN_PRINTF(__INFO, "Client: Receiver port used: %d\n", htons(ServerAddr.sin_port));
+
+     ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout_sec, sizeof(int));
+        if (ret == SOCKET_ERROR) {
+           ADIN_PRINTF(__WARNING, "setsockopt for receive timeout failed with error: %u\n", WSAGetLastError());
+        } else
+            ADIN_PRINTF(__INFO, "Set receive timeout: ON\n");
+
+    ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_SNDTIMEO, (char *) &timeout_sec, sizeof(int));
+       if (ret == SOCKET_ERROR) {
+          ADIN_PRINTF(__WARNING, "setsockopt for transmite timeout failed with error: %u\n", WSAGetLastError());
+       } else
+           ADIN_PRINTF(__INFO, "Set transmite timeout : ON\n");
 
      return true;
 }
@@ -84,17 +96,17 @@ bool closeTCP(){
      // you should close the socket using the closesocket API. We will
      // describe socket closure later in the chapter.
      if(closesocket(ConnectSocket) != 0){
-          ADIN_PRINTF(__WARNING, "Client: Cannot close \"SendingSocket\" socket. Error code: %ld\n", WSAGetLastError());
+          ADIN_PRINTF(__WARNING, "Client: Cannot close \"Socket\" socket. Error code: %ld\n", WSAGetLastError());
           success = false;
      } else {
-        ADIN_LOG(__DEBUG) << "Client: Closing \"SendingSocket\" socket...";
+        ADIN_LOG(__DEBUG) << "Client: Closing \"Socket\" socket...";
      }
      // When your application is finished handling the connection, call WSACleanup.
      if(WSACleanup() != 0){
-          ADIN_PRINTF(__WARNING, "Client: WSACleanup() failed!...\n");
+          ADIN_PRINTF(__WARNING, "Client: VVCleanup() failed!...\n");
           success = false;
      } else {
-        ADIN_LOG(__DEBUG) << "Client: WSACleanup() is OK...";
+        ADIN_LOG(__DEBUG) << "Client: VVCleanup() is OK...";
      }
      return false;
 }
