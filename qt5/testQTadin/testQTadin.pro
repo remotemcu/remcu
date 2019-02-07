@@ -18,11 +18,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 QMAKE_CXXFLAGS += -fno-rtti -std=c++11
 
-HEADERS += ../../test/IrTest.h
-
-SOURCES += ../../test/test.cpp
-
-include(../libQTadin/libQTadin.pri)
+include(../testSrc.pri)
+include(../LibAdin.pri)
+include(../libQT5/qt5net.pri)
 
 TARGET = qttest
 
@@ -34,4 +32,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 INCLUDEPATH += ../../include/
 INCLUDEPATH += ../../export/
 INCLUDEPATH += ../../
-LIBS += ../../test/IrTest.ll
+
