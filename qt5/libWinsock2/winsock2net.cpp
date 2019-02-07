@@ -17,10 +17,7 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
 
     int ret;
     WSADATA wsaData;
-    struct addrinfo *result = NULL,
-                        *ptr = NULL,
-                        hints;
-    SOCKADDR_IN          ServerAddr, ThisSenderInfo;
+    SOCKADDR_IN          ServerAddr;
 
     // Initialize Winsock
     ret = WSAStartup(MAKEWORD(2,2), &wsaData);
@@ -29,12 +26,12 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
         return false;
     }
 
-    printf("Client: Winsock DLL status is %s.\n", wsaData.szSystemStatus);
+    ADIN_PRINTF(__INFO, "Client: Winsock DLL status is %s.\n", wsaData.szSystemStatus);
 
     ConnectSocket = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 
     if(ConnectSocket == INVALID_SOCKET){
-          printf("Client: socket() failed! Error code: %ld\n", WSAGetLastError());
+          ADIN_PRINTF(__ERROR, "Client: socket() failed! Error code: %ld\n", WSAGetLastError());
           // Do the clean up
           WSACleanup();
           // Exit with error
@@ -52,7 +49,7 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
     // Make a connection to the server with socket SendingSocket.
      ret = connect(ConnectSocket, (SOCKADDR *) &ServerAddr, sizeof(ServerAddr));
      if(ret != 0){
-         printf("Client: connect() failed! Error code: %ld\n", WSAGetLastError());
+         ADIN_PRINTF(__ERROR, "Client: connect() failed! Error code: %ld\n", WSAGetLastError());
            // Close the socket
            closesocket(ConnectSocket);
            // Do the clean up
@@ -60,14 +57,14 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
            // Exit with error
            return -1;
      }
-     printf("Client: connect() is OK, got connected...\n");
-     printf("Client: Ready for sending and/or receiving data...\n");
+     ADIN_LOG(__DEBUG) << "Client: connect() is OK, got connected...";
+     ADIN_LOG(__DEBUG) << "Client: Ready for sending and/or receiving data...";
      // At this point you can start sending or receiving data on
     // the socket SendingSocket.
     // Some info on the receiver side...
      getsockname(ConnectSocket, (SOCKADDR *)&ServerAddr, (int *)sizeof(ServerAddr));
-     printf("Client: Receiver IP(s) used: %s\n", inet_ntoa(ServerAddr.sin_addr));
-     printf("Client: Receiver port used: %d\n", htons(ServerAddr.sin_port));
+     ADIN_PRINTF(__INFO, "Client: Receiver IP(s) used: %s\n", inet_ntoa(ServerAddr.sin_addr));
+     ADIN_PRINTF(__INFO, "Client: Receiver port used: %d\n", htons(ServerAddr.sin_port));
 
      return true;
 }
@@ -76,28 +73,28 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
 bool closeTCP(){
     bool success = true;
     if( shutdown(ConnectSocket, SD_SEND) != 0){
-              printf("Client: Well, there is something wrong with the shutdown().\
+              ADIN_PRINTF(__WARNING, "Client: Well, there is something wrong with the shutdown().\
                  The error code: %ld\n", WSAGetLastError());
                      success = false;
     } else {
-        printf("Client: shutdown() looks OK...\n");
+        ADIN_LOG(__DEBUG) << "Client: shutdown() looks OK...";
     }
 
      // When you are finished sending and receiving data on socket SendingSocket,
      // you should close the socket using the closesocket API. We will
      // describe socket closure later in the chapter.
      if(closesocket(ConnectSocket) != 0){
-          printf("Client: Cannot close \"SendingSocket\" socket. Error code: %ld\n", WSAGetLastError());
+          ADIN_PRINTF(__WARNING, "Client: Cannot close \"SendingSocket\" socket. Error code: %ld\n", WSAGetLastError());
           success = false;
      } else {
-        printf("Client: Closing \"SendingSocket\" socket...\n");
+        ADIN_LOG(__DEBUG) << "Client: Closing \"SendingSocket\" socket...";
      }
      // When your application is finished handling the connection, call WSACleanup.
      if(WSACleanup() != 0){
-          printf("Client: WSACleanup() failed!...\n");
+          ADIN_PRINTF(__WARNING, "Client: WSACleanup() failed!...\n");
           success = false;
      } else {
-        printf("Client: WSACleanup() is OK...\n");
+        ADIN_LOG(__DEBUG) << "Client: WSACleanup() is OK...";
      }
      return false;
 }
@@ -105,14 +102,14 @@ bool closeTCP(){
 bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
 
     if(ConnectSocket == INVALID_SOCKET){
-          printf("Client: socket() failed! Error code: %ld\n", WSAGetLastError());
+          ADIN_PRINTF(__ERROR, "Client: socket() failed! Error code: %ld\n", WSAGetLastError());
           return false;
      }
 
     // Send an initial buffer
     const int ret = send(ConnectSocket, buffer, lenBuffer, 0);
     if (ret == SOCKET_ERROR) {
-        printf("send failed: %d\n", WSAGetLastError());
+        ADIN_PRINTF(__ERROR, "send failed: %d\n", WSAGetLastError());
         return false;
     }
 
@@ -122,19 +119,19 @@ bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
 bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
 
     if(ConnectSocket == INVALID_SOCKET){
-          printf("Client: socket() failed! Error code: %ld\n", WSAGetLastError());
+          ADIN_PRINTF(__ERROR, "Client: socket() failed! Error code: %ld\n", WSAGetLastError());
           return false;
      }
 
     const int ret = recv(ConnectSocket, buffer, lenBuffer, 0);
         if (ret > 0){
-            printf("Bytes received: %d\n", ret);
+            ADIN_PRINTF(__DEBUG, "Bytes received: %d\n", ret);
             lenBuffer = ret;
             return true;
         } else if (ret == 0)
-            printf("Connection closed\n");
+            ADIN_PRINTF(__ERROR, "Connection closed\n");
         else
-            printf("recv failed: %d\n", WSAGetLastError());
+            ADIN_PRINTF(__ERROR, "recv failed: %d\n", WSAGetLastError());
 
         return false;
 }
