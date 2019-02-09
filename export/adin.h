@@ -5,6 +5,12 @@
 
 namespace adin {
 
+#if (defined(_WIN32) || defined(WIN32) || defined(WIN64) || defined(_WIN64))
+#define _DLL_EXPORT __declspec(dllexport)
+#else
+#define _DLL_EXPORT
+#endif
+
 enum ServerType {
     _DUMMY_SERVVER = 0,
     _OPENOCD_SERVER,
@@ -24,24 +30,24 @@ enum LevelDebug { __ERROR = 0,
 #define _DEFAULT_TIMEOUT_SEC 3
 
 
-bool connect2OpenOCD(const std::string host, const uint16_t port,
+bool _DLL_EXPORT connect2OpenOCD(const std::string host, const uint16_t port,
                      const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-bool connect2GDB(const std::string host, const uint16_t port,
+bool _DLL_EXPORT connect2GDB(const std::string host, const uint16_t port,
                  const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-bool setMCU(const std::string target);
-void clearMCU();
+bool _DLL_EXPORT setMCU(const std::string target);
+void _DLL_EXPORT clearMCU();
 
-std::string getCurrentMCU();
+std::string _DLL_EXPORT getCurrentMCU();
 
-bool resetRemoteUnit(const ResetType type);
+bool _DLL_EXPORT resetRemoteUnit(const ResetType type);
 
-void setVerboseLevel(const LevelDebug level);
+void _DLL_EXPORT setVerboseLevel(const LevelDebug level);
 
-bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size);
+bool _DLL_EXPORT arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size);
 
-bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist);
+bool _DLL_EXPORT arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist);
 
 } //namespace
 #endif // OCDLIB_H
