@@ -30,8 +30,6 @@ static bool callback(const char *__assertion, const char *__file,
     return true;
 }
 
-llvm_pass_arg v = 0x87654321;
-
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
 
@@ -60,7 +58,6 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    //addInterceptAddress2Interval(address, address + 4*4);
     setMCU("STM32F10X_MD");
 
     ret = irTest(reinterpret_cast<int*>(address));
@@ -95,7 +92,6 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    //addInterceptAddress2Interval(address, address + 4*4);
     setMCU("STM32F10X_MD");
 
     #define _SIZE 33
