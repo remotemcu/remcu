@@ -74,7 +74,7 @@ $(BUILD_DIR):
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(TEST_IR_LL)
+	rm -rf $(BUILD_DIR)
 
 .PHONY: test
 test: $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL)
