@@ -19,9 +19,9 @@ struct ClientBase {
 
     virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const DECL_BODY_VIRTUAL_FUNCTION
 
     virtual bool resetRemoteUnit(const ResetType) const DECL_BODY_VIRTUAL_FUNCTION
 
@@ -40,9 +40,9 @@ struct ClientDummy: ClientBase {
 
     bool loadFromRemoteAddr(const llvm_ocd_addr DECL_UNUSED, llvm_pass_arg & value, const llvm_pass_arg DECL_UNUSED) const {value = 0; return true;}
 
-    bool fastWrite2RemoteMem(const uintptr_t DECL_UNUSED, const char* DECL_UNUSED, const size_t DECL_UNUSED) const {return true;}
+    bool arrayWrite2RemoteMem(const uintptr_t DECL_UNUSED, const char* DECL_UNUSED, const size_t DECL_UNUSED) const {return true;}
 
-    bool fastLoadFromRemoteMem(const uintptr_t DECL_UNUSED, const size_t DECL_UNUSED, char* DECL_UNUSED) const {return true;}
+    bool arrayLoadFromRemoteMem(const uintptr_t DECL_UNUSED, const size_t DECL_UNUSED, char* DECL_UNUSED) const {return true;}
 
     bool resetRemoteUnit(const ResetType DECL_UNUSED) const {return true;}
 
@@ -55,9 +55,9 @@ struct ClientOpenOCD: ClientBase {
 
     bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
 
-    bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
+    bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
-    bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
+    bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
 
     bool resetRemoteUnit(const ResetType) const ;
 
@@ -69,9 +69,9 @@ struct ClientGDB: ClientBase {
 
     bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
 
-    bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
+    bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
-    bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
+    bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
 
     bool resetRemoteUnit(const ResetType) const ;
 

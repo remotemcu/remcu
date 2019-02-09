@@ -139,16 +139,16 @@ static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_
     return static_cast<llvm_value_type>(value);
 }
 
-bool fastWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
+bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
     assert_1message(sink != nullptr, "sink buffer is NULL. Check please.")
-    assert_printf(client->fastWrite2RemoteMem(addr, sink, size),
+    assert_printf(client->arrayWrite2RemoteMem(addr, sink, size),
                   "can't write array bytes [%d] to address: %p\n", size, addr);
     return true;
 }
 
-bool fastLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
+bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
     assert_1message(dist != nullptr, "distination buffer is NULL. Check please.")
-    assert_printf(client->fastLoadFromRemoteMem(addr, size, dist),
+    assert_printf(client->arrayLoadFromRemoteMem(addr, size, dist),
                   "can't read array bytes [%d] from address: %p\n", size, addr);
     return true;
 }

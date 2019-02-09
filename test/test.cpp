@@ -72,9 +72,9 @@ int main(int argc, char** argv)
 
     char dist[100] = {'\0'};
 
-    fastWrite2RemoteMem(address, testMessage, _SIZE);
+    arrayWrite2RemoteMem(address, testMessage, _SIZE);
 
-    fastLoadFromRemoteMem(address, 100, dist);
+    arrayLoadFromRemoteMem(address, 100, dist);
 
     ret = strncmp(testMessage, dist, _SIZE);
 
@@ -84,9 +84,9 @@ int main(int argc, char** argv)
 
     std::cout << "Errors:" << endl;
 
-    fastWrite2RemoteMem(address,dist,1);
-    fastWrite2RemoteMem(address,nullptr,1);
-    fastLoadFromRemoteMem(address, 10, nullptr);
+    arrayWrite2RemoteMem(address,dist,1);
+    arrayWrite2RemoteMem(address,nullptr,1);
+    arrayLoadFromRemoteMem(address, 10, nullptr);
 
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
@@ -100,11 +100,11 @@ int main(int argc, char** argv)
     uint8_t test_msg[_SIZE];
     for(int i =0; i < _SIZE; i++)
         test_msg[i] = i;
-    fastWrite2RemoteMem(address, (const char *)&test_msg, 10);
+    arrayWrite2RemoteMem(address, (const char *)&test_msg, 10);
 
     char  buf[_SIZE] = {'@'};
 
-    fastLoadFromRemoteMem(address, 10, buf);
+    arrayLoadFromRemoteMem(address, 10, buf);
 
     assert(std::strncmp((char*)test_msg,buf,10) == 0);
 
@@ -115,8 +115,8 @@ int main(int argc, char** argv)
     closeTCP();
     std::cout << "Errors:" << endl;
 
-    fastWrite2RemoteMem(address,dist,1);
-    fastWrite2RemoteMem(address,nullptr,1);
-    fastLoadFromRemoteMem(address, 10, nullptr);
+    arrayWrite2RemoteMem(address,dist,1);
+    arrayWrite2RemoteMem(address,nullptr,1);
+    arrayLoadFromRemoteMem(address, 10, nullptr);
 }
 
