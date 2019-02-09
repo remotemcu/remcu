@@ -11,6 +11,7 @@
 #include "logger.h"
 #include "assertion.h"
 #include "client.h"
+#include "netwrapper.h"
 
 using namespace  std;
 
@@ -37,6 +38,10 @@ bool connect2OpenOCD(const std::string host, const uint16_t port,
 bool connect2GDB(const std::string host, const uint16_t port,
                  const int timeout_sec){
     return connect2Server(host, port, _GDB_SERVER, timeout_sec);
+}
+
+bool disconnect(){
+    return closeTCP();
 }
 
 static string targetMCU("unknown");

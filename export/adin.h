@@ -36,6 +36,8 @@ bool _DLL_EXPORT connect2OpenOCD(const std::string host, const uint16_t port,
 bool _DLL_EXPORT connect2GDB(const std::string host, const uint16_t port,
                  const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
+bool _DLL_EXPORT disconnect();
+
 bool _DLL_EXPORT setMCU(const std::string target);
 void _DLL_EXPORT clearMCU();
 
