@@ -1,9 +1,22 @@
 OS := $(shell uname)
 
 CC			= clang++
+
 AR 			= llvm-ar
-CFLAGS		= -g -c -std=c++11 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
+CFLAGS		= -c -std=c++11 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
+
+
+ifneq ($(DEBUG),)
+CFLAGS += -g
+endif
+
+ifneq ($(OS),Linux)
+ifeq ($(OPT_PATH),)
+	$error("set opt path")
+endif
+OPT			= $(OPT_PATH)
+endif
 
 ifeq ($(OS),Linux)
 CFLAGS		+= -fPIC
@@ -71,7 +84,14 @@ test: $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL)
 .PHONY: ir_pass
 ir_pass: $(TEST_IR_SOURCE) $(TEST_IR_LL)
 
+
+ifeq ($(OS),Linux)
 $(TEST_IR_LL): $(TEST_IR_SOURCE)
 	$(CC) -S -emit-llvm -Xclang -load -Xclang \
-	../AddressInterceptorPass/build/AddressInterceptPass/libAddressInterceptPass.so \
+	../AddressInterception/build/src/libAddressInterceptorPassModule.so \
 	$< -o $@
+else
+	$(TEST_IR_LL):
+		$(CC) -S -emit-llvm $< -o $@
+		$(OPT) -adin $< -o $@
+endif
