@@ -95,3 +95,19 @@ else
 		$(CC) -S -emit-llvm $< -o $@
 		$(OPT) -adin $< -o $@
 endif
+
+.PHONY: strip
+strip:
+	strip -v -K __adin_store_ \
+	-K __adin_load_ \
+	-K _ZN4adin10disconnectEv \
+	-K _ZN4adin15connect2OpenOCDENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEti \
+	-K _ZN4adin11connect2GDBENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEti \
+	-K _ZN4adin13getCurrentMCUB5cxx11Ev \
+	-K _ZN4adin15setVerboseLevelENS_10LevelDebugE \
+	-K _ZN4adin15resetRemoteUnitENS_9ResetTypeE \
+	-K _ZN4adin20arrayWrite2RemoteMemEmPKcm \
+	-K _ZN4adin22arrayLoadFromRemoteMemEmmPc \
+	-K _ZN4adin8clearMCUEv \
+	-K _ZN4adin6setMCUENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE \
+	$(BUILD_DIR)/$(STATIC_LIB)
