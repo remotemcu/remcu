@@ -51,7 +51,7 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
      // The IP address
      ServerAddr.sin_addr.s_addr = inet_addr(host.c_str());
     // Make a connection to the server with socket SendingSocket.
-     ret = connect(ConnectSocket, (SOCKADDR *) &ServerAddr, sizeof(ServerAddr));
+     ret = connect(ConnectSocket, reinterpret_cast<SOCKADDR *>(&ServerAddr), sizeof(ServerAddr));
      if(ret != 0){
          ADIN_PRINTF(__ERROR, "Client: connect() failed! Error code: %ld\n", WSAGetLastError());
            // Close the socket
@@ -66,17 +66,20 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
      // At this point you can start sending or receiving data on
     // the socket SendingSocket.
     // Some info on the receiver side...
-     getsockname(ConnectSocket, (SOCKADDR *)&ServerAddr, (int *)sizeof(ServerAddr));
+     getsockname(ConnectSocket, reinterpret_cast<SOCKADDR *>(&ServerAddr),
+                 reinterpret_cast<int *>(sizeof(ServerAddr)));
      ADIN_PRINTF(__INFO, "Client: Receiver IP(s) used: %s\n", inet_ntoa(ServerAddr.sin_addr));
      ADIN_PRINTF(__INFO, "Client: Receiver port used: %d\n", htons(ServerAddr.sin_port));
 
-     ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout_sec, sizeof(int));
+     ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char *>(&timeout_ms)
+                      , sizeof(int));
         if (ret == SOCKET_ERROR) {
            ADIN_PRINTF(__WARNING, "setsockopt for receive timeout failed with error: %u\n", WSAGetLastError());
         } else
             ADIN_PRINTF(__INFO, "Set receive timeout: ON\n");
 
-    ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_SNDTIMEO, (char *) &timeout_sec, sizeof(int));
+    ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_SNDTIMEO, reinterpret_cast<const char *>(&timeout_ms)
+                     , sizeof(int));
        if (ret == SOCKET_ERROR) {
           ADIN_PRINTF(__WARNING, "setsockopt for transmite timeout failed with error: %u\n", WSAGetLastError());
        } else
@@ -123,7 +126,7 @@ bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
      }
 
     // Send an initial buffer
-    const int ret = send(ConnectSocket, buffer, lenBuffer, 0);
+    const int ret = send(ConnectSocket, buffer, static_cast<int>(lenBuffer), 0);
     if (ret == SOCKET_ERROR) {
         ADIN_PRINTF(__ERROR, "send failed: %d\n", WSAGetLastError());
         return false;
@@ -139,10 +142,10 @@ bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
           return false;
      }
 
-    const int ret = recv(ConnectSocket, buffer, lenBuffer, 0);
+    const int ret = recv(ConnectSocket, buffer, static_cast<int>(lenBuffer), 0);
         if (ret > 0){
             ADIN_PRINTF(__DEBUG, "Bytes received: %d\n", ret);
-            lenBuffer = ret;
+            lenBuffer = static_cast<size_t>(ret);
             return true;
         } else if (ret == 0)
             ADIN_PRINTF(__ERROR, "Connection closed\n");
