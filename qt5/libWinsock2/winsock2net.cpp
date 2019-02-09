@@ -19,6 +19,10 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
     WSADATA wsaData;
     SOCKADDR_IN          ServerAddr = {0};
 
+    memset(&ServerAddr, 0, sizeof(SOCKADDR_IN));
+
+    const int timeout_ms = timeout_sec*1000;
+
     // Initialize Winsock
     ret = WSAStartup(MAKEWORD(2,2), &wsaData);
     if (ret != 0) {
