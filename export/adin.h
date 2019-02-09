@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "AddressInterceptPass.h"
-
 namespace adin {
 
 enum ServerType {

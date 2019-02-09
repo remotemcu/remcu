@@ -10,7 +10,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/../export/adin.h \
-    $$PWD/../export/AddressInterceptPass.h \
+    $$PWD/../include/AddressInterceptPass.h \
     $$PWD/../include/client.h \
     $$PWD/../include/netwrapper.h \
     $$PWD/../include/assertion.h \
