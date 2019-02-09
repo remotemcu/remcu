@@ -50,7 +50,7 @@ static bool isEntryHalfInterval(const llvm_ocd_addr addr){
 }
 
 bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
-                    const bool logo, const int timeout_sec){
+                    const int timeout_sec){
 
     client->close();
 
@@ -68,7 +68,7 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
 
     const bool success = client->connect(host,port, timeout_sec);
 
-    if(success && logo){
+    if(success){
         ADIN_LOG(__INFO) << "logo!!";
     }
 

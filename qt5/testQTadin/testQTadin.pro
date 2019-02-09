@@ -33,3 +33,6 @@ INCLUDEPATH += ../../include/
 INCLUDEPATH += ../../export/
 INCLUDEPATH += ../../
 
+SOURCES += \
+    ../../src/exportfunctions.cpp
+

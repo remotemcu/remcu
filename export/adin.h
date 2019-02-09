@@ -25,20 +25,19 @@ enum LevelDebug { __ERROR = 0,
 
 #define _DEFAULT_TIMEOUT_SEC 3
 
-bool connect2Server(const std::string host, const uint16_t port,
-                    const ServerType server = _DUMMY_SERVVER, const bool logo = false,
-                    const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-inline bool connect2OpenOCD(const std::string host, const uint16_t port,
-                            const bool logo = true, const int timeout_sec = _DEFAULT_TIMEOUT_SEC){
-    return connect2Server(host, port, _OPENOCD_SERVER, logo, timeout_sec);
-}
+bool connect2OpenOCD(const std::string host, const uint16_t port,
+                     const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+
+bool connect2GDB(const std::string host, const uint16_t port,
+                 const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+
+bool setMCU(const std::string target);
+void clearMCU();
+
+std::string getCurrentMCU();
 
 bool resetRemoteUnit(const ResetType type);
-
-void addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end);
-
-void clearAllInterceptAddressInterval();
 
 void setVerboseLevel(const LevelDebug level);
 

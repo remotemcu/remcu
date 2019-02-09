@@ -60,7 +60,8 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    addInterceptAddress2Interval(address, address + 4*4);
+    //addInterceptAddress2Interval(address, address + 4*4);
+    setMCU("STM32F10X_MD");
 
     ret = irTest(reinterpret_cast<int*>(address));
 
@@ -90,11 +91,12 @@ int main(int argc, char** argv)
 
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
-    connect2Server(host, PORT_GDB, _GDB_SERVER);
+    connect2GDB(host, PORT_GDB);
 
     resetRemoteUnit(ResetType::__HALT);
 
-    addInterceptAddress2Interval(address, address + 4*4);
+    //addInterceptAddress2Interval(address, address + 4*4);
+    setMCU("STM32F10X_MD");
 
     #define _SIZE 33
     uint8_t test_msg[_SIZE];
