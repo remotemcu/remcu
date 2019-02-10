@@ -1,9 +1,12 @@
-#ifndef OCDLIB_H
-#define OCDLIB_H
+#ifndef ADIN_LIB_H
+#define ADIN_LIB_H
 
 #include <string>
 
-#include "defines.h"
+#ifndef __EXPORT
+#define __EXPORT
+#endif
+
 
 namespace adin {
 
@@ -48,4 +51,4 @@ bool __EXPORT arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const
 bool __EXPORT arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist);
 
 } //namespace
-#endif // OCDLIB_H
+#endif // ADIN_LIB_H

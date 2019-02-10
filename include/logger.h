@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "adin.h"
+#include "exports.h"
 
 namespace adin {
 

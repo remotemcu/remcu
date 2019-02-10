@@ -15,7 +15,8 @@ HEADERS += \
     $$PWD/../include/netwrapper.h \
     $$PWD/../include/assertion.h \
     $$PWD/../include/logger.h \
-    $$PWD/../include/defines.h
+    $$PWD/../include/defines.h \
+    $$PWD/../include/exports.h
 
 INCLUDEPATH += $$PWD/../include/
 INCLUDEPATH += $$PWD/../export/

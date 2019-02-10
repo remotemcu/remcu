@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "AddressInterceptPass.h"
-#include "adin.h"
+#include "exports.h"
 #include "defines.h"
 
 namespace adin {
