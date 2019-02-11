@@ -17,7 +17,7 @@ HEADERS += \
     $$PWD/../include/logger.h \
     $$PWD/../include/defines.h \
     $$PWD/../include/exports.h \
-    $$PWD/../src/obusfaction.h
+    $$PWD/../include/obusfaction.h
 
 INCLUDEPATH += $$PWD/../include/
 INCLUDEPATH += $$PWD/../export/

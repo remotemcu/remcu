@@ -9,7 +9,7 @@ namespace adin
 template<std::size_t index>
 struct encryptor {
     static constexpr int encrypt(char *dest, const char *str) {
-        dest[index] = str[index] ^ (index+1);
+        dest[index] = str[index] ^ ((index+1) & 0xFF);
 
         encryptor<index - 1>::encrypt(dest, str);
         return index;
@@ -39,7 +39,7 @@ public:
             std::string ret(_size, '\0');
 
             for (size_t i = 0; i < _size; i++) {
-                ret[i] = _buffer[i] ^ (i+1);
+                ret[i] = _buffer[i] ^ ((i+1) & 0xFF);
             }
 
             return ret;
@@ -64,7 +64,7 @@ public:
         std::string ret(size, '\0');
         size--;
         for (size_t i = 0; i < size; i++) {
-            ret[i] = str[i] ^ (i+1);
+            ret[i] = str[i] ^ ((i+1) & 0xFF);
         }
         return ret;
     }
