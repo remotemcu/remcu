@@ -46,15 +46,15 @@ int main(int argc, char** argv)
     printf("dec %s [%d]\n", dec.c_str(), dec.size());
 
 
-    if(argc != 3){
-        printf("test requare 2 arguments: host 32bit_hex_address\n");
+    if(argc != 2){
+        printf("test requare 1 arguments: host\n");
         return -1;
     }
 
     int ret = 0;
 
     const string host(argv[1]);
-    const uint32_t address = strtoul(argv[2], NULL, 16) & 0xFFFFFFFF;
+    const uint32_t address = 0x20000000;
 
     setVerboseLevel(__INFO);
     ADIN_LOG(__INFO) << "host: " << host;
