@@ -3,7 +3,7 @@ OS := $(shell uname)
 CC			= clang++
 
 AR 			= llvm-ar
-CFLAGS		= -c -std=c++11 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
+CFLAGS		= -c -std=c++14 -O2 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
 
 

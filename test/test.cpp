@@ -15,6 +15,8 @@
 
 #include "test/IrTest.h"
 
+#include "obusfaction.h"
+
 
 #pragma clang diagnostic ignored "-Wall"
 #pragma clang diagnostic ignored "-Wextra"
@@ -33,8 +35,16 @@ static bool callback(const char *__assertion, const char *__file,
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
 
+#define _STRING_ "123456789abc"
+
+
 int main(int argc, char** argv)
 {
+
+    const string dec = cryptor::create(_STRING_).decrypt();
+
+    printf("dec %s [%d]\n", dec.c_str(), dec.size());
+
 
     if(argc != 3){
         printf("test requare 2 arguments: host 32bit_hex_address\n");
