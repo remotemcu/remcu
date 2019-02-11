@@ -11,6 +11,7 @@
 #include "logger.h"
 #include "assertion.h"
 #include "client.h"
+#include "logofun.h"
 
 
 using namespace std;
@@ -69,7 +70,7 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
     const bool success = client->connect(host,port, timeout_sec);
 
     if(success){
-        ADIN_LOG(__INFO) << "logo!!";
+        printLogo();
     }
 
     if(success == false){
