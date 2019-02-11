@@ -12,10 +12,10 @@
 #include "exports.h"
 #include "logger.h"
 #include "assertion.h"
+#include "obusfaction.h"
+#include "logofun.h"
 
 #include "test/IrTest.h"
-
-#include "obusfaction.h"
 
 
 #pragma clang diagnostic ignored "-Wall"
@@ -44,6 +44,8 @@ int main(int argc, char** argv)
     const string dec = cryptor::create(_STRING_).decrypt();
 
     printf("dec %s [%d]\n", dec.c_str(), dec.size());
+
+    printLogo();
 
 
     if(argc != 2){

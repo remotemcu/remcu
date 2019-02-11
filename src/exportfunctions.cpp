@@ -12,6 +12,7 @@
 #include "assertion.h"
 #include "client.h"
 #include "netwrapper.h"
+#include "obusfaction.h"
 
 using namespace  std;
 

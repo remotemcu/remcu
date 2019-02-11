@@ -6,7 +6,9 @@ SOURCES += \
     $$PWD/../src/OpenocdClient.cpp \
     $$PWD/../src/BaseClient.cpp \
     $$PWD/../src/GdbClient.cpp \
-    $$PWD/../src/exportfunctions.cpp
+    $$PWD/../src/exportfunctions.cpp \
+    $$PWD/../src/logofun.cpp
+
 
 HEADERS += \
     $$PWD/../export/adin.h \
@@ -17,7 +19,9 @@ HEADERS += \
     $$PWD/../include/logger.h \
     $$PWD/../include/defines.h \
     $$PWD/../include/exports.h \
-    $$PWD/../include/obusfaction.h
+    $$PWD/../include/obusfaction.h \
+    $$PWD/../include/logofun.h
+
 
 INCLUDEPATH += $$PWD/../include/
 INCLUDEPATH += $$PWD/../export/
