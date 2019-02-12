@@ -30,10 +30,16 @@ static ClientOpenOCD openocd;
 static ClientGDB gdb;
 
 static ClientBase * client = static_cast<ClientBase*>(&dummy);
+//todo: safe from idiots!
+bool addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end){
+    if(start >= end){
+        ADIN_PRINTF(__ERROR, "Error init virtual address : %p, %p\n", start, end);
+        return false;
+    }
 
-void addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end){
     AddrInterval st = {start, end};
     intervals.push_back(st);
+    return true;
 }
 
 void clearAllInterceptAddressInterval(){
@@ -55,13 +61,12 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
 
     client->close();
 
-    if(server == _DUMMY_SERVVER){
+    if(server == ServerType::_DUMMY_SERVVER){
         client = static_cast<ClientBase*>(&dummy);
-    } else if (server == _OPENOCD_SERVER) {
+    } else if (server == ServerType::_OPENOCD_SERVER) {
         client = static_cast<ClientBase*>(&openocd);
-    } else if(server == _GDB_SERVER) {
+    } else if(server == ServerType::_GDB_SERVER) {
         client = static_cast<ClientBase*>(&gdb);
-        //assert(!"GDB client not implementet");
     } else {
         ADIN_LOG(__ERROR) << "unknown client, please choice _OPENOCD_SERVER or _GDB_SERVER";
         return false;

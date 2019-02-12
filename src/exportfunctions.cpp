@@ -22,7 +22,7 @@ bool connect2Server(const std::string host, const uint16_t port,
                     const ServerType server = _DUMMY_SERVVER,
                     const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-void addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end);
+bool addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end);
 
 void clearAllInterceptAddressInterval();
 
