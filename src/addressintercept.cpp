@@ -56,6 +56,10 @@ static bool isEntryHalfInterval(const llvm_ocd_addr addr){
     return false;
 }
 
+static bool isEmptyAddressInterval(){
+    return intervals.empty();
+}
+
 bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
                     const int timeout_sec){
 
@@ -119,20 +123,53 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
     return ret;
 }
 
+static llvm_pass_arg getMask(llvm_pass_arg TypeSizeArg){
+    llvm_value_type ret = 0;
+    switch (TypeSizeArg) {
+    case 1:
+        ret = 0x1;
+        break;
+    case 8:
+        ret = 0xFF;
+        break;
+    case 16:
+        ret = 0xFFFF;
+        break;
+    case 32:
+        ret = 0xFFFFFFFF;
+        break;
+    case 64:
+        ret = 0xFFFFFFFFFFFFFFFF;
+        break;
+    default:
+        ADIN_LOG(__ERROR) << "Unknown size of type: " << TypeSizeArg;
+        ADIN_LOG(__ERROR) << "Mask isn't set!";
+        ret = 0;
+        break;
+    }
+
+    return ret;
+}
 
 static inline bool store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
 {
+    assert_1message(isEmptyAddressInterval() == false, "MCU is not set. Please input kind of MCU.");
+
+    const llvm_pass_arg val = value & getMask(TypeSizeArg);
+
     if(isEntryHalfInterval(pointer) == false){
         return true;
     }
 
-    assert_printf(client->store2RemoteAddr(pointer, value, TypeSizeArg),
+    assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
                   "Can't write value to address: %p, size: %d\n", pointer, TypeSizeArg);
     return true;
 }
 
 static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
 {
+    assert_1message(isEmptyAddressInterval() == false, "MCU is not set. Please input kind of MCU.");
+
     if(isEntryHalfInterval(pointer) == false)
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
 
@@ -141,6 +178,8 @@ static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_
         value = 0;
         ADIN_PRINTF(__ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);
     }
+
+    value &= getMask(TypeSizeArg);
 
     return static_cast<llvm_value_type>(value);
 }
