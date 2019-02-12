@@ -151,13 +151,14 @@ static llvm_pass_arg getMask(llvm_pass_arg TypeSizeArg){
     return ret;
 }
 
-static inline bool store(const llvm_ocd_addr pointer, const llvm_pass_arg value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
+static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
 {
     assert_1message(isEmptyAddressInterval() == false, "MCU is not set. Please input kind of MCU.");
 
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
     if(isEntryHalfInterval(pointer) == false){
+        //pizda, why it's don't write to local?
         return true;
     }
 
@@ -173,7 +174,7 @@ static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_
     if(isEntryHalfInterval(pointer) == false)
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
 
-    llvm_pass_arg  value;
+    llvm_value_type  value;
     if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
         value = 0;
         ADIN_PRINTF(__ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);

@@ -55,7 +55,7 @@ static uint8_t getQtyBytes(const llvm_pass_arg sizeValBits ){
     }
 }
 
-bool ClientGDB::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const {
+bool ClientGDB::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const {
 
     const uint8_t size = getQtyBytes(sizeVal);
 
@@ -67,7 +67,7 @@ bool ClientGDB::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg v
     return this->arrayWrite2RemoteMem(addr, p, size);
 }
 
-bool ClientGDB::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const {
+bool ClientGDB::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const {
 
     const uint8_t size = getQtyBytes(sizeVal);
 

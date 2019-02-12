@@ -50,7 +50,7 @@ static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, ch
     return true;
 }
 
-static bool parseValue(vector<char> & buffer, llvm_pass_arg & value){
+static bool parseValue(vector<char> & buffer, llvm_value_type & value){
 
     char * p = buffer.data();
 
@@ -92,14 +92,14 @@ bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
     return commandSendAndGetResponse(reset_message.c_str(), reset_message.size(), bufferReceiv, lenReceiv, COMMAND_TOKEN);
 }
 
-bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const {
+bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const {
 
     llvm_pass_arg mask = 0;
     char sizeOp = 0;
 
     assert_1message(getMaskAndSize(sizeVal, mask, sizeOp), "attribute of value - error");
 
-    const llvm_pass_arg sendValue = value & mask;
+    const llvm_value_type sendValue = value & mask;
 
     const int len = snprintf(bufferSend.data(), bufferSend.size(),
                     storeTempCommand,
@@ -109,7 +109,7 @@ bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_a
     return commandSendAndGetResponse(bufferSend.data(), static_cast<size_t>(len), bufferReceiv, lenReceiv, COMMAND_TOKEN);
 }
 
-bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const {
+bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const {
 
     llvm_pass_arg mask = 0;
     char sizeOp = 0;

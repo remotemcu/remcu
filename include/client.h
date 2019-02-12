@@ -15,9 +15,9 @@ struct ClientBase {
 
     bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
-    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
 
-    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
 
     virtual bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const DECL_BODY_VIRTUAL_FUNCTION
 
@@ -36,9 +36,9 @@ struct ClientDummy: ClientBase {
 
     bool connect(const std::string DECL_UNUSED, const uint16_t DECL_UNUSED, int DECL_UNUSED) const {return true;}
 
-    bool store2RemoteAddr(const llvm_ocd_addr DECL_UNUSED, const llvm_pass_arg DECL_UNUSED, const llvm_pass_arg DECL_UNUSED) const {return true;}
+    bool store2RemoteAddr(const llvm_ocd_addr DECL_UNUSED, const llvm_value_type DECL_UNUSED, const llvm_pass_arg DECL_UNUSED) const {return true;}
 
-    bool loadFromRemoteAddr(const llvm_ocd_addr DECL_UNUSED, llvm_pass_arg & value, const llvm_pass_arg DECL_UNUSED) const {value = 0; return true;}
+    bool loadFromRemoteAddr(const llvm_ocd_addr DECL_UNUSED, llvm_value_type & value, const llvm_pass_arg DECL_UNUSED) const {value = 0; return true;}
 
     bool arrayWrite2RemoteMem(const uintptr_t DECL_UNUSED, const char* DECL_UNUSED, const size_t DECL_UNUSED) const {return true;}
 
@@ -51,9 +51,9 @@ struct ClientDummy: ClientBase {
 
 struct ClientOpenOCD: ClientBase {
 
-    bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
+    bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const ;
 
-    bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
+    bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const ;
 
     bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
@@ -65,9 +65,9 @@ struct ClientOpenOCD: ClientBase {
 
 struct ClientGDB: ClientBase {
 
-    bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_arg value, const llvm_pass_arg sizeVal) const ;
+    bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const ;
 
-    bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const ;
+    bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const ;
 
     bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
