@@ -17,13 +17,8 @@ namespace adin {
 
 #define COMMAND_TOKEN '\x1a'
 
-static const char * loadTempCommand = "ocd_m%c%c 0x%lX\x1a";
-static const char * storeTempCommand = "m%c%c 0x%lX 0x%lX\x1a";
-
-enum TypeOperation_t {
-    STORE = 'w', LOAD = 'd'
-};
-
+static const char * loadTempCommand = "ocd_md%c 0x%lX\x1a";
+static const char * storeTempCommand = "mw%c 0x%lX 0x%lX\x1a";
 
 enum SizeOperation_t {
     BYTE = 'b', HALF_WORD = 'h', WORD = 'w'
@@ -108,10 +103,10 @@ bool ClientOpenOCD::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_pass_a
 
     const int len = snprintf(bufferSend.data(), bufferSend.size(),
                     storeTempCommand,
-                             STORE, sizeOp, addr, sendValue);
+                             sizeOp, addr, sendValue);
 
     size_t lenReceiv;
-    return commandSendAndGetResponse(bufferSend.data(), len, bufferReceiv, lenReceiv, COMMAND_TOKEN);
+    return commandSendAndGetResponse(bufferSend.data(), static_cast<size_t>(len), bufferReceiv, lenReceiv, COMMAND_TOKEN);
 }
 
 bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg & value, const llvm_pass_arg sizeVal) const {
@@ -124,10 +119,10 @@ bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_pass_arg &
 
     const int len = snprintf(bufferSend.data(), bufferSend.size(),
                              loadTempCommand,
-                             LOAD, sizeOp, addr);
+                             sizeOp, addr);
 
     size_t lenReceiv = 0;
-    commandSendAndGetResponse(bufferSend.data(), len, bufferReceiv, lenReceiv, COMMAND_TOKEN);
+    commandSendAndGetResponse(bufferSend.data(), static_cast<size_t>(len), bufferReceiv, lenReceiv, COMMAND_TOKEN);
 
     assert_printf(parseValue(bufferReceiv, value), "can't parse answer of server: [%d] %s\n", lenReceiv, bufferReceiv.data());
 
@@ -158,12 +153,12 @@ bool ClientOpenOCD::arrayWrite2RemoteMem(const uintptr_t addr, const char* sink,
     for(size_t i =0; i < size; i++){
         len = snprintf(buf, sizeBuf, elementTemplate, i, sink[i]);
         assert_1message(len > 0, "can't create packet for server");
-        const size_t future_size = usedBufferBytes + len;
+        const size_t future_size = usedBufferBytes + static_cast<size_t>(len);
         if(arrayBuffer.size() <= future_size){
             arrayBuffer.resize(future_size + _ADD);
         }
-        strncpy(arrayBuffer.data() + usedBufferBytes, buf, len);
-        usedBufferBytes += len;
+        strncpy(arrayBuffer.data() + usedBufferBytes, buf, static_cast<size_t>(len));
+        usedBufferBytes += static_cast<size_t>(len);
     }
 
     const size_t potential_size_buffer = arrayBuffer.size() + strlen(array2memTemplate) + _ADD;
@@ -181,9 +176,9 @@ bool ClientOpenOCD::arrayWrite2RemoteMem(const uintptr_t addr, const char* sink,
 
     len = snprintf(buf, sizeBuf, arraySecondPart, addr, size);
     assert_1message(len > 0, "error package for server");
-    strncpy(bufferSend.data() + pos, buf, len);
+    strncpy(bufferSend.data() + pos, buf, static_cast<size_t>(len));
 
-    pos += len;
+    pos += static_cast<size_t>(len);
 
     size_t lenBufReceiv;
     return commandSendAndGetResponse(bufferSend.data(), pos, bufferReceiv, lenBufReceiv, COMMAND_TOKEN);
@@ -209,7 +204,7 @@ bool ClientOpenOCD::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t si
                              addr, size);
 
     size_t lenBuf = 0;
-    assert_1message(commandSendAndGetResponse(bufferSend.data(), len, bufferReceiv, lenBuf, COMMAND_TOKEN),
+    assert_1message(commandSendAndGetResponse(bufferSend.data(), static_cast<size_t>(len), bufferReceiv, lenBuf, COMMAND_TOKEN),
                     "Server error^");
 
     char * point = bufferReceiv.data();
