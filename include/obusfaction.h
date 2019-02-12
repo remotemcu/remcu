@@ -1,6 +1,7 @@
 #ifndef OBUSFACTION_H
 #define OBUSFACTION_H
 
+#include <cstring>
 #include <string>
 
 namespace adin
