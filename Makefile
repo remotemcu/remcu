@@ -3,7 +3,7 @@ OS := $(shell uname)
 CC			= clang++
 
 AR 			= llvm-ar
-CFLAGS		= -c -std=c++14 -O2 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
+CFLAGS		= -c -std=c++14 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
 
 LAST_TAG = $(shell git describe --tags)
@@ -11,7 +11,9 @@ COMMIT_HASH = $(shell git rev-parse --short HEAD)
 DEFINES += -D_GIT_HASH_=\"$(COMMIT_HASH)\" -D_GIT_TAG_=\"$(LAST_TAG)\" 
 
 ifneq ($(DEBUG),)
-CFLAGS += -g
+CFLAGS += -g -D_DEBUG_BUILD_
+else
+CFLAGS += -O2
 endif
 
 ifneq ($(OS),Linux)
