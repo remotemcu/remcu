@@ -48,8 +48,8 @@ int main(int argc, char** argv)
     printLogo();
 
 
-    if(argc != 2){
-        printf("test requare 1 arguments: host\n");
+    if(argc != 3){
+        printf("test requare 2 arguments: host and verbose level\n");
         return -1;
     }
 
@@ -57,11 +57,13 @@ int main(int argc, char** argv)
 
     const string host(argv[1]);
     const uint32_t address = 0x20000000;
+    const LevelDebug level = static_cast<LevelDebug>(atoi(argv[2]) & 0xF);
 
     setVerboseLevel(__INFO);
     ADIN_LOG(__INFO) << "host: " << host;
-    ADIN_LOG(__INFO) << "address: 0x" << hex<< address;
-    setVerboseLevel(__ERROR);
+    ADIN_LOG(__INFO) << "address: 0x" << hex << address;
+    ADIN_LOG(__INFO) << "Verbose Level: " << level;
+    setVerboseLevel(level);
 
     std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
 
