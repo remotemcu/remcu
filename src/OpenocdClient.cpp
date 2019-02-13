@@ -10,6 +10,9 @@
 #include "logger.h"
 #include "client.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+
 using namespace std;
 
 
@@ -228,3 +231,6 @@ bool ClientOpenOCD::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t si
 
 
 } //namespace
+
+#pragma clang diagnostic pop
+
