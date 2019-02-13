@@ -4,7 +4,7 @@
 #include <cstring>
 #include <string>
 
-namespace adin
+namespace remcu
 {
 
 template<std::size_t index>
@@ -33,7 +33,7 @@ public:
     public:
         constexpr string_encryptor(const char str[S])
             : _buffer{'\0'}, _size(S-1) {
-            adin::encryptor<S - 2>::encrypt(_buffer, str);
+            encryptor<S - 2>::encrypt(_buffer, str);
         }
 
         std::string decrypt() const {
@@ -72,6 +72,6 @@ public:
 
 };
 
-} //adin
+} //namespace
 
 #endif // OBUSFACTION_H

@@ -26,3 +26,6 @@ HEADERS += \
 INCLUDEPATH += $$PWD/../include/
 INCLUDEPATH += $$PWD/../export/
 INCLUDEPATH += $$PWD/../
+
+DISTFILES += \
+    $$PWD/../src/unix/unixnet.cpp

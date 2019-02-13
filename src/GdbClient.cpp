@@ -16,7 +16,7 @@
 using namespace std;
 
 
-namespace adin {
+namespace remcu {
 
 static const char * loadTempCommand = "$m%x,%x#";
 static const char * storeTempCommand = "$M%x,%x:";

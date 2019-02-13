@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace adin {
+namespace remcu {
 
 static void printLicense(){
     unsigned char s[] =

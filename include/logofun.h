@@ -1,7 +1,7 @@
 #ifndef LOGOFUN_H
 #define LOGOFUN_H
 
-namespace adin {
+namespace remcu {
 
 void printLogo();
 

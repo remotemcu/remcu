@@ -16,7 +16,7 @@
 
 using namespace std;
 
-namespace adin {
+namespace remcu {
 
 typedef struct {
     llvm_ocd_addr startAddr;
@@ -229,12 +229,12 @@ bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist)
 
 } //namespace
 
-
+using namespace remcu;
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    adin::ADIN_PRINTF(adin::__DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
-    adin::store(reinterpret_cast<llvm_ocd_addr>(pointer),
+    ADIN_PRINTF(__DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 }
 
@@ -242,7 +242,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    adin::ADIN_PRINTF(adin::__DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
-    return adin::load(reinterpret_cast<llvm_ocd_addr>(pointer),
+    ADIN_PRINTF(__DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
+    return load(reinterpret_cast<llvm_ocd_addr>(pointer),
                   TypeSizeArg, AlignmentArg);
 }

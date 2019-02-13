@@ -10,7 +10,7 @@
 using namespace std;
 using namespace unix_tcp;
 
-namespace adin {
+namespace remcu {
 
 static TCPConnector* connector = new TCPConnector();
 

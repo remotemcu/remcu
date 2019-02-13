@@ -5,7 +5,7 @@
 
 #include "logger.h"
 
-namespace adin {
+namespace remcu {
 
 #if 0
 void __ASSERT__DEBUG(const char *);

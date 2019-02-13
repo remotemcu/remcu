@@ -15,7 +15,7 @@
 using namespace std;
 
 
-namespace adin {
+namespace remcu {
 
 vector<char> ClientBase::bufferSend(0x100,'\0');
 vector<char> ClientBase::bufferReceiv(0x100,'\0');

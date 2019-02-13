@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 
-namespace adin {
+namespace remcu {
 
 #define TIMEOUT_SEC_OCD_RESPONSE 3
 

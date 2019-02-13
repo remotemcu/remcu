@@ -21,7 +21,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #pragma clang diagnostic ignored "-Wextra"
 
-using namespace adin;
+using namespace remcu;
 using namespace std;
 
 static bool callback(const char *__assertion, const char *__file,

@@ -8,7 +8,7 @@
 #endif
 
 
-namespace adin {
+namespace remcu {
 
 enum ServerType {
     _DUMMY_SERVVER = 0,
@@ -38,7 +38,7 @@ bool __EXPORT connect2GDB(const std::string host, const uint16_t port,
 bool __EXPORT disconnect();
 
 std::string __EXPORT getVersion();
-
+//setConfig
 bool __EXPORT setMCU(const std::string target);
 void __EXPORT clearMCU();
 

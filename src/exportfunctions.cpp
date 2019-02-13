@@ -16,7 +16,7 @@
 
 using namespace  std;
 
-namespace adin {
+namespace remcu {
 
 bool connect2Server(const std::string host, const uint16_t port,
                     const ServerType server = _DUMMY_SERVVER,

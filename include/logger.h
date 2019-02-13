@@ -5,7 +5,7 @@
 
 #include "exports.h"
 
-namespace adin {
+namespace remcu {
 
 
 class Log {

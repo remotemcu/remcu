@@ -4,7 +4,7 @@
 #include "logger.h"
 
 
-namespace adin {
+namespace remcu {
 
 LevelDebug Log::gLevel = __ERROR;
 

@@ -3,7 +3,7 @@
 #include "assertion.h"
 
 
-namespace adin {
+namespace remcu {
 #if 0
 static ErrorFunction_t callback = NULL;
 

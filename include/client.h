@@ -9,7 +9,7 @@
 #include "exports.h"
 #include "defines.h"
 
-namespace adin {
+namespace remcu {
 
 struct ClientBase {
 

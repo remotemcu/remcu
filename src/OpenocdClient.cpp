@@ -16,7 +16,7 @@
 using namespace std;
 
 
-namespace adin {
+namespace remcu {
 
 #define COMMAND_TOKEN '\x1a'
 
