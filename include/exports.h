@@ -3,6 +3,6 @@
 
 #include "defines.h"
 
-#include "adin.h"
+#include "remcu.h"
 
 #endif // EXPORTS_H

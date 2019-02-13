@@ -11,7 +11,6 @@ SOURCES += \
 
 
 HEADERS += \
-    $$PWD/../export/adin.h \
     $$PWD/../include/AddressInterceptPass.h \
     $$PWD/../include/client.h \
     $$PWD/../include/netwrapper.h \
@@ -20,7 +19,8 @@ HEADERS += \
     $$PWD/../include/defines.h \
     $$PWD/../include/exports.h \
     $$PWD/../include/obusfaction.h \
-    $$PWD/../include/logofun.h
+    $$PWD/../include/logofun.h \
+    $$PWD/../export/remcu.h
 
 
 INCLUDEPATH += $$PWD/../include/

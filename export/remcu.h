@@ -1,5 +1,5 @@
-#ifndef ADIN_LIB_H
-#define ADIN_LIB_H
+#ifndef REMCU_H
+#define REMCU_H
 
 #include <string>
 
@@ -53,4 +53,4 @@ bool __EXPORT arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const
 bool __EXPORT arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist);
 
 } //namespace
-#endif // ADIN_LIB_H
+#endif // REMCU_H
