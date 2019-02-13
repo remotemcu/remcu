@@ -123,6 +123,33 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
     return ret;
 }
 
+static inline bool storeToLocalValue(const llvm_ocd_addr pointer, const llvm_value_type value,  const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg){
+
+    switch (TypeSizeArg) {
+    case 1:
+        *reinterpret_cast<uint8_t*>(pointer) = value & 0x1;
+        break;
+    case 8:
+        *reinterpret_cast<uint8_t*>(pointer) = value & 0xFF;
+        break;
+    case 16:
+        *reinterpret_cast<uint16_t*>(pointer) = value & 0xFFFF;
+        break;
+    case 32:
+        *reinterpret_cast<uint32_t*>(pointer) = value & 0xFFFFFFFF;
+        break;
+    case 64:
+        *reinterpret_cast<uint64_t*>(pointer) = value;
+        break;
+    default:
+        ADIN_LOG(__ERROR) << "Unknown size of type: " << TypeSizeArg;
+        ADIN_PRINTF(__ERROR, "at the pointer: %p\n", pointer);
+        return false;
+    }
+
+    return true;
+}
+
 static llvm_pass_arg getMask(llvm_pass_arg TypeSizeArg){
     llvm_value_type ret = 0;
     switch (TypeSizeArg) {
@@ -158,7 +185,8 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
     if(isEntryHalfInterval(pointer) == false){
-        //pizda, why it's don't write to local?
+        ADIN_LOG(__WARNING) << "load from local, ptr : " <<  hex << pointer;
+        assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
 
