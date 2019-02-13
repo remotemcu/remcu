@@ -109,11 +109,18 @@ static void printLine(){
 
 std::string getVersion(){
 
-#ifdef _GIT_HASH_
-    return std::string(_GIT_HASH_);
+#ifdef _GIT_TAG_
+    const string tag(_GIT_TAG_);
 #else
-    return std::string("unknown");
+    const string tag("unknown");
 #endif
+
+#ifdef _GIT_HASH_
+    const string commit(_GIT_HASH_);
+#else
+    const string commit("unknown");
+#endif
+    return tag + "@" + commit;
 }
 
 

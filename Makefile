@@ -6,8 +6,9 @@ AR 			= llvm-ar
 CFLAGS		= -c -std=c++14 -O2 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
 
-COMMIT_HASH = $(shell git rev-parse HEAD)
-DEFINES += -D_GIT_HASH_=\"$(COMMIT_HASH)\"
+LAST_TAG = $(shell git describe --tags)
+COMMIT_HASH = $(shell git rev-parse --short HEAD)
+DEFINES += -D_GIT_HASH_=\"$(COMMIT_HASH)\" -D_GIT_TAG_=\"$(LAST_TAG)\" 
 
 ifneq ($(DEBUG),)
 CFLAGS += -g
