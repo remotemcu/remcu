@@ -26,7 +26,7 @@ bool addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr
 
 void clearAllInterceptAddressInterval();
 
-void clearMCU(){
+void clearConfig(){
     clearAllInterceptAddressInterval();
 }
 
@@ -51,7 +51,7 @@ std::string getCurrentMCU(){
     return targetMCU;
 }
 
-bool setMCU(const std::string target){
+bool setConfig(const std::string target){
 
     if(target.compare("STM32F10X_MD") == 0){
         addInterceptAddress2Interval(0x20000000, 0x20000000 + 20*1024);

@@ -38,9 +38,9 @@ bool __EXPORT connect2GDB(const std::string host, const uint16_t port,
 bool __EXPORT disconnect();
 
 std::string __EXPORT getVersion();
-//setConfig
-bool __EXPORT setMCU(const std::string target);
-void __EXPORT clearMCU();
+
+bool __EXPORT setConfig(const std::string target);
+void __EXPORT clearConfig();
 
 std::string __EXPORT getCurrentMCU();
 
