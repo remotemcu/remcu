@@ -6,6 +6,8 @@ AR 			= llvm-ar
 CFLAGS		= -c -std=c++14 -O2 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
 
+COMMIT_HASH = $(shell git rev-parse HEAD)
+DEFINES += -D_GIT_HASH_=\"$(COMMIT_HASH)\"
 
 ifneq ($(DEBUG),)
 CFLAGS += -g
@@ -23,6 +25,8 @@ CFLAGS		+= -fPIC -fvisibility=hidden
 LDFLAGS		+= -fPIC -fvisibility=hidden
 SHARED_FLAGS = -shared
 endif
+
+CFLAGS		+= $(DEFINES)
 
 BUILD_DIR 	= build
 

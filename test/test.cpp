@@ -65,6 +65,7 @@ int main(int argc, char** argv)
 
     std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
 
+    std::cout << getVersion() << endl;
 
     connect2OpenOCD(host, PORT_TCL);
 
