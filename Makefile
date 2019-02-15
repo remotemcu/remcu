@@ -1,8 +1,18 @@
 OS := $(shell uname)
 
-CC			= clang++
+ifneq (,$(findstring CYGWIN,$(OS)))
+OS = CYGWIN
+endif
 
+ifeq ($(OS),CYGWIN)
+CC			= "$(CLANG_PATH)clang++"
+AR 			= "$(CLANG_PATH)llvm-ar"
+OPT			= "$(OPT_PATH)opt"
+else
+CC			= clang++
 AR 			= llvm-ar
+endif
+
 CFLAGS		= -c -std=c++14 -fno-rtti -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS		= -lstdc++
 
@@ -16,29 +26,31 @@ else
 CFLAGS += -O2
 endif
 
-ifneq ($(OS),Linux)
-ifeq ($(OPT_PATH),)
-	$error("set opt path")
-endif
-OPT			= $(OPT_PATH)
-endif
 
 ifeq ($(OS),Linux)
 CFLAGS		+= -fPIC -fvisibility=hidden
 LDFLAGS		+= -fPIC -fvisibility=hidden
-SHARED_FLAGS = -shared
+else ifeq ($(OS),CYGWIN)
+CFLAGS		+= -Xclang -flto-visibility-public-std -fno-exceptions 
+LDFLAGS		+= -lwsock32  -Xclang -flto-visibility-public-std -fno-exceptions
+DEFINES 	+= -D_CRT_SECURE_NO_WARNINGS -D_HAS_STATIC_RTTI=0
 endif
+
+SHARED_FLAGS = -shared
 
 CFLAGS		+= $(DEFINES)
 
 BUILD_DIR 	= build
 
-
-UNIX_SOURCE = $(wildcard src/unix/*.cpp)
+ifeq ($(OS),CYGWIN)
+NET_SOURCE = $(wildcard qt5/libWinsock2/*.cpp)
+else
+NET_SOURCE = $(wildcard src/unix/*.cpp)
+endif
 
 SOURCES 	= $(wildcard src/*.cpp)
 
-SOURCES 	+= $(UNIX_SOURCE)
+SOURCES 	+= $(NET_SOURCE)
 
 OBJECTS		= $(SOURCES:.cpp=.o)
 
@@ -48,13 +60,17 @@ TEST_SOURCE = test/test.cpp
 TEST_OBJECTS= $(TEST_SOURCE:.cpp=.o)
 
 TEST_IR_SOURCE = test/IrTest.cpp
-TEST_IR_LL = $(TEST_IR_SOURCE:.cpp=.ll)
+TEST_IR_LL = $(BUILD_DIR)/$(notdir $(TEST_IR_SOURCE:.cpp=.ll))
 
 LIB_NAME 	= libadin
 
 ifeq ($(OS),Linux)
 STATIC_LIB 	= $(LIB_NAME).a
 SHARED_LIB 	= $(LIB_NAME).so
+else ifeq ($(OS),CYGWIN)
+STATIC_LIB 	= $(LIB_NAME).lib
+SHARED_LIB 	= $(LIB_NAME).dll
+EXE_SUFFIX = .exe
 endif
 
 print-%  : ; @echo $* = $($*)
@@ -62,6 +78,7 @@ print-%  : ; @echo $* = $($*)
 
 .PHONY: objects
 objects: $(BUILD_DIR) $(OBJECTS)
+
 
 
 .PHONY: static
@@ -85,7 +102,7 @@ clean:
 
 .PHONY: test
 test: $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS) $(TEST_IR_LL)
-	$(CC) $(LDFLAGS) $(BUILD_DIR)/*.o $(TEST_IR_LL) -o $(BUILD_DIR)/$@
+	$(CC) $(LDFLAGS) $(BUILD_DIR)/*.o $(TEST_IR_LL) -o $(BUILD_DIR)/$@$(EXE_SUFFIX)
 
 
 .PHONY: ir_pass
@@ -98,9 +115,9 @@ $(TEST_IR_LL): $(TEST_IR_SOURCE)
 	../AddressInterception/build/src/libAddressInterceptorPassModule.so \
 	$< -o $@
 else
-	$(TEST_IR_LL):
+$(TEST_IR_LL): $(TEST_IR_SOURCE)
 		$(CC) -S -emit-llvm $< -o $@
-		$(OPT) -adin $< -o $@
+		$(OPT) -adin -S $@ -o $@
 endif
 
 .PHONY: strip

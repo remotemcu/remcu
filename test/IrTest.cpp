@@ -1,7 +1,9 @@
-#include "IrTest.h"
+
 #include <stdint.h>
 #include <assert.h>
 #include <stdio.h>
+
+#pragma clang attribute push (__declspec(dllexport), apply_to = function)
 
 typedef struct {
     int8_t  field_1_8;
@@ -63,3 +65,5 @@ int irTest(int* addr){
     *addr = 0;
     return *addr;
 }
+
+#pragma clang attribute pop
