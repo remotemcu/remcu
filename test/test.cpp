@@ -20,6 +20,7 @@
 
 #pragma clang diagnostic ignored "-Wall"
 #pragma clang diagnostic ignored "-Wextra"
+#pragma clang diagnostic ignored "-Wmacro-redefined"
 
 using namespace remcu;
 using namespace std;

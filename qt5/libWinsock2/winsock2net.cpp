@@ -9,7 +9,11 @@
 #include "logger.h"
 #include "netwrapper.h"
 
-namespace adin {
+
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
+namespace remcu {
 
 static SOCKET ConnectSocket = INVALID_SOCKET;
 
@@ -17,7 +21,7 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
 
     int ret;
     WSADATA wsaData;
-    SOCKADDR_IN          ServerAddr = {0};
+    SOCKADDR_IN          ServerAddr;// = {0};
 
     memset(&ServerAddr, 0, sizeof(SOCKADDR_IN));
 
@@ -30,7 +34,7 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
         return false;
     }
 
-    ADIN_PRINTF(__INFO, "Client: VVsock status is %s.\n", wsaData.szSystemStatus);
+    ADIN_PRINTF(__INFO, "Client: BBsock status is %s.\n", wsaData.szSystemStatus);
 
     ConnectSocket = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 
@@ -76,14 +80,14 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
         if (ret == SOCKET_ERROR) {
            ADIN_PRINTF(__WARNING, "setsockopt for receive timeout failed with error: %u\n", WSAGetLastError());
         } else
-            ADIN_PRINTF(__INFO, "Set receive timeout: ON\n");
+            ADIN_PRINTF(__INFO, "Set receive timeout: ON\n",0);
 
     ret = setsockopt(ConnectSocket, SOL_SOCKET, SO_SNDTIMEO, reinterpret_cast<const char *>(&timeout_ms)
                      , sizeof(int));
        if (ret == SOCKET_ERROR) {
           ADIN_PRINTF(__WARNING, "setsockopt for transmite timeout failed with error: %u\n", WSAGetLastError());
        } else
-           ADIN_PRINTF(__INFO, "Set transmite timeout : ON\n");
+           ADIN_PRINTF(__INFO, "Set transmite timeout : ON\n",0);
 
      return true;
 }
@@ -110,10 +114,10 @@ bool closeTCP(){
      }
      // When your application is finished handling the connection, call WSACleanup.
      if(WSACleanup() != 0){
-          ADIN_PRINTF(__WARNING, "Client: VVCleanup() failed!...\n");
+          ADIN_PRINTF(__WARNING, "Client: BBCleanup() failed!...\n",0);
           success = false;
      } else {
-        ADIN_LOG(__DEBUG) << "Client: VVCleanup() is OK...";
+        ADIN_LOG(__DEBUG) << "Client: BBCleanup() is OK...";
      }
      return false;
 }
@@ -148,7 +152,7 @@ bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
             lenBuffer = static_cast<size_t>(ret);
             return true;
         } else if (ret == 0)
-            ADIN_PRINTF(__ERROR, "Connection closed\n");
+            ADIN_PRINTF(__ERROR, "Connection closed\n",0);
         else
             ADIN_PRINTF(__ERROR, "recv failed: %d\n", WSAGetLastError());
 
