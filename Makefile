@@ -62,7 +62,7 @@ TEST_OBJECTS= $(TEST_SOURCE:.cpp=.o)
 TEST_IR_SOURCE = test/IrTest.cpp
 TEST_IR_LL = $(BUILD_DIR)/$(notdir $(TEST_IR_SOURCE:.cpp=.ll))
 
-LIB_NAME 	= libadin
+LIB_NAME 	= libremcu
 
 ifeq ($(OS),Linux)
 STATIC_LIB 	= $(LIB_NAME).a
@@ -86,8 +86,8 @@ static: $(BUILD_DIR) $(OBJECTS)
 	$(AR) -rcs $(BUILD_DIR)/$(STATIC_LIB) $(BUILD_DIR)/*.o
 
 .PHONY: shared
-shared: $(BUILD_DIR) $(OBJECTS)
-	$(CC) $(SHARED_FLAGS) $(LDFLAGS) $(BUILD_DIR)/*.o -o $(BUILD_DIR)/$(SHARED_LIB)
+shared: $(BUILD_DIR) $(OBJECTS) $(TEST_IR_LL)
+	$(CC) $(SHARED_FLAGS) $(LDFLAGS) $(TEST_IR_LL) $(BUILD_DIR)/*.o -o $(BUILD_DIR)/$(SHARED_LIB)
 
 
 $(BUILD_DIR):
