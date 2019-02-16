@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 
     assert(ret == 0);
 
-    closeTCP();
+    disconnect();
 
     std::cout << "Errors:" << endl;
 
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 
     assert(ret == 0);
 
-    closeTCP();
+    disconnect();
     std::cout << "Errors:" << endl;
 
     arrayWrite2RemoteMem(address,dist,1);
