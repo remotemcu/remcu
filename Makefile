@@ -43,7 +43,7 @@ CFLAGS		+= $(DEFINES)
 BUILD_DIR 	= build
 
 ifeq ($(OS),CYGWIN)
-NET_SOURCE = $(wildcard qt5/libWinsock2/*.cpp)
+NET_SOURCE = $(wildcard src/win/*.cpp)
 else
 NET_SOURCE = $(wildcard src/unix/*.cpp)
 endif
