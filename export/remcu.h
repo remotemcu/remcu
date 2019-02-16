@@ -7,6 +7,13 @@
 #define __EXPORT
 #endif
 
+#if defined(_WIN32) || defined(WIN32)
+  #ifndef REMCULIB_DLL_API
+    #define REMCULIB_DLL_API __declspec(dllimport)
+  #endif
+#else 
+  #define REMCULIB_DLL_API
+#endif
 
 namespace remcu {
 
@@ -29,28 +36,29 @@ enum LevelDebug { __ERROR = 0,
 #define _DEFAULT_TIMEOUT_SEC 3
 
 
-bool __EXPORT connect2OpenOCD(const std::string host, const uint16_t port,
+REMCULIB_DLL_API bool connect2OpenOCD(const std::string host, const uint16_t port,
                      const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-bool __EXPORT connect2GDB(const std::string host, const uint16_t port,
+REMCULIB_DLL_API bool connect2GDB(const std::string host, const uint16_t port,
                  const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-bool __EXPORT disconnect();
+REMCULIB_DLL_API bool disconnect();
 
-std::string __EXPORT getVersion();
+REMCULIB_DLL_API std::string getVersion();
 
-bool __EXPORT setConfig(const std::string target);
-void __EXPORT clearConfig();
+REMCULIB_DLL_API bool setConfig(const std::string target);
 
-std::string __EXPORT getCurrentMCU();
+REMCULIB_DLL_API void clearConfig();
 
-bool __EXPORT resetRemoteUnit(const ResetType type);
+REMCULIB_DLL_API std::string getCurrentMCU();
 
-void __EXPORT setVerboseLevel(const LevelDebug level);
+REMCULIB_DLL_API bool resetRemoteUnit(const ResetType type);
 
-bool __EXPORT arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size);
+REMCULIB_DLL_API void setVerboseLevel(const LevelDebug level);
 
-bool __EXPORT arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist);
+REMCULIB_DLL_API bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size);
+
+REMCULIB_DLL_API bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist);
 
 } //namespace
 #endif // REMCU_H

@@ -15,15 +15,15 @@ struct ClientBase {
 
     bool connect(const std::string, const uint16_t port, int timeout_sec) const ;
 
-    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type value, const llvm_pass_arg sizeVal) const ;
 
-    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & value, const llvm_pass_arg sizeVal) const ;
 
-    virtual bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const ;
 
-    virtual bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const ;
 
-    virtual bool resetRemoteUnit(const ResetType) const DECL_BODY_VIRTUAL_FUNCTION
+    virtual bool resetRemoteUnit(const ResetType) const ;
 
     bool close() const ;
 
