@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "IrTest.h"
+
 typedef struct {
     int8_t  field_1_8;
     int16_t field_2_16;

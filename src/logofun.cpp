@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "exports.h"
 #include "logofun.h"
 #include "obusfaction.h"
 
