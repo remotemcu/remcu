@@ -63,7 +63,7 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
            // Do the clean up
            WSACleanup();
            // Exit with error
-           return -1;
+           return false;
      }
      ADIN_LOG(__INFO) << "Client: connect() is OK, got connected...";
      ADIN_LOG(__INFO) << "Client: Ready for sending and/or receiving data...";
