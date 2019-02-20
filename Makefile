@@ -116,7 +116,7 @@ $(TEST_IR_LL): $(TEST_IR_SOURCE)
 	$< -o $@
 else
 $(TEST_IR_LL): $(TEST_IR_SOURCE)
-		$(CC) -S -emit-llvm $< -o $@
+		$(CC) -S -emit-llvm $< -o $@ $(INCLUDES)
 		$(OPT) -adin -S $@ -o $@
 endif
 
