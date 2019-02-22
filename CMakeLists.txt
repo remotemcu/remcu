@@ -14,7 +14,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
 # have all targets (exe, lib, dll) as projects (.vcproj)
-project(remcu-lib C CXX)
+project(remcu-lib CXX)
 
 # detect operating system and host processor
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
@@ -30,6 +30,9 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCE)
 
 if(WIN32)
 	set(NET_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/win/winsock2net)
+else()
+	aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src/unix NET_SOURCE)
+	SET(CMAKE_CXX_FLAGS "-fno-rtti" )  
 endif()
 
 set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})

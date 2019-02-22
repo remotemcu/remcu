@@ -1,10 +1,12 @@
 
 if(WIN32)
-  set(WIN_CLANG_IR_OPTIONS -D_MT -D_DLL)
+  set(CLANG_IR_OPTIONS -D_MT -D_DLL)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("WIN debug option: -D_DEBUG")
-    list(APPEND WIN_CLANG_IR_OPTIONS -D_DEBUG)
+    list(APPEND CLANG_IR_OPTIONS -D_DEBUG)
   endif()
+else()
+  set(CLANG_IR2O_OPTIONS -fPIC)
 endif()
 
 set(TEST_IR_LL IrTest.ll)
@@ -13,7 +15,7 @@ set(TEST_IR_ADIN_LL_O IrTest.adin.ll.obj)
 
 add_custom_target (
   ${TEST_IR_LL}
-  COMMAND clang -S -emit-llvm ${WIN_CLANG_IR_OPTIONS} ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.cpp 
+  COMMAND clang -S -emit-llvm ${CLANG_IR_OPTIONS} ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.cpp 
   -I${CMAKE_CURRENT_SOURCE_DIR}/../export
   -I${CMAKE_CURRENT_SOURCE_DIR}/../include
   -I${CMAKE_CURRENT_SOURCE_DIR}/
@@ -30,6 +32,7 @@ add_custom_target (
 add_custom_target (
   ${TEST_IR_ADIN_LL_O}
   COMMAND clang -c ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL}
+  ${CLANG_IR2O_OPTIONS}
   -o ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL_O}
   DEPENDS ${TEST_IR_ADIN_LL}
   )
@@ -48,6 +51,7 @@ add_executable(test_dll test_dll.cpp)
 target_link_libraries(test_dll remcu_ir_dll)
 
 add_dependencies(test_static ${TEST_IR_ADIN_LL_O})
+add_dependencies(remcu_ir_dll ${TEST_IR_ADIN_LL_O})
 
 if(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
