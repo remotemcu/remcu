@@ -7,12 +7,12 @@
 #define __EXPORT
 #endif
 
-#if defined(_WIN32) || defined(WIN32)
-  #ifndef REMCULIB_DLL_API
+#ifndef REMCULIB_DLL_API
+  #if defined(_WIN32) || defined(WIN32)
     #define REMCULIB_DLL_API __declspec(dllimport)
+  #else 
+    #define REMCULIB_DLL_API
   #endif
-#else 
-  #define REMCULIB_DLL_API
 #endif
 
 namespace remcu {
