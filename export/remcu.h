@@ -35,6 +35,8 @@ enum LevelDebug { __ERROR = 0,
 
 #define _DEFAULT_TIMEOUT_SEC 3
 
+typedef void (*ErrorSignalFunc)();
+
 
 REMCULIB_DLL_API bool connect2OpenOCD(const std::string host, const uint16_t port,
                      const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
@@ -55,6 +57,12 @@ REMCULIB_DLL_API std::string getCurrentMCU();
 REMCULIB_DLL_API bool resetRemoteUnit(const ResetType type);
 
 REMCULIB_DLL_API void setVerboseLevel(const LevelDebug level);
+
+REMCULIB_DLL_API void setErrorSignalFunc(ErrorSignalFunc callback);
+
+REMCULIB_DLL_API size_t getErrorCout();
+
+REMCULIB_DLL_API void clearErrorCount();
 
 REMCULIB_DLL_API bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size);
 
