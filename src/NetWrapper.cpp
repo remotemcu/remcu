@@ -39,4 +39,18 @@ bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
     return success;
 }
 
+bool connect2Server(const std::string host, const uint16_t port,
+                    const ServerType server = _DUMMY_SERVVER,
+                    const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+
+bool connect2OpenOCD(const std::string host, const uint16_t port,
+                     const int timeout_sec){
+    return connect2Server(host, port, _OPENOCD_SERVER, timeout_sec);
+}
+
+bool connect2GDB(const std::string host, const uint16_t port,
+                 const int timeout_sec){
+    return connect2Server(host, port, _GDB_SERVER, timeout_sec);
+}
+
 } //namespace
