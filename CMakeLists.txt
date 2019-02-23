@@ -35,7 +35,7 @@ if(WIN32)
 	set(NET_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/win/winsock2net)
 else()
 	aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src/unix NET_SOURCE)
-	SET(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions" )
+	SET(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fvisibility=hidden" )
 endif()
 
 set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})
