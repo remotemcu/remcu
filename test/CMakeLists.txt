@@ -45,16 +45,16 @@ SET_SOURCE_FILES_PROPERTIES(
   )
 
 
-add_library(remcu_ir_dll SHARED ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
+add_library(remcu_ir_shared SHARED ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
 add_executable(test_static test.cpp ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
-add_executable(test_dll test_dll.cpp)
-target_link_libraries(test_dll remcu_ir_dll)
+add_executable(test_shared test_shared.cpp)
+target_link_libraries(test_shared remcu_ir_shared)
 
 add_dependencies(test_static ${TEST_IR_ADIN_LL_O})
-add_dependencies(remcu_ir_dll ${TEST_IR_ADIN_LL_O})
+add_dependencies(remcu_ir_shared ${TEST_IR_ADIN_LL_O})
 
 if(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   target_link_libraries(test_static ws2_32)
-  target_link_libraries(remcu_ir_dll ws2_32)
+  target_link_libraries(remcu_ir_shared ws2_32)
 endif()
