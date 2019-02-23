@@ -29,6 +29,9 @@
 #include <errno.h>
 
 #include "unix/tcpconnector.h"
+#include "logger.h"
+
+using namespace remcu;
 
 namespace unix_tcp {
 
@@ -47,11 +50,11 @@ TCPStream* TCPConnector::connect(const char* server, int port)
     // Create and connect the socket, bail if we fail in either case
     int sd = socket(AF_INET, SOCK_STREAM, 0);
     if (sd < 0) {
-        perror("socket() failed");
+        ADIN_LOG(__ERROR) << "socket() failed";
         return NULL;
     }
     if (::connect(sd, (struct sockaddr*)&address, sizeof(address)) != 0) {
-        perror("connect() failed");
+        ADIN_LOG(__ERROR) << "connect() failed";
         close(sd);
         return NULL;
     }
@@ -79,7 +82,8 @@ TCPStream* TCPConnector::connect(const char* server, int port, int timeout)
     
     // Bail if we fail to create the socket
     if (sd < 0) {
-        perror("socket() failed");
+        //standart log
+        ADIN_LOG(__ERROR) << "socket() failed";
         return NULL;
     }    
 
@@ -107,7 +111,7 @@ TCPStream* TCPConnector::connect(const char* server, int port, int timeout)
                 len = sizeof(int);
                 getsockopt(sd, SOL_SOCKET, SO_ERROR, (void*)(&valopt), &len);
                 if (valopt) {
-                    fprintf(stderr, "connect() error %d - %s\n", valopt, strerror(valopt));
+                    ADIN_PRINTF(__ERROR, "connect() error %d - %s\n", valopt, strerror(valopt));
                 }
                 // connection established
                 else result = 0;
@@ -115,13 +119,13 @@ TCPStream* TCPConnector::connect(const char* server, int port, int timeout)
             else
 	    {
 		close(sd);
-		fprintf(stderr, "connect() timed out\n");
+                ADIN_LOG(__ERROR) << "connect() timed out\n";
 	    }
         }
         else
 	{
 	    close(sd);
-	    fprintf(stderr, "connect() error %d - %s\n", errno, strerror(errno));
+             ADIN_PRINTF(__ERROR, "connect() error %d - %s\n", errno, strerror(errno));
 	}
     }
 
