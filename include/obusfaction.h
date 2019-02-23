@@ -72,8 +72,60 @@ public:
 
 };
 
+#define __SHIFT 2
+
+template<std::size_t index>
+struct encryptor_debug {
+    static constexpr int encrypt(char *dest, const char *str) {
+        if(str[index] == '.'){
+            dest[index] = '\0';
+        } else {
+            dest[index] = str[index] + __SHIFT;
+        }
+        encryptor_debug<index - 1>::encrypt(dest, str);
+        return index;
+    }
+};
+
+template<>
+struct encryptor_debug<0> {
+    static constexpr int encrypt(char *dest, const char *str) {
+        dest[0] = str[0] + __SHIFT;
+        return 0;
+    }
+};
+
+
+class cryptor_debug {
+public:
+    template<std::size_t S>
+    class string_encryptor_debug {
+    public:
+        constexpr string_encryptor_debug(const char str[S])
+            : _buffer{'\0'}, _size(S-1) {
+            encryptor_debug<S - 2>::encrypt(_buffer, str);
+        }
+
+        std::string get() const {
+            return std::string(_buffer, _size);
+        }
+
+    private:
+        char _buffer[S];
+        const size_t _size;
+    };
+
+    template<std::size_t S>
+    static constexpr string_encryptor_debug<S> create1(const char(&str)[S]) {
+        return string_encryptor_debug<S>{ str};
+    }
+
+};
+
 } //namespace
 
 #define _S_(str) cryptor::create(str).decrypt()
+
+#define _D_(str) cryptor_debug::create1(str).get().c_str()
 
 #endif // OBUSFACTION_H
