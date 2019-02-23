@@ -74,4 +74,6 @@ public:
 
 } //namespace
 
+#define _S_(str) cryptor::create(str).decrypt()
+
 #endif // OBUSFACTION_H
