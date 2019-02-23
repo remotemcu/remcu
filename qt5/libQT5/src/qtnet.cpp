@@ -46,7 +46,7 @@ bool closeTCP(){
     return true;
 }
 
-bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
+bool send(const char * buffer, const size_t lenBuffer){
 
     ADIN_LOG(__DEBUG) << "-> " << lenBuffer << " : '" << buffer <<"'";
 
@@ -71,7 +71,7 @@ bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
     return false;
 }
 
-bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
+bool receive(char * buffer, size_t & lenBuffer){
 
     if(socket->state() != QAbstractSocket::ConnectedState){
         ADIN_LOG(__ERROR) << "socket is disconnected already";

@@ -52,9 +52,9 @@ bool closeTCP(){
 }
 
 
-bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
+bool send(const char * buffer, const size_t lenBuffer){
 
-    ADIN_LOG(__DEBUG) << "-> " << lenBuffer << " : '" << buffer <<"'";
+
 
     if(stream == NULL){
         ADIN_LOG(__ERROR) << "Connection close yet ";
@@ -66,12 +66,12 @@ bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
         return true;
     }
 
-    ADIN_LOG(__ERROR) << "send message failed " << len;
+    ADIN_PRINTF(__ERROR, "size : %d | send %d\n", lenBuffer, len);
 
     return false;
 }
 
-bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
+bool receive(char * buffer, size_t & lenBuffer){
 
     if(stream == NULL){
         ADIN_LOG(__ERROR) << "Connection close yet ";
@@ -92,8 +92,7 @@ bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
 
     buffer[lenSocket] = '\0';
 
-    lenBuffer = lenSocket;
-    ADIN_LOG(__DEBUG) << "<- " << lenBuffer << " : '" << buffer <<"'";
+    lenBuffer = static_cast<size_t>(lenSocket);
 
     return true;
 }

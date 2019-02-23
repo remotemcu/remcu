@@ -122,7 +122,7 @@ bool closeTCP(){
      return false;
 }
 
-bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
+bool send(const char * buffer, const size_t lenBuffer){
 
     if(ConnectSocket == INVALID_SOCKET){
           ADIN_PRINTF(__ERROR, "Client: socket() failed! Error code: %ld\n", WSAGetLastError());
@@ -139,7 +139,7 @@ bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
     return true;
 }
 
-bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
+bool receive(char * buffer, size_t & lenBuffer){
 
     if(ConnectSocket == INVALID_SOCKET){
           ADIN_PRINTF(__ERROR, "Client: socket() failed! Error code: %ld\n", WSAGetLastError());
