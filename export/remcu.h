@@ -52,7 +52,7 @@ REMCULIB_DLL_API bool setConfig(const std::string target);
 
 REMCULIB_DLL_API void clearConfig();
 
-REMCULIB_DLL_API std::string getCurrentMCU();
+REMCULIB_DLL_API std::string getCurrentConfig();
 
 REMCULIB_DLL_API bool resetRemoteUnit(const ResetType type);
 

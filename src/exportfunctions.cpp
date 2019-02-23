@@ -45,17 +45,17 @@ bool disconnect(){
     return closeTCP();
 }
 
-static string targetMCU("unknown");
+static string target_mem_conf("unknown");
 
-std::string getCurrentMCU(){
-    return targetMCU;
+std::string getCurrentConfig(){
+    return target_mem_conf;
 }
 
 bool setConfig(const std::string target){
 
     if(target.compare("STM32F10X_MD") == 0){
         addInterceptAddress2Interval(0x20000000, 0x20000000 + 20*1024);
-        targetMCU.assign(target);
+        target_mem_conf.assign(target);
     } else  if(target.compare("STM32F40_41xxx") == 0){
         addInterceptAddress2Interval(0x20000000,  0x20000000 + (112)*1024); //SRAM
         addInterceptAddress2Interval(0x40000000,  0x40008000); //APB1
@@ -63,7 +63,7 @@ bool setConfig(const std::string target){
         addInterceptAddress2Interval(0x40020000,  0x40080000); //AHB1
         addInterceptAddress2Interval(0x50000000,  0x50060C00); //AHB2
         addInterceptAddress2Interval(0xA0000000,  0xA0001000); //AHB3
-        targetMCU.assign(target);
+        target_mem_conf.assign(target);
     } else {
         return false;
     }
