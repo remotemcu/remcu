@@ -18,11 +18,17 @@ include(utils)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
 # have all targets (exe, lib, dll) as projects (.vcproj)
-project(remcu-lib CXX)
+project(libremcu CXX)
 
 # detect operating system and host processor
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
 message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+
+if(WIN32)
+	set(CMAKE_CXX_COMPILER clang-cl)
+else()
+	set(CMAKE_CXX_COMPILER clang++)
+endif()
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -50,11 +56,11 @@ set(WIN_CLANG_IR_OPTIONS -D_MT -D_DLL)
 add_subdirectory(test)
 
 # shared library
-add_library(remcu_dll SHARED ${LIB_SOURCE})
-define_file_basename_for_sources(remcu_dll)
+add_library(libremcu SHARED ${LIB_SOURCE})
+define_file_basename_for_sources(libremcu)
 
 
 if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-	target_link_libraries(remcu_dll ws2_32)
+	target_link_libraries(libremcu ws2_32)
 endif()
