@@ -14,6 +14,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(version)
+include(utils)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
 # have all targets (exe, lib, dll) as projects (.vcproj)
@@ -48,7 +49,7 @@ add_subdirectory(test)
 
 # shared library
 add_library(remcu_dll SHARED ${LIB_SOURCE})
-	
+define_file_basename_for_sources(remcu_dll)
 
 
 if(WIN32)

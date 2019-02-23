@@ -58,15 +58,17 @@ public:
 
 
 
-#ifdef _DEBUG_BUILD_
-
-#define ADIN_LOG(LEVEL) Log((LEVEL), __FILE__, __FUNCTION__, __LINE__)
-#define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), __FILE__, __FUNCTION__, __LINE__, F__, __VA_ARGS__)
-
-#else
+#ifdef NDEBUG
 
 #define ADIN_LOG(LEVEL) Log((LEVEL), __LINE__)
 #define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), __LINE__, F__, __VA_ARGS__)
+
+
+#else
+
+#define ADIN_LOG(LEVEL) Log((LEVEL), __BASENAME_SRC__, __FUNCTION__, __LINE__)
+#define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), __BASENAME_SRC__, __FUNCTION__, __LINE__, F__, __VA_ARGS__)
+
 
 #endif
 

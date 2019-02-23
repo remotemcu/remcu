@@ -50,6 +50,10 @@ add_executable(test_static test.cpp ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
 add_executable(test_shared test_shared.cpp)
 target_link_libraries(test_shared remcu_ir_shared)
 
+define_file_basename_for_sources(remcu_ir_shared)
+define_file_basename_for_sources(test_static)
+define_file_basename_for_sources(test_shared)
+
 add_dependencies(test_static ${TEST_IR_ADIN_LL_O})
 add_dependencies(remcu_ir_shared ${TEST_IR_ADIN_LL_O})
 
