@@ -2,12 +2,18 @@ cmake_minimum_required (VERSION 3.5)
 
 # Write information to the console.
 message("Running CMakeLists.txt for REMCU...")
-#[[]]
+
 if (NOT EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
   if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
     message("Current type ${CMAKE_BUILD_TYPE} ... set build type to Release")
   endif()
+endif()
+
+if(NOT DEFINED ENV{LLVM_ADIN_PATH})
+    message(FATAL_ERROR "$LLVM_ADIN_PATH is not defined")
+else ()
+	set(ADIN_OPT $ENV{LLVM_ADIN_PATH}opt)
 endif()
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -48,8 +54,6 @@ else()
 endif()
 
 set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})
-
-set(ADIN_OPT ${LLVM_ADIN_PATH}opt)
 
 set(WIN_CLANG_IR_OPTIONS -D_MT -D_DLL)
 
