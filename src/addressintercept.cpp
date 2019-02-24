@@ -12,6 +12,7 @@
 #include "assertion.h"
 #include "client.h"
 #include "logofun.h"
+#include "ErrorFunction.h"
 
 
 using namespace std;
@@ -195,14 +196,13 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     return true;
 }
 
-static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
+static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
 {
     assert_1message(isEmptyAddressInterval() == false, "MCU is not set. Please input kind of MCU.");
 
     if(isEntryHalfInterval(pointer) == false)
         return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
 
-    llvm_value_type  value;
     if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
         value = 0;
         ADIN_PRINTF(__ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);
@@ -210,11 +210,12 @@ static inline llvm_value_type load(const llvm_ocd_addr pointer, const llvm_pass_
 
     value &= getMask(TypeSizeArg);
 
-    return static_cast<llvm_value_type>(value);
+    return true;
 }
 
 bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
     assert_1message(sink != nullptr, "sink buffer is NULL. Check please.")
+    // todo: check memory region? only RAM
     assert_printf(client->arrayWrite2RemoteMem(addr, sink, size),
                   "can't write array bytes [%d] to address: %p\n", size, addr);
     return true;
@@ -222,6 +223,7 @@ bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t s
 
 bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
     assert_1message(dist != nullptr, "distination buffer is NULL. Check please.")
+    // todo: check memory region? only RAM
     assert_printf(client->arrayLoadFromRemoteMem(addr, size, dist),
                   "can't read array bytes [%d] from address: %p\n", size, addr);
     return true;
@@ -234,8 +236,12 @@ using namespace remcu;
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
     ADIN_PRINTF(__DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
-    store(reinterpret_cast<llvm_ocd_addr>(pointer),
+    const bool success = store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
+
+    if(success == false){
+        errorAppear();
+    }
 }
 
 
@@ -243,6 +249,14 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
     ADIN_PRINTF(__DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
-    return load(reinterpret_cast<llvm_ocd_addr>(pointer),
+    llvm_value_type value = 0;
+    const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
+
+    if(success == false){
+        value = 0;
+        errorAppear();
+    }
+
+    return value;
 }
