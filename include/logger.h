@@ -57,19 +57,19 @@ public:
 
 } //namespace
 
-
+#ifndef __BASENAME_SRC__
+    #define __BASENAME_SRC__ "unknown"
+#endif
 
 #ifdef NDEBUG
-
-#define ADIN_LOG(LEVEL) Log((LEVEL), __LINE__)
-#define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), __LINE__, F__, __VA_ARGS__)
-
-
-#else
 
 #define ADIN_LOG(LEVEL) Log((LEVEL), _D_(__BASENAME_SRC__), _D_(__FUNCTION__), __LINE__)
 #define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), _D_(__BASENAME_SRC__), _D_(__FUNCTION__), __LINE__, F__, __VA_ARGS__)
 
+#else
+
+#define ADIN_LOG(LEVEL) Log((LEVEL), __BASENAME_SRC__, __FUNCTION__, __LINE__)
+#define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), __BASENAME_SRC__, __FUNCTION__, __LINE__, F__, __VA_ARGS__)
 
 #endif
 
