@@ -52,6 +52,7 @@ void assertErrorTest(uint32_t address){
     setErrorSignalFunc(nullptr);
     irTestSimple(reinterpret_cast<int*>(address));
     assert(error == false);
+    clearErrorCount();
 }
 
 
