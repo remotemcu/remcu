@@ -40,7 +40,7 @@ static const uint16_t PORT_GDB = 3333;
 #define _STRING_ "123456789abc"
 
 void assertErrorTest(uint32_t address){
-    std::cout << "----------------------- Test Error -----------------------" << endl;
+    std::cout << "\n----------------------- Test Error -----------------------\n" << endl;
 
     setErrorSignalFunc(callback);
     assert(getErrorCout() == 0);
@@ -97,8 +97,9 @@ int main(int argc, char** argv)
     printLogo();
 
 
-    if(argc != 3){
+    if(argc < 3){
         printf("test requare 2 arguments: host and verbose level\n");
+        printf("optional 3-d arg: testOpenocd(bool)\n");
         return -1;
     }
 
@@ -107,6 +108,16 @@ int main(int argc, char** argv)
     const string host(argv[1]);
     const uint32_t address = 0x20000000;
     const LevelDebug level = static_cast<LevelDebug>(atoi(argv[2]) & 0xF);
+    bool testOpenocd = true;
+
+
+    printf("!!!! %d '%s'\n", argc, argv[3]);
+
+    if(argc > 3){
+        if(string(argv[3]).compare("no") == 0){
+            testOpenocd = false;
+        }
+    }
 
     setVerboseLevel(__INFO);
     ADIN_LOG(__INFO) << "host: " << host;
@@ -116,27 +127,29 @@ int main(int argc, char** argv)
 
     assertErrorTest(address);
 
-    std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
-
-    std::cout << getVersion() << endl;
-
-    connect2OpenOCD(host, PORT_TCL);
-
-    resetRemoteUnit(ResetType::__HALT);
-
     setConfig("TEST_CONFIG_MEM");
 
-    standartTestAddr(address);
+    if(testOpenocd){
+        std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
 
-    std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
+        std::cout << getVersion() << endl;
+
+        connect2OpenOCD(host, PORT_TCL);
+
+        resetRemoteUnit(ResetType::__HALT);
+
+        standartTestAddr(address);
+    }
+
+    std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
 
     connect2GDB(host, PORT_GDB);
 
     resetRemoteUnit(ResetType::__HALT);
 
-    setConfig("TEST_CONFIG_MEM");
-
     standartTestAddr(address);
+
+    std::cout << "\n----------------------- SUCCESS TEST -----------------------\n" << endl;
 
 }
 
