@@ -15,6 +15,7 @@
 #include "obusfaction.h"
 #include "logofun.h"
 #include "AddressInterval.h"
+#include "AddressFunction.h"
 
 #include "test/IrTest.h"
 
@@ -69,13 +70,14 @@ void standartTestAddr(uint32_t address){
 
     uint8_t dist[100] = {'\0'};
 
-    remote_memcpy(address, testMessage, _SIZE);
+    store2addr(address, testMessage, _SIZE);
 
-    local_memcpy(address, 100, dist);
+    loadFromAddr(address, 100, dist);
 
     ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
 
-    assert(remote_memcpy(address, testMessage, _SIZE_ONE_MEMPCY) == false);
+    assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == false);
+    assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
 
     assert(ret == 0);
 

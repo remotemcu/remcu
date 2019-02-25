@@ -24,8 +24,6 @@ void clear_all_mem_interval();
 
 bool is_empty_mem_interval();
 
-#define _SIZE_ONE_MEMPCY 33
-
 } //namespace
 
 #endif // REMOTEADDRESS_H

@@ -64,9 +64,9 @@ REMCULIB_DLL_API size_t getErrorCout();
 
 REMCULIB_DLL_API void clearErrorCount();
 
-REMCULIB_DLL_API bool remote_memcpy(const uintptr_t addr, const uint8_t* sink, const size_t size);
+REMCULIB_DLL_API bool store2mem(const uintptr_t addr, const uint8_t* sink, const size_t size);
 
-REMCULIB_DLL_API bool local_memcpy(const uintptr_t addr, const size_t size, uint8_t* dist);
+REMCULIB_DLL_API bool loadFrMem(const uintptr_t addr, const size_t size, uint8_t* dist);
 
 } //namespace
 #endif // REMCU_H
