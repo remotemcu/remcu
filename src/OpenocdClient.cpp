@@ -141,7 +141,7 @@ static char buf[sizeBuf];
 
 static vector<char> arrayBuffer(100);
 
-bool ClientOpenOCD::arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const {
+bool ClientOpenOCD::arrayWrite2RemoteMem(const uintptr_t addr, const uint8_t*  sink, const size_t size) const {
 
     const size_t potential_array_size = size*6;
     const size_t _ADD = 100;
@@ -193,7 +193,7 @@ static const size_t qty_service_bytes = 12;
 static const size_t _GAP = 100;
 static const char _SEPARATOR_LOAD = ' ';
 
-bool ClientOpenOCD::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const {
+bool ClientOpenOCD::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, uint8_t*  dist) const {
 
     const size_t potential_size_receive = size*3 +
         (size/qty_value_in_row)*qty_service_bytes + _GAP;

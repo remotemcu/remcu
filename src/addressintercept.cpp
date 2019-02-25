@@ -178,7 +178,7 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
     return true;
 }
 
-bool remote_memcpy(const uintptr_t addr, const char* sink, const size_t size){
+bool remote_memcpy(const uintptr_t addr, const uint8_t* sink, const size_t size){
     assert_1message(sink != nullptr, "sink buffer is NULL. Check please.");
 
     assert_1message(is_entry_mem_interval(addr), "Try write to non-memory region");
@@ -188,7 +188,7 @@ bool remote_memcpy(const uintptr_t addr, const char* sink, const size_t size){
     return true;
 }
 
-bool local_memcpy(const uintptr_t addr, const size_t size, char* dist){
+bool local_memcpy(const uintptr_t addr, const size_t size, uint8_t* dist){
     assert_1message(dist != nullptr, "distination buffer is NULL. Check please.");
 
     assert_1message(is_entry_mem_interval(addr), "Try read from non-memory region");

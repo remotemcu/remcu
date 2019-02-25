@@ -64,7 +64,7 @@ bool ClientGDB::store2RemoteAddr(const llvm_ocd_addr addr, const llvm_value_type
     if(size == 0)
         return false;
 
-    const char *p = reinterpret_cast<const char *>(&value);
+    const uint8_t *p = reinterpret_cast<const uint8_t *>(&value);
 
     return this->arrayWrite2RemoteMem(addr, p, size);
 }
@@ -76,7 +76,7 @@ bool ClientGDB::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type & v
     if(size == 0)
         return false;
 
-    char *p = reinterpret_cast<char *>(&value);
+    uint8_t *p = reinterpret_cast<uint8_t *>(&value);
 
     return this->arrayLoadFromRemoteMem(addr, size, p);
 }
@@ -112,7 +112,7 @@ static void appendSum(const char* start, const char * end, char * append_ptr){
 }
 
 
-bool ClientGDB::arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size) const {
+bool ClientGDB::arrayWrite2RemoteMem(const uintptr_t addr, const uint8_t*  sink, const size_t size) const {
     char str[SIZE_DATA]={'\0'};
 
     const size_t potential_size_buffer = strlen(storeTempCommand) + size*2
@@ -173,7 +173,7 @@ bool ClientGDB::arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, con
 }
 
 
-bool ClientGDB::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist) const {
+bool ClientGDB::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, uint8_t*  dist) const {
 
     const size_t size_receive = size*2 + 1 /*start*/ + 3 /*sum*/;
     char buf[SIZE_DATA]={'\0'};
