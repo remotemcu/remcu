@@ -46,7 +46,7 @@ SET_SOURCE_FILES_PROPERTIES(
 
 
 add_library(remcu_ir_shared SHARED ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
-add_executable(test_static test.cpp ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
+add_executable(test_static test_static.cpp ${LIB_SOURCE} ${TEST_IR_ADIN_LL_O})
 add_executable(test_shared test_shared.cpp)
 target_link_libraries(test_shared remcu_ir_shared)
 
