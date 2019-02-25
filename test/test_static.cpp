@@ -55,6 +55,32 @@ void assertErrorTest(uint32_t address){
     clearErrorCount();
 }
 
+void standartTestAddr(uint32_t address){
+
+    int ret = irTest(reinterpret_cast<int*>(address));
+
+    assert(ret == 0);
+
+    #define _SIZE 30
+    uint8_t testMessage[_SIZE];
+    for(int i =0; i < _SIZE; i++)
+        testMessage[i] = i;
+
+    uint8_t dist[100] = {'\0'};
+
+    remote_memcpy(address, testMessage, _SIZE);
+
+    local_memcpy(address, 100, dist);
+
+    ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
+
+    assert(ret == 0);
+
+    disconnect();
+
+    assertErrorTest(address);
+}
+
 
 int main(int argc, char** argv)
 {
@@ -95,27 +121,7 @@ int main(int argc, char** argv)
 
     setConfig("TEST_CONFIG_MEM");
 
-    ret = irTest(reinterpret_cast<int*>(address));
-
-    assert(ret == 0);
-
-    const char * testMessage = "test message";
-
-    const size_t _SIZE = strlen(testMessage);
-
-    char dist[100] = {'\0'};
-
-    remote_memcpy(address, testMessage, _SIZE);
-
-    local_memcpy(address, 100, dist);
-
-    ret = strncmp(testMessage, dist, _SIZE);
-
-    assert(ret == 0);
-
-    disconnect();
-
-    assertErrorTest(address);
+    standartTestAddr(address);
 
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
@@ -125,24 +131,7 @@ int main(int argc, char** argv)
 
     setConfig("TEST_CONFIG_MEM");
 
-    #define _SIZE 33
-    uint8_t test_msg[_SIZE];
-    for(int i =0; i < _SIZE; i++)
-        test_msg[i] = i;
-    remote_memcpy(address, (const char *)&test_msg, 10);
+    standartTestAddr(address);
 
-    char  buf[_SIZE] = {'@'};
-
-    local_memcpy(address, 10, buf);
-
-    assert(std::strncmp((char*)test_msg,buf,10) == 0);
-
-    ret = irTest(reinterpret_cast<int*>(0x20000000));
-
-    assert(ret == 0);
-
-    disconnect();
-
-    assertErrorTest(address);
 }
 
