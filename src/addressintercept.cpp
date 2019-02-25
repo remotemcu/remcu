@@ -13,7 +13,7 @@
 #include "client.h"
 #include "logofun.h"
 #include "ErrorFunction.h"
-#include "RemoteAddress.h"
+#include "AddressInterval.h"
 
 
 using namespace std;
