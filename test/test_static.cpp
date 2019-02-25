@@ -28,6 +28,7 @@ using namespace std;
 static bool error = false;
 
 static void callback(){
+    cout << "callback()" << endl;
     error = true;
 }
 
@@ -39,6 +40,7 @@ static const uint16_t PORT_GDB = 3333;
 void assertErrorTest(uint32_t address){
     std::cout << "----------------------- Test Error -----------------------" << endl;
 
+    setErrorSignalFunc(callback);
     assert(getErrorCout() == 0);
     assert(error == false);
     irTestSimple(reinterpret_cast<int*>(address));
@@ -46,6 +48,10 @@ void assertErrorTest(uint32_t address){
     assert(error == true);
     error = false;
     clearErrorCount();
+
+    setErrorSignalFunc(nullptr);
+    irTestSimple(reinterpret_cast<int*>(address));
+    assert(error == false);
 }
 
 
