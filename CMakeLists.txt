@@ -55,7 +55,6 @@ endif()
 
 set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})
 
-set(WIN_CLANG_IR_OPTIONS -D_MT -D_DLL)
 
 add_subdirectory(test)
 

@@ -6,7 +6,7 @@ if(WIN32)
     list(APPEND CLANG_IR_OPTIONS -D_DEBUG)
   endif()
 else()
-  set(CLANG_IR2O_OPTIONS -fPIC)
+  set(CLANG_IR2OBJ_OPTIONS -fPIC)
 endif()
 
 set(TEST_IR_LL IrTest.ll)
@@ -32,7 +32,7 @@ add_custom_target (
 add_custom_target (
   ${TEST_IR_ADIN_LL_O}
   COMMAND clang -c ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL}
-  ${CLANG_IR2O_OPTIONS}
+  ${CLANG_IR2OBJ_OPTIONS}
   -o ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL_O}
   DEPENDS ${TEST_IR_ADIN_LL}
   )
