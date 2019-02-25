@@ -178,7 +178,7 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
     return true;
 }
 
-bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t size){
+bool remote_memcpy(const uintptr_t addr, const char* sink, const size_t size){
     assert_1message(sink != nullptr, "sink buffer is NULL. Check please.")
     // todo: check memory region? only RAM
     assert_printf(client->arrayWrite2RemoteMem(addr, sink, size),
@@ -186,7 +186,7 @@ bool arrayWrite2RemoteMem(const uintptr_t addr, const char* sink, const size_t s
     return true;
 }
 
-bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, char* dist){
+bool local_memcpy(const uintptr_t addr, const size_t size, char* dist){
     assert_1message(dist != nullptr, "distination buffer is NULL. Check please.")
     // todo: check memory region? only RAM
     assert_printf(client->arrayLoadFromRemoteMem(addr, size, dist),

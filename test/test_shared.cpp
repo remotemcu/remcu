@@ -78,9 +78,9 @@ int main(int argc, char** argv)
 
     char dist[100] = {'\0'};
 
-    arrayWrite2RemoteMem(address, testMessage, _SIZE);
+    remote_memcpy(address, testMessage, _SIZE);
 
-    arrayLoadFromRemoteMem(address, 100, dist);
+    local_memcpy(address, 100, dist);
 
     ret = strncmp(testMessage, dist, _SIZE);
 
@@ -90,9 +90,9 @@ int main(int argc, char** argv)
 
     std::cout << "Errors:" << endl;
 
-    arrayWrite2RemoteMem(address,dist,1);
-    arrayWrite2RemoteMem(address,nullptr,1);
-    arrayLoadFromRemoteMem(address, 10, nullptr);
+    remote_memcpy(address,dist,1);
+    remote_memcpy(address,nullptr,1);
+    local_memcpy(address, 10, nullptr);
 
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
@@ -106,11 +106,11 @@ int main(int argc, char** argv)
     uint8_t test_msg[_SIZE];
     for(int i =0; i < _SIZE; i++)
         test_msg[i] = i;
-    arrayWrite2RemoteMem(address, (const char *)&test_msg, 10);
+    remote_memcpy(address, (const char *)&test_msg, 10);
 
     char  buf[_SIZE] = {'@'};
 
-    arrayLoadFromRemoteMem(address, 10, buf);
+    local_memcpy(address, 10, buf);
 
     assert(std::strncmp((char*)test_msg,buf,10) == 0);
 
@@ -121,8 +121,8 @@ int main(int argc, char** argv)
     disconnect();
     std::cout << "Errors:" << endl;
 
-    arrayWrite2RemoteMem(address,dist,1);
-    arrayWrite2RemoteMem(address,nullptr,1);
-    arrayLoadFromRemoteMem(address, 10, nullptr);
+    remote_memcpy(address,dist,1);
+    remote_memcpy(address,nullptr,1);
+    local_memcpy(address, 10, nullptr);
 }
 
