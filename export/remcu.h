@@ -17,12 +17,6 @@
 
 namespace remcu {
 
-enum ServerType {
-    _DUMMY_SERVVER = 0,
-    _OPENOCD_SERVER,
-    _GDB_SERVER
-};
-
 enum ResetType {
     __RUN = 0,
     __HALT,

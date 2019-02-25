@@ -10,9 +10,9 @@
 #include "logger.h"
 #include "assertion.h"
 #include "client.h"
-#include "logofun.h"
 #include "ErrorFunction.h"
 #include "AddressInterval.h"
+#include "netwrapper.h"
 
 
 using namespace std;
@@ -41,18 +41,7 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
         return false;
     }
 
-    const bool success = client->connect(host,port, timeout_sec);
-
-    if(success){
-        printLogo();
-    }
-
-    if(success == false){
-        ADIN_LOG(__ERROR) << "Connecting failed!";
-        ADIN_LOG(__ERROR) << "Please check server and try again...";
-    }
-
-    return success;
+    return client->connect(host,port, timeout_sec);
 }
 
 bool resetRemoteUnit(const ResetType type){

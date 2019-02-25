@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "netwrapper.h"
 #include "obusfaction.h"
+#include "logofun.h"
 
 
 using namespace std;
@@ -40,17 +41,33 @@ bool receiveResponseFromServer(char * buffer, size_t & lenBuffer){
 }
 
 bool connect2Server(const std::string host, const uint16_t port,
-                    const ServerType server = _DUMMY_SERVVER,
+                    const ServerType server = ServerType::_DUMMY_SERVVER,
                     const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+
+bool connect2ServerLogo(const std::string host, const uint16_t port,
+                        const ServerType server = ServerType::_DUMMY_SERVVER,
+                        const int timeout_sec = _DEFAULT_TIMEOUT_SEC){
+
+    const bool success = connect2Server(host, port, server, timeout_sec);
+
+    if(success){
+        printLogo();
+    } else {
+        ADIN_LOG(__ERROR) << "Connecting failed!";
+        ADIN_LOG(__ERROR) << "Please check server and try again...";
+    }
+
+    return success;
+}
 
 bool connect2OpenOCD(const std::string host, const uint16_t port,
                      const int timeout_sec){
-    return connect2Server(host, port, _OPENOCD_SERVER, timeout_sec);
+    return connect2ServerLogo(host, port, ServerType::_OPENOCD_SERVER, timeout_sec);
 }
 
 bool connect2GDB(const std::string host, const uint16_t port,
                  const int timeout_sec){
-    return connect2Server(host, port, _GDB_SERVER, timeout_sec);
+    return connect2ServerLogo(host, port, ServerType::_GDB_SERVER, timeout_sec);
 }
 
 } //namespace

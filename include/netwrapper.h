@@ -7,6 +7,12 @@
 
 namespace remcu {
 
+enum ServerType {
+    _DUMMY_SERVVER = 0,
+    _OPENOCD_SERVER,
+    _GDB_SERVER
+};
+
 #define TIMEOUT_SEC_OCD_RESPONSE 3
 
 bool connectTCP(const std::string host, const uint16_t port, const int timeout_sec = TIMEOUT_SEC_OCD_RESPONSE);
