@@ -14,6 +14,7 @@
 #include "assertion.h"
 #include "obusfaction.h"
 #include "logofun.h"
+#include "AddressInterval.h"
 
 #include "test/IrTest.h"
 
@@ -73,6 +74,8 @@ void standartTestAddr(uint32_t address){
     local_memcpy(address, 100, dist);
 
     ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
+
+    assert(remote_memcpy(address, testMessage, _SIZE_ONE_MEMPCY) == false);
 
     assert(ret == 0);
 

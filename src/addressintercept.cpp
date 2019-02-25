@@ -181,6 +181,8 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
 bool remote_memcpy(const uintptr_t addr, const uint8_t* sink, const size_t size){
     assert_1message(sink != nullptr, "sink buffer is NULL. Check please.");
 
+    assert_1message(size < _SIZE_ONE_MEMPCY, "Try write a lot of bytes to remote memory. Please decrease size of array.");
+
     assert_1message(is_entry_mem_interval(addr), "Try write to non-memory region");
 
     assert_printf(client->arrayWrite2RemoteMem(addr, sink, size),
@@ -190,6 +192,8 @@ bool remote_memcpy(const uintptr_t addr, const uint8_t* sink, const size_t size)
 
 bool local_memcpy(const uintptr_t addr, const size_t size, uint8_t* dist){
     assert_1message(dist != nullptr, "distination buffer is NULL. Check please.");
+
+    assert_1message(size < _SIZE_ONE_MEMPCY, "Try read a lot of bytes from remote memory. Please decrease size of array.");
 
     assert_1message(is_entry_mem_interval(addr), "Try read from non-memory region");
 
