@@ -13,53 +13,18 @@
 #include "client.h"
 #include "logofun.h"
 #include "ErrorFunction.h"
+#include "RemoteAddress.h"
 
 
 using namespace std;
 
 namespace remcu {
 
-typedef struct {
-    llvm_ocd_addr startAddr;
-    llvm_ocd_addr endAddr;
-} AddrInterval;
-
-static vector<AddrInterval> intervals;
-
 static ClientDummy dummy;
 static ClientOpenOCD openocd;
 static ClientGDB gdb;
 
 static ClientBase * client = static_cast<ClientBase*>(&dummy);
-//todo: safe from idiots!
-bool addInterceptAddress2Interval(const llvm_ocd_addr start, const llvm_ocd_addr end){
-    if(start >= end){
-        ADIN_PRINTF(__ERROR, "Error init virtual address : %p, %p\n", start, end);
-        return false;
-    }
-
-    AddrInterval st = {start, end};
-    intervals.push_back(st);
-    return true;
-}
-
-void clearAllInterceptAddressInterval(){
-    intervals.clear();
-}
-
-static bool isEntryHalfInterval(const llvm_ocd_addr addr){
-    for( const AddrInterval & i : intervals ){
-        bool isEntry = addr >= i.startAddr;
-        isEntry &= addr < i.endAddr;
-        if(isEntry)
-            return true;
-    }
-    return false;
-}
-
-static bool isEmptyAddressInterval(){
-    return intervals.empty();
-}
 
 bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
                     const int timeout_sec){
