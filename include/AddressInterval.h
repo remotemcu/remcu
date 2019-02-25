@@ -14,6 +14,16 @@ bool is_entry_adin_interval(const llvm_ocd_addr addr);
 
 bool is_empty_adin_interval();
 
+
+
+bool add_to_mem_interval(const llvm_ocd_addr start, const llvm_ocd_addr end);
+
+bool is_entry_mem_interval(const llvm_ocd_addr addr);
+
+void clear_all_mem_interval();
+
+bool is_empty_mem_interval();
+
 } //namespace
 
 #endif // REMOTEADDRESS_H

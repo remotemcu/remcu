@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    setConfig("STM32F10X_MD");
+    setConfig("TEST_CONFIG_MEM");
 
     ret = irTest(reinterpret_cast<int*>(address));
 
@@ -123,7 +123,7 @@ int main(int argc, char** argv)
 
     resetRemoteUnit(ResetType::__HALT);
 
-    setConfig("STM32F10X_MD");
+    setConfig("TEST_CONFIG_MEM");
 
     #define _SIZE 33
     uint8_t test_msg[_SIZE];

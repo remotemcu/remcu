@@ -13,6 +13,7 @@
 #include "client.h"
 #include "netwrapper.h"
 #include "obusfaction.h"
+#include "AddressInterval.h"
 
 using namespace  std;
 
@@ -38,8 +39,9 @@ std::string getCurrentMCU(){
 
 bool setConfig(const std::string target){
 
-    if(target.compare("STM32F10X_MD") == 0){
-        add_to_adin_interval(0x20000000, 0x20000000 + 20*1024);
+    if(target.compare("TEST_CONFIG_MEM") == 0){
+        add_to_mem_interval(0x20000000, 0x20000000 + 20);
+        add_to_adin_interval(0x20000000, 0x20000000 + 20);
         targetMCU.assign(target);
     } else  if(target.compare("STM32F40_41xxx") == 0){
         add_to_adin_interval(0x20000000,  0x20000000 + (112)*1024); //SRAM
