@@ -65,3 +65,8 @@ int irTest(int* addr){
     *addr = 0;
     return *addr;
 }
+
+void irTestSimple(int* addr){
+    *addr = 0;
+    *addr = *(addr+1);
+}

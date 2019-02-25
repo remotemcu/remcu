@@ -25,18 +25,28 @@
 using namespace remcu;
 using namespace std;
 
-static bool callback(const char *__assertion, const char *__file,
-               const unsigned int __line, const char *__function){
-    std::cout << "test custom error callback : " << endl;
-    std::cout << "$" << __file << "/" << __function << ":" << __line
-              << ": " << __assertion << endl;
-    return true;
+static bool error = false;
+
+static void callback(){
+    error = true;
 }
 
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
 
 #define _STRING_ "123456789abc"
+
+void assertErrorTest(uint32_t address){
+    std::cout << "----------------------- Test Error -----------------------" << endl;
+
+    assert(getErrorCout() == 0);
+    assert(error == false);
+    irTestSimple(reinterpret_cast<int*>(address));
+    assert(getErrorCout() > 0);
+    assert(error == true);
+    error = false;
+    clearErrorCount();
+}
 
 
 int main(int argc, char** argv)
@@ -65,6 +75,8 @@ int main(int argc, char** argv)
     ADIN_LOG(__INFO) << "address: 0x" << hex << address;
     ADIN_LOG(__INFO) << "Verbose Level: " << level;
     setVerboseLevel(level);
+
+    assertErrorTest(address);
 
     std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
 
@@ -96,11 +108,7 @@ int main(int argc, char** argv)
 
     disconnect();
 
-    std::cout << "Errors:" << endl;
-
-    arrayWrite2RemoteMem(address,dist,1);
-    arrayWrite2RemoteMem(address,nullptr,1);
-    arrayLoadFromRemoteMem(address, 10, nullptr);
+    assertErrorTest(address);
 
     std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
 
@@ -127,10 +135,7 @@ int main(int argc, char** argv)
     assert(ret == 0);
 
     disconnect();
-    std::cout << "Errors:" << endl;
 
-    arrayWrite2RemoteMem(address,dist,1);
-    arrayWrite2RemoteMem(address,nullptr,1);
-    arrayLoadFromRemoteMem(address, 10, nullptr);
+    assertErrorTest(address);
 }
 
