@@ -64,7 +64,7 @@ public:
 #ifdef NDEBUG
 
 #define ADIN_LOG(LEVEL) Log((LEVEL), _D_(__BASENAME_SRC__), _D_(__FUNCTION__), __LINE__)
-#define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), _D_(__BASENAME_SRC__), _D_(__FUNCTION__), __LINE__, F__, __VA_ARGS__)
+#define ADIN_PRINTF(LEVEL,F__,...) Log::loggerf((LEVEL), _D_(__BASENAME_SRC__), _D_(__FUNCTION__), __LINE__, _S_(F__).c_str(), __VA_ARGS__)
 
 #else
 
