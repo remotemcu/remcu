@@ -23,7 +23,7 @@ bool __assertionF (const char *__assertion, const char *__file,
   if(expr){                                                             \
         ADIN_PRINTF(__ALL_LOG,"%s\n", #expr);                            \
     } else {                                                            \
-        ADIN_LOG(__ERROR) << msg;                                        \
+        ADIN_LOG(__ERROR) << _S_(msg);                                        \
         return false;                                                   \
     }                                                                   \
 
