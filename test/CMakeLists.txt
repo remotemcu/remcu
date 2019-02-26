@@ -55,6 +55,7 @@ define_file_basename_for_sources(test_static)
 define_file_basename_for_sources(test_shared)
 
 add_dependencies(test_static ${TEST_IR_ADIN_LL_O})
+add_dependencies(test_static ${LICENSE_SIGN_FILE})
 add_dependencies(remcu_ir_shared ${TEST_IR_ADIN_LL_O})
 
 if(WIN32)
