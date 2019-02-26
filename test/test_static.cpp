@@ -76,7 +76,7 @@ void standartTestAddr(uint32_t address){
 
     ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
 
-    assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == false);
+    assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == true);
     assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
 
     assert(ret == 0);

@@ -40,8 +40,8 @@ std::string getCurrentMCU(){
 bool setConfig(const std::string target){
 
     if(target.compare("TEST_CONFIG_MEM") == 0){
-        add_to_mem_interval(0x20000000, 0x20000000 + 20);
-        add_to_adin_interval(0x20000000, 0x20000000 + 20);
+        add_to_mem_interval(0x20000000, 0x20000000 + 200);
+        add_to_adin_interval(0x20000000, 0x20000000 + 200);
         targetMCU.assign(target);
     } else  if(target.compare("STM32F40_41xxx") == 0){
         add_to_adin_interval(0x20000000,  0x20000000 + (112)*1024); //SRAM
