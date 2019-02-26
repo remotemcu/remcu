@@ -62,6 +62,7 @@ add_subdirectory(test)
 # shared library
 add_library(libremcu SHARED ${LIB_SOURCE})
 define_file_basename_for_sources(libremcu)
+add_dependencies(test_static ${LICENSE_SIGN_FILE})
 
 
 if(WIN32)
