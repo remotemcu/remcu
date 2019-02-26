@@ -16,6 +16,7 @@
 #include "logofun.h"
 #include "AddressInterval.h"
 #include "AddressFunction.h"
+#include "license.h"
 
 #include "test/IrTest.h"
 
@@ -94,8 +95,9 @@ int main(int argc, char** argv)
 
     printf("dec %s [%d]\n", dec.c_str(), dec.size());
 
-    printLogo();
+    assert(checkLicense());
 
+    printLogo();
 
     if(argc < 3){
         printf("test requare 2 arguments: host and verbose level\n");

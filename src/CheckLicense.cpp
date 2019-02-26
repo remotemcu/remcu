@@ -6,12 +6,20 @@
 
 using namespace std;
 
+
+#ifndef LICENSE_TYPE
+    #error License not set!
+#endif
+
+
 namespace remcu {
 
 static const char _TOKEN = '#';
 static const size_t _MAX_SIZE_TEXT = 10000;
 static const size_t _MIN_SIZE_TEXT = 100;
 static const size_t _SIZE_SIGN = 32*2 + 1;
+
+static const char * license_type = LICENSE_TYPE;
 
 enum error_check_type{
     _NO_ERROR = 0,
@@ -68,17 +76,19 @@ bool checkLicense(){
     }
 
     if(error != _NO_ERROR){
-        ADIN_LOG(__ERROR) << _S_("license err: '") << error;
+        ADIN_LOG(__ERROR) << _S_("license error : ") << error;
         return false;
     }
 
-    cout << "buf: '" << text << "'" << endl;
+    //cout << "buf: '" << text << "'" << endl;
+
+    text += string(license_type);
 
     const string hash_hex_str = picosha2::hash256_hex_string(text);
 
-    cout << "hash_hex_str: '" << hash_hex_str << "'" << endl;
+    //cout << "hash_hex_str: '" << hash_hex_str << "'" << endl;
 
-    cout << "read hash: '" << line << "'" << endl;
+    //cout << "read hash: '" << line << "'" << endl;
 
     if(strncmp(sign.data()+1, hash_hex_str.data(), hash_hex_str.size()) != 0){
         error |= setErrorBit(_WRONG_SIZE);
@@ -86,6 +96,7 @@ bool checkLicense(){
 
     if(error != _NO_ERROR){
         ADIN_LOG(__ERROR) << _S_("license err: '") << error;
+        return false;
     }
 
     return true;
