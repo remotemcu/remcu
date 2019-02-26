@@ -25,7 +25,7 @@ include(license)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
 # have all targets (exe, lib, dll) as projects (.vcproj)
-project(libremcu CXX)
+project(remcu CXX)
 
 # detect operating system and host processor
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
@@ -60,12 +60,12 @@ set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})
 add_subdirectory(test)
 
 # shared library
-add_library(libremcu SHARED ${LIB_SOURCE})
-define_file_basename_for_sources(libremcu)
-add_dependencies(test_static ${LICENSE_SIGN_FILE})
+add_library(remcu SHARED ${LIB_SOURCE})
+define_file_basename_for_sources(remcu)
+add_dependencies(remcu ${LICENSE_SIGN_FILE})
 
 
 if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-	target_link_libraries(libremcu ws2_32)
+	target_link_libraries(remcu ws2_32)
 endif()
