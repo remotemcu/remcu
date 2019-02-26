@@ -8,7 +8,7 @@
 #include "assertion.h"
 #include "netwrapper.h"
 #include "logger.h"
-#include "client.h"
+#include "BaseClient.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat-nonliteral"

@@ -9,7 +9,7 @@
 #include "AddressInterceptPass.h"
 #include "logger.h"
 #include "assertion.h"
-#include "client.h"
+#include "BaseClient.h"
 #include "ErrorFunction.h"
 #include "AddressInterval.h"
 #include "netwrapper.h"
