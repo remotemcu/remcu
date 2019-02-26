@@ -95,8 +95,6 @@ int main(int argc, char** argv)
 
     printf("dec %s [%d]\n", dec.c_str(), dec.size());
 
-    assert(checkLicense());
-
     printLogo();
 
     if(argc < 3){
@@ -136,7 +134,7 @@ int main(int argc, char** argv)
 
         std::cout << getVersion() << endl;
 
-        connect2OpenOCD(host, PORT_TCL);
+        assert(connect2OpenOCD(host, PORT_TCL));
 
         resetRemoteUnit(ResetType::__HALT);
 
@@ -145,7 +143,7 @@ int main(int argc, char** argv)
 
     std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
 
-    connect2GDB(host, PORT_GDB);
+    assert(connect2GDB(host, PORT_GDB));
 
     resetRemoteUnit(ResetType::__HALT);
 

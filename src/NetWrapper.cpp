@@ -4,7 +4,7 @@
 #include "netwrapper.h"
 #include "obusfaction.h"
 #include "logofun.h"
-
+#include "license.h"
 
 using namespace std;
 
@@ -47,6 +47,13 @@ bool connect2Server(const std::string host, const uint16_t port,
 bool connect2ServerLogo(const std::string host, const uint16_t port,
                         const ServerType server = ServerType::_DUMMY_SERVVER,
                         const int timeout_sec = _DEFAULT_TIMEOUT_SEC){
+
+    const size_t ret = checkLicense();
+
+    if(ret != ErrorLicense_Type::_NO_ERROR){
+        ADIN_LOG(__ERROR) << _S_("license err: '") << ret;
+        return false;
+    }
 
     const bool success = connect2Server(host, port, server, timeout_sec);
 
