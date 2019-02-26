@@ -64,6 +64,10 @@ add_library(remcu SHARED ${LIB_SOURCE})
 define_file_basename_for_sources(remcu)
 add_dependencies(remcu ${LICENSE_SIGN_FILE})
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
+	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
+)
+
 
 if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
