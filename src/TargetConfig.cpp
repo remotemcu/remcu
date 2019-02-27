@@ -25,6 +25,7 @@ void clear_all_adin_interval();
 
 void clearConfig(){
     clear_all_adin_interval();
+    clear_all_mem_interval();
 }
 
 bool disconnect(){
@@ -39,7 +40,7 @@ std::string getCurrentMCU(){
 
 bool setConfig(const std::string target){
 
-    if(target.compare("TEST_CONFIG_MEM") == 0){
+    clearConfig();
         add_to_mem_interval(0x20000000, 0x20000000 + 200);
         add_to_adin_interval(0x20000000, 0x20000000 + 200);
         targetMCU.assign(target);
