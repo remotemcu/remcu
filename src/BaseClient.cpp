@@ -28,7 +28,7 @@ bool ClientBase::close() const {
     return closeTCP();
 }
 
-static bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char token){
+bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char token){
     size_t len = 0;
     size_t respN = 0;
     char * p = buffer.data();
@@ -44,9 +44,10 @@ static bool readBeforeToken(vector<char> & buffer, size_t & lenResp, const char 
         assert_printf(respN < buffer.size(),
                       "receive buffer is small: %d > %d\n", respN , buffer.size());
 
-        ADIN_PRINTF(__DEBUG, "> %d - %s\n", respN, buffer.data());
+        ADIN_PRINTF(__DEBUG, "buf %d : %s\n", respN, buffer.data());
 
         if(strchr(p, token) != nullptr){
+            ADIN_PRINTF(__DEBUG, "token got %c : %s\n", token, buffer.data());
             break;
         }
     }

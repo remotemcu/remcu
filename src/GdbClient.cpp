@@ -25,6 +25,10 @@ static const char * TOKEN_ACK_SUCCESS = "+";
 static const char TOKEN_START_PACKET = '$';
 static const char * RESPONSE_OK = "$OK#";
 
+static bool sendAck(const char * token){
+    return sendMessage2Server(token, 1);
+}
+
 bool ClientGDB::resetRemoteUnit(const ResetType type) const {
 
     if(ResetType::__HALT != type){
@@ -36,7 +40,16 @@ bool ClientGDB::resetRemoteUnit(const ResetType type) const {
     const size_t size = strlen(RESET_COMMAND);
 
     size_t lenReceiv;
-    commandSendAndGetResponse(RESET_COMMAND, size, bufferReceiv, lenReceiv, *TOKEN_ACK_SUCCESS);
+    if(commandSendAndGetResponse(RESET_COMMAND, size,
+                                  bufferReceiv, lenReceiv, *TOKEN_ACK_SUCCESS) == false){
+        ADIN_PRINTF(__INFO, "wait OK\n", 0);
+    }
+
+    if(readBeforeToken(bufferReceiv, lenReceiv, TOKEN_CHECKSUM) == false){
+        ADIN_PRINTF(__INFO, "failed OK .. continue \n", 0);
+    }
+
+    assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");
 
     return true;
 }
@@ -92,9 +105,6 @@ static uint8_t  checkSumModulo256(const char* start, const char * end){
     return static_cast<uint8_t>(sum);
 }
 
-static bool sendAck(const char * token){
-    return sendMessage2Server(token, 1);
-}
 
 #define SIZE_DATA 3
 
@@ -200,7 +210,7 @@ bool ClientGDB::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, 
     const char * start = strchr(bufferReceiv.data(), TOKEN_START_PACKET);
 
     if((start == nullptr) ||
-        (strlen(start) != size_receive))
+        (strlen(start) < size_receive))
     {
         const string resp(bufferReceiv.data(), lenBufReceiv);
         ADIN_LOG(__ERROR) << "GDB server error respose: "  << resp;
@@ -214,6 +224,7 @@ bool ClientGDB::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, 
         buf[0] = data[i*2];
         buf[1] = data[i*2+1];
         buf[2] = '\0';
+        // todo: check correct digits
         dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
     }
 
