@@ -188,7 +188,7 @@ using namespace remcu;
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__DEBUG, "__store__ : pointer = %p, value 0x%X, TypeSizeArg %d, AlignmentArg %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    ADIN_PRINTF(__INFO, "___S : p %p, v 0x%X, ts %d, a %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     const bool success = store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 
@@ -201,7 +201,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__DEBUG, "__load__: pointer = %p, TypeSizeArg %d, AlignmentArg %d\n", pointer, TypeSizeArg, AlignmentArg);
+    ADIN_PRINTF(__INFO, "___L : p%p, ts %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
     llvm_value_type value = 0;
     const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
