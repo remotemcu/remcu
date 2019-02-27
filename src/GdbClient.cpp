@@ -22,6 +22,7 @@ static const char * loadTempCommand = "$m%x,%x#";
 static const char * storeTempCommand = "$M%x,%x:";
 static const char TOKEN_CHECKSUM = '#';
 static const char * TOKEN_ACK_SUCCESS = "+";
+static const char * TOKEN_ACK_FAILED = "-";
 static const char TOKEN_START_PACKET = '$';
 static const char * RESPONSE_OK = "$OK#";
 
@@ -224,8 +225,14 @@ bool ClientGDB::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, 
         buf[0] = data[i*2];
         buf[1] = data[i*2+1];
         buf[2] = '\0';
-        // todo: check correct digits
-        dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
+        if(isxdigit(buf[0]) && isxdigit(buf[1])){
+            dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
+        } else {
+            ADIN_PRINTF(__ERROR, "wrong number format from server. s: %s\n", buf);
+            ADIN_PRINTF(__ERROR, "full s: %s\n", start);
+            sendAck(TOKEN_ACK_FAILED);
+            return false;
+        }
     }
 
     assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");

@@ -223,7 +223,13 @@ bool ClientOpenOCD::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t si
         buf[1] = point[pos];
         pos++;
         buf[2] = '\0';
-        dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
+        if(isxdigit(buf[0]) && isxdigit(buf[1])){
+            dist[i] = strtoul(buf, nullptr, 16) & 0xFF;
+        } else {
+            ADIN_PRINTF(__ERROR, "wrong number format from server. s: %s\n", buf);
+            ADIN_PRINTF(__ERROR, "full s: %s\n", point);
+            return false;
+        }
     }
 
     return true;
