@@ -1,7 +1,8 @@
 #ifndef REMCU_H
 #define REMCU_H
 
-#include <string>
+#include <stdint.h>
+#include <stdlib.h>
 
 #ifndef __EXPORT
 #define __EXPORT
