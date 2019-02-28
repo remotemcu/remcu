@@ -25,7 +25,7 @@ if(NOT LICENSE_FILE_PATH)
 endif()
 
 
-add_definitions(-DLICENSE_TYPE=\"${LICENSE_TYPE}\")
+add_definitions(-D_LICENSE_TYPE_=\"${LICENSE_TYPE}\")
 
 set(LICENSE_SIGN_SCRIPT license.py)
 set(LICENSE_SIGN_FILE REMCU_LICENSE.txt)

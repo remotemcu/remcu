@@ -8,7 +8,7 @@
 using namespace std;
 
 
-#ifndef LICENSE_TYPE
+#ifndef _LICENSE_TYPE_
     #error License not set!
 #endif
 
@@ -20,7 +20,7 @@ static const size_t _MAX_SIZE_TEXT = 10000;
 static const size_t _MIN_SIZE_TEXT = 100;
 static const size_t _SIZE_SIGN = 32*2 + 1;
 
-static const char * license_type = LICENSE_TYPE;
+static const char * license_type = _LICENSE_TYPE_;
 
 
 
