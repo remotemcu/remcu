@@ -19,14 +19,21 @@ bool __assertionF (const char *__assertion, const char *__file,
                   const unsigned int __line, const char *__function);
 #endif
 
-# define assert_1message(expr, msg)                                      \
-  if(expr){                                                             \
-        ADIN_PRINTF(__ALL_LOG,"%s\n", #expr);                            \
-    } else {                                                            \
-        ADIN_LOG(__ERROR) << _S_(msg);                                        \
-        return false;                                                   \
-    }                                                                   \
-
+#ifdef NDEBUG
+    #define assert_1message(expr, msg)                                      \
+      if(expr == false){                                                         \
+            ADIN_LOG(__ERROR) << _S_(msg);                                        \
+            return false;                                                   \
+        }
+#else
+    #define assert_1message(expr, msg)                                      \
+      if(expr){                                                             \
+            ADIN_PRINTF(__ALL_LOG,"%s\n", #expr);                            \
+        } else {                                                            \
+            ADIN_LOG(__ERROR) << _S_(msg);                                        \
+            return false;                                                   \
+        }
+#endif
 
 # define assert_printf(expr, msg,...)                                      \
   if(expr){                                                             \

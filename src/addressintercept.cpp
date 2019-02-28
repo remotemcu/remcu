@@ -213,7 +213,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "___L : p%p, ts %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
+    ADIN_PRINTF(__INFO, "___L : p %p, ts %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
     llvm_value_type value = 0;
     const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
