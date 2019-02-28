@@ -35,6 +35,10 @@ static void callback(){
     error = true;
 }
 
+#ifdef NDEBUG
+    #define assert
+#endif
+
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
 
