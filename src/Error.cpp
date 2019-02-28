@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <vector>
 
-#include "exports.h"
+#include "ExportsCPP.h"
 
 namespace remcu {
 

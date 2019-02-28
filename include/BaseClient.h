@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "AddressInterceptPass.h"
-#include "exports.h"
+#include "ExportsCPP.h"
 #include "defines.h"
 
 namespace remcu {

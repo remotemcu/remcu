@@ -15,7 +15,7 @@
   #endif
 #endif
 
-namespace remcu {
+extern "C" {
 
 enum ResetType {
     __RUN = 0,
@@ -27,40 +27,39 @@ enum LevelDebug { __ERROR = 0,
                   __WARNING, __INFO,
                   __DEBUG, __ALL_LOG };
 
-#define _DEFAULT_TIMEOUT_SEC 3
-
 typedef void (*ErrorSignalFunc)();
 
+#define _DEFAULT_TIMEOUT_SEC 3
 
-REMCULIB_DLL_API bool connect2OpenOCD(const std::string host, const uint16_t port,
-                     const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+REMCULIB_DLL_API bool remcu_connect2OpenOCD(const char* host, const uint16_t port,
+                      const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-REMCULIB_DLL_API bool connect2GDB(const std::string host, const uint16_t port,
-                 const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+REMCULIB_DLL_API bool remcu_connect2GDB(const char* host, const uint16_t port,
+                       const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
-REMCULIB_DLL_API bool disconnect();
+REMCULIB_DLL_API bool remcu_disconnect();
 
-REMCULIB_DLL_API std::string getVersion();
+REMCULIB_DLL_API bool remcu_getVersion(char* str, size_t & len);
 
-REMCULIB_DLL_API bool setConfig(const std::string target);
+REMCULIB_DLL_API bool remcu_setConfig(const char* target);
 
-REMCULIB_DLL_API void clearConfig();
+REMCULIB_DLL_API void remcu_clearConfig();
 
-REMCULIB_DLL_API std::string getCurrentConfig();
+REMCULIB_DLL_API bool remcu_getCurrentConfig(char* str, size_t & len);
 
-REMCULIB_DLL_API bool resetRemoteUnit(const ResetType type);
+REMCULIB_DLL_API bool remcu_resetRemoteUnit(const ResetType type);
 
-REMCULIB_DLL_API void setVerboseLevel(const LevelDebug level);
+REMCULIB_DLL_API void remcu_setVerboseLevel(const LevelDebug level);
 
-REMCULIB_DLL_API void setErrorSignalFunc(ErrorSignalFunc callback);
+REMCULIB_DLL_API void remcu_setErrorSignalFunc(ErrorSignalFunc callback);
 
-REMCULIB_DLL_API size_t getErrorCout();
+REMCULIB_DLL_API size_t remcu_getErrorCout();
 
-REMCULIB_DLL_API void clearErrorCount();
+REMCULIB_DLL_API void remcu_clearErrorCount();
 
-REMCULIB_DLL_API bool store2mem(const uintptr_t addr, const uint8_t* sink, const size_t size);
+REMCULIB_DLL_API bool remcu_store2mem(const uintptr_t addr, const uint8_t* sink, const size_t size);
 
-REMCULIB_DLL_API bool loadFrMem(const uintptr_t addr, const size_t size, uint8_t* dist);
+REMCULIB_DLL_API bool remcu_loadFrMem(const uintptr_t addr, const size_t size, uint8_t* dist);
 
-} //namespace
+} //extern "C"
 #endif // REMCU_H

@@ -9,7 +9,7 @@
 
 #include "netwrapper.h"
 #include "AddressInterceptPass.h"
-#include "exports.h"
+#include "ExportsCPP.h"
 #include "logger.h"
 #include "assertion.h"
 #include "obusfaction.h"

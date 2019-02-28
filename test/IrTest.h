@@ -1,7 +1,7 @@
 #ifndef IR_TEST
 #define IR_TEST
 
-#include "exports.h"
+#include "ExportsCPP.h"
 
 REMCULIB_DLL_API int irTest(int* addr);
 

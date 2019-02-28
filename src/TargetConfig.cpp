@@ -34,7 +34,7 @@ bool disconnect(){
 
 static string targetMCU("unknown");
 
-std::string getCurrentMCU(){
+std::string getCurrentConfig(){
     return targetMCU;
 }
 
