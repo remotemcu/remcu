@@ -71,6 +71,20 @@ static bool parseValue(vector<char> & buffer, llvm_value_type & value){
 }
 
 
+
+bool ClientOpenOCD::ping() const {
+    static const char _RESPONSE = '*';
+    string pingCommand("ocd_echo ");
+    pingCommand.push_back(_RESPONSE);
+    pingCommand.push_back('\x1a');
+    size_t lenReceiv;
+    assert_1message(commandSendAndGetResponse(pingCommand.c_str(), pingCommand.size(),
+                                              bufferReceiv, lenReceiv, COMMAND_TOKEN),
+                    "Server disconnect already");
+    return true;
+}
+
+
 bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
     string reset_message("reset ");
 

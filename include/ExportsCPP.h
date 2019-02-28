@@ -1,6 +1,8 @@
 #ifndef EXPORTS_H
 #define EXPORTS_H
 
+#include <string>
+
 #include "defines.h"
 
 #include "remcu.h"
@@ -14,6 +16,8 @@ namespace remcu {
                                   const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
  bool disconnect();
+
+ bool pingServer();
 
  std::string getVersion();
 

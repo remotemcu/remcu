@@ -37,6 +37,10 @@ extern "C"{
      return remcu::disconnect();
  }
 
+ bool remcu_is_connected(){
+     return remcu::pingServer();
+ }
+
  bool remcu_getVersion(char* str, size_t & len){
      const string & version = remcu::getVersion();
      return returnStr(str, len, version);

@@ -44,6 +44,18 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
     return client->connect(host,port, timeout_sec);
 }
 
+bool disconnect(){
+    const bool succes = closeTCP();
+    ADIN_PRINTF(__INFO, "Close connection: %b\n", succes);
+    client = static_cast<ClientBase*>(&dummy);
+    return succes;
+}
+
+bool pingServer(){
+    ADIN_PRINTF(__INFO, "Ping server ... \n", 0);
+    return client->ping();
+}
+
 bool resetRemoteUnit(const ResetType type){
     assert_1message(client->resetRemoteUnit(type), "can't reset remote unit");
     return true;

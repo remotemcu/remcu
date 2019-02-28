@@ -28,10 +28,6 @@ void clearConfig(){
     clear_all_mem_interval();
 }
 
-bool disconnect(){
-    return closeTCP();
-}
-
 static string targetMCU("unknown");
 
 std::string getCurrentConfig(){

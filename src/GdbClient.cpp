@@ -25,6 +25,7 @@ static const char * TOKEN_ACK_SUCCESS = "+";
 static const char * TOKEN_ACK_FAILED = "-";
 static const char TOKEN_START_PACKET = '$';
 static const char * RESPONSE_OK = "$OK#";
+static const char * COMMAND_OK = "$OK#9a";
 
 static bool sendAck(const char * token){
     return sendMessage2Server(token, 1);
@@ -52,6 +53,17 @@ bool ClientGDB::resetRemoteUnit(const ResetType type) const {
 
     assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");
 
+    return true;
+}
+
+bool ClientGDB::ping() const {
+    string reset_message("$?#3F");
+    size_t lenReceiv;
+    assert_1message(commandSendAndGetResponse(reset_message.c_str(), reset_message.size(),
+                                              bufferReceiv, lenReceiv, TOKEN_CHECKSUM),
+                    "Server disconnect already");
+
+    assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");
     return true;
 }
 

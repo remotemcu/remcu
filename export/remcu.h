@@ -40,6 +40,8 @@ REMCULIB_DLL_API bool remcu_connect2GDB(const char* host, const uint16_t port,
 
 REMCULIB_DLL_API bool remcu_disconnect();
 
+REMCULIB_DLL_API bool remcu_is_connected();
+
 REMCULIB_DLL_API bool remcu_getVersion(char* str, size_t & len);
 
 REMCULIB_DLL_API bool remcu_setConfig(const char* target);

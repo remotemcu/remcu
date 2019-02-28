@@ -8,6 +8,7 @@
 #include "AddressInterceptPass.h"
 #include "ExportsCPP.h"
 #include "defines.h"
+#include "logger.h"
 
 namespace remcu {
 
@@ -25,6 +26,8 @@ struct ClientBase {
 
     virtual bool resetRemoteUnit(const ResetType) const ;
 
+    virtual bool ping() const ;
+
     bool close() const ;
 
 protected:
@@ -34,17 +37,34 @@ protected:
 
 struct ClientDummy: ClientBase {
 
-    bool connect(const std::string DECL_UNUSED, const uint16_t DECL_UNUSED, int DECL_UNUSED) const {return true;}
+    bool connect(const std::string DECL_UNUSED, const uint16_t DECL_UNUSED, int DECL_UNUSED) const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        return false;}
 
-    bool store2RemoteAddr(const llvm_ocd_addr DECL_UNUSED, const llvm_value_type DECL_UNUSED, const llvm_pass_arg DECL_UNUSED) const {return true;}
+    bool store2RemoteAddr(const llvm_ocd_addr DECL_UNUSED, const llvm_value_type DECL_UNUSED, const llvm_pass_arg DECL_UNUSED) const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        return false;}
 
-    bool loadFromRemoteAddr(const llvm_ocd_addr DECL_UNUSED, llvm_value_type & value, const llvm_pass_arg DECL_UNUSED) const {value = 0; return true;}
+    bool loadFromRemoteAddr(const llvm_ocd_addr DECL_UNUSED, llvm_value_type & value, const llvm_pass_arg DECL_UNUSED) const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        value = 0;
+        return false;}
 
-    bool arrayWrite2RemoteMem(const uintptr_t DECL_UNUSED, const uint8_t*  DECL_UNUSED, const size_t DECL_UNUSED) const {return true;}
+    bool arrayWrite2RemoteMem(const uintptr_t DECL_UNUSED, const uint8_t*  DECL_UNUSED, const size_t DECL_UNUSED) const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        return false;}
 
-    bool arrayLoadFromRemoteMem(const uintptr_t DECL_UNUSED, const size_t DECL_UNUSED, uint8_t*  DECL_UNUSED) const {return true;}
+    bool arrayLoadFromRemoteMem(const uintptr_t DECL_UNUSED, const size_t DECL_UNUSED, uint8_t*  DECL_UNUSED) const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        return false;}
 
-    bool resetRemoteUnit(const ResetType DECL_UNUSED) const {return true;}
+    bool resetRemoteUnit(const ResetType DECL_UNUSED) const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        return false;}
+
+    bool ping() const {
+        ADIN_PRINTF(__INFO, "No set client. Please set client\n", 0);
+        return false;}
 
     bool close() const {return true;}
 };
@@ -61,6 +81,8 @@ struct ClientOpenOCD: ClientBase {
 
     bool resetRemoteUnit(const ResetType) const ;
 
+    bool ping() const ;
+
 };
 
 struct ClientGDB: ClientBase {
@@ -74,6 +96,8 @@ struct ClientGDB: ClientBase {
     bool arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, uint8_t*  dist) const ;
 
     bool resetRemoteUnit(const ResetType) const ;
+
+    bool ping() const ;
 
 };
 
