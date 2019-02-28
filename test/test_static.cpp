@@ -25,7 +25,7 @@
 #pragma clang diagnostic ignored "-Wextra"
 #pragma clang diagnostic ignored "-Wmacro-redefined"
 
-using namespace remcu;
+//using namespace remcu;
 using namespace std;
 
 static bool error = false;
@@ -43,19 +43,19 @@ static const uint16_t PORT_GDB = 3333;
 void assertErrorTest(uint32_t address){
     std::cout << "\n----------------------- Test Error -----------------------\n" << endl;
 
-    setErrorSignalFunc(callback);
-    assert(getErrorCout() == 0);
+    remcu_setErrorSignalFunc(callback);
+    assert(remcu_getErrorCout() == 0);
     assert(error == false);
     irTestSimple(reinterpret_cast<int*>(address));
-    assert(getErrorCout() > 0);
+    assert(remcu_getErrorCout() > 0);
     assert(error == true);
     error = false;
-    clearErrorCount();
+    remcu_clearErrorCount();
 
-    setErrorSignalFunc(nullptr);
+    remcu_setErrorSignalFunc(nullptr);
     irTestSimple(reinterpret_cast<int*>(address));
     assert(error == false);
-    clearErrorCount();
+    remcu_clearErrorCount();
 }
 
 void standartTestAddr(uint32_t address){
@@ -71,18 +71,18 @@ void standartTestAddr(uint32_t address){
 
     uint8_t dist[100] = {'\0'};
 
-    store2addr(address, testMessage, _SIZE);
+    remcu_store2mem(address, testMessage, _SIZE);
 
-    loadFromAddr(address, 100, dist);
+    remcu_loadFrMem(address, 100, dist);
 
     ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
 
-    assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == true);
-    assert(store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
+    assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == true);
+    assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
 
     assert(ret == 0);
 
-    disconnect();
+    remcu_disconnect();
 
     assertErrorTest(address);
 }
@@ -91,11 +91,15 @@ void standartTestAddr(uint32_t address){
 int main(int argc, char** argv)
 {
 
-    const string dec = cryptor::create(_STRING_).decrypt();
+    const string dec = remcu::cryptor::create(_STRING_).decrypt();
 
-    printf("dec %s [%d]\n", dec.c_str(), dec.size());
+    printf("obusfactor _STRING_ '%s' [%d]\n", dec.c_str(), dec.size());
 
-    printLogo();
+#define _SIZE_VERSION 100
+    char version[_SIZE_VERSION] = {'\0'};
+    size_t len = _SIZE_VERSION;
+    assert(remcu_getVersion(version, len));
+    std::cout << "version : " << version << endl;
 
     if(argc < 3){
         printf("test requare 2 arguments: host and verbose level\n");
@@ -110,8 +114,7 @@ int main(int argc, char** argv)
     const LevelDebug level = static_cast<LevelDebug>(atoi(argv[2]) & 0xF);
     bool testOpenocd = true;
 
-
-    printf("!!!! %d '%s'\n", argc, argv[3]);
+    printf("argc: %d '%s'\n", argc, argv[3]);
 
     if(argc > 3){
         if(string(argv[3]).compare("no") == 0){
@@ -119,33 +122,34 @@ int main(int argc, char** argv)
         }
     }
 
-    setVerboseLevel(__INFO);
-    ADIN_LOG(__INFO) << "host: " << host;
-    ADIN_LOG(__INFO) << "address: 0x" << hex << address;
-    ADIN_LOG(__INFO) << "Verbose Level: " << level;
-    setVerboseLevel(level);
+    cout << "host: " << host << endl;
+    cout << "address: 0x" << hex << address << endl;
+    cout << "Verbose Level: " << level << endl;
+    remcu_setVerboseLevel(level);
 
     assertErrorTest(address);
 
-    setConfig("TEST_CONFIG_MEM");
+    assert(remcu_setConfig("ERROR") == false);
+
+    assert(remcu_setConfig("TEST_CONFIG_MEM"));
 
     if(testOpenocd){
         std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
 
-        std::cout << getVersion() << endl;
+        assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL));
 
-        assert(connect2OpenOCD(host, PORT_TCL));
-
-        resetRemoteUnit(ResetType::__HALT);
+        assert(remcu_resetRemoteUnit(ResetType::__HALT));
 
         standartTestAddr(address);
     }
 
     std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
 
-    assert(connect2GDB(host, PORT_GDB));
+    assert(remcu_connect2GDB(host.c_str(), PORT_GDB));
 
-    resetRemoteUnit(ResetType::__HALT);
+    assert(remcu_resetRemoteUnit(ResetType::__HALT));
+
+    assert(remcu_resetRemoteUnit(ResetType::__INIT) == false);
 
     standartTestAddr(address);
 
