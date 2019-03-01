@@ -11,7 +11,8 @@ using namespace std;
 
 namespace remcu {
 
-static void printLicense(){
+//deprecated
+static void printLicense1(){
     unsigned char s[] =
         {
 
@@ -156,12 +157,12 @@ void printLogo(){
          << endl;
 #endif
 
+    //deprecated
+#if 0
     printLine();
-
     printLicense();
-
     printLine();
-
+#endif
     cout << "Version: " << getVersion() << endl;
 
 }
