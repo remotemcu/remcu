@@ -17,6 +17,7 @@ if(NOT MCU_NAME_LIB)
 endif()
 
 add_definitions(-D_MCU_NAME_LIB_=\"${MCU_NAME_LIB}\")
+add_definitions(-D_MCU_NAME_LIB_${MCU_NAME_LIB})
 
 if(NOT MCU_VERSION_LIB)
 	if(NOT ENV{MCU_VERSION_LIB})

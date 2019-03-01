@@ -124,18 +124,18 @@ std::string getVersion(){
 #ifdef _MCU_NAME_LIB_
     const string MCU_NAME_LIB(_MCU_NAME_LIB_);
 #else
-    #error unknown _GIT_HASH_
+    #error unknown _MCU_NAME_LIB_
 #endif
 
 #ifdef _MCU_VERSION_LIB_
     const string MCU_VERSION_LIB(_MCU_VERSION_LIB_);
 #else
-    #error unknown _GIT_HASH_
+    #error unknown _MCU_VERSION_LIB_
 #endif
 #ifdef _LICENSE_TYPE_
     const string LICENSE_TYPE(_LICENSE_TYPE_);
 #else
-    #error unknown _GIT_HASH_
+    #error unknown _LICENSE_TYPE_
 #endif
 #ifdef _TIMESTAMP_
     const string TIMESTAMP(_TIMESTAMP_);
