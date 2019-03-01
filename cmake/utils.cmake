@@ -12,6 +12,6 @@ function(define_file_basename_for_sources targetname)
         set_property(
             SOURCE "${sourcefile}"
             PROPERTY COMPILE_DEFINITIONS ${defs})
-    message(STATUS "get base name for ${sourcefile} - ${basename}")
+    #message(STATUS "get base name for ${sourcefile} - ${basename}")
     endforeach()
 endfunction()

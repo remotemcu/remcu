@@ -23,6 +23,7 @@ include(version)
 include(utils)
 include(license)
 include(mcu)
+include(archive)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
 # have all targets (exe, lib, dll) as projects (.vcproj)
@@ -71,7 +72,18 @@ add_dependencies(remcu ${LICENSE_SIGN_FILE})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
+file(COPY ${MCU_INCLUDE_PATH}/
+	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
+	FILES_MATCHING PATTERN "*.h")
 
+add_custom_command(TARGET remcu POST_BUILD
+    COMMAND ${ARCHIVE_COMMAND}
+    $<TARGET_FILE_NAME:remcu>
+    REMCU_LICENSE.txt
+    remcu_include
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "---------------------------Archive lib... ---------------------------"
+)
 
 if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)

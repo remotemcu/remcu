@@ -1,0 +1,3 @@
+
+set(ARCHIVE_COMMAND tar -cf ${FULL_VERSION_NAME}.tar)
+
