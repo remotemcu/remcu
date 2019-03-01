@@ -39,7 +39,6 @@ size_t checkLicense(){
 
     if (rfile.is_open()) {
         while (getline(rfile, line)) {
-            cout << line << endl;
             if((line.size() > 0) && (line.at(0) == _TOKEN)){
                 flag_token = true;
                 sign.assign(line);
@@ -50,6 +49,7 @@ size_t checkLicense(){
                 error |= setErrorBit(ErrorLicense_Type::_BIG_SIZE);
                 break;
             }
+            cout << line << endl;
         }
         rfile.close();
     } else {
