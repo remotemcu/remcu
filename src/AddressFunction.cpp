@@ -4,7 +4,6 @@
 #include <cstring>
 #include <vector>
 
-#include "AddressInterceptPass.h"
 #include "logger.h"
 #include "assertion.h"
 #include "AddressInterval.h"

@@ -30,6 +30,8 @@ enum LevelDebug { __ERROR = 0,
 
 typedef void (*ErrorSignalFunc)();
 
+#define _SIZE_ONE_MEMPCY 33
+
 #define _DEFAULT_TIMEOUT_SEC 3
 
 REMCULIB_DLL_API bool remcu_connect2OpenOCD(const char* host, const uint16_t port,
