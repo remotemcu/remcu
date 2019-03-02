@@ -1,7 +1,8 @@
 
 if(WIN32)
-  #set(CLANG_IR_OPTIONS -D_MT -D_DLL)
+  #
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CLANG_IR_OPTIONS -D_MT -D_DLL)
     message("WIN debug option: -D_DEBUG")
     list(APPEND CLANG_IR_OPTIONS -D_DEBUG)
   endif()
