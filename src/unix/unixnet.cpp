@@ -52,7 +52,7 @@ bool closeTCP(){
 }
 
 
-bool send(const char * buffer, const size_t lenBuffer){
+bool sendTCP(const char * buffer, const size_t lenBuffer){
 
     if(stream == NULL){
         ADIN_LOG(__ERROR) << "Connection close yet ";

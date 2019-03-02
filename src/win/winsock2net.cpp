@@ -122,7 +122,7 @@ bool closeTCP(){
      return false;
 }
 
-bool send(const char * buffer, const size_t lenBuffer){
+bool sendTCP(const char * buffer, const size_t lenBuffer){
 
     if(ConnectSocket == INVALID_SOCKET){
           ADIN_PRINTF(__ERROR, "Client: socket() failed! Error code: %ld\n", WSAGetLastError());

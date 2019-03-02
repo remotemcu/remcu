@@ -46,7 +46,7 @@ bool closeTCP(){
     return true;
 }
 
-bool send(const char * buffer, const size_t lenBuffer){
+bool sendTCP(const char * buffer, const size_t lenBuffer){
 
     ADIN_LOG(__DEBUG) << "-> " << lenBuffer << " : '" << buffer <<"'";
 

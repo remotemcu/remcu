@@ -10,12 +10,12 @@ using namespace std;
 
 namespace remcu {
 
-bool send(const char * buffer, const size_t lenBuffer);
+bool sendTCP(const char * buffer, const size_t lenBuffer);
 bool receive(char * buffer, size_t & lenBuffer);
 
 
 bool sendMessage2Server(const char * buffer, const size_t lenBuffer){
-    const bool success = send(buffer, lenBuffer);
+    const bool success = sendTCP(buffer, lenBuffer);
 
     if(success == false){
         ADIN_LOG(__ERROR) << _S_("send message failed^");
