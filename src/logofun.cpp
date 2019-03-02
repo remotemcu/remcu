@@ -142,7 +142,11 @@ std::string getVersion(){
 #else
     #error unknown _TIMESTAMP_
 #endif
-    return MCU_NAME_LIB + "-" + MCU_VERSION_LIB + "-"
+    return
+#ifndef NDEBUG
+    string("!DEBUG!-") +
+#endif
+     MCU_NAME_LIB + "-" + MCU_VERSION_LIB + "-"
         + GIT_TAG + "-" + GIT_HASH  + "-" + LICENSE_TYPE
         + "-" + TIMESTAMP;
 }
