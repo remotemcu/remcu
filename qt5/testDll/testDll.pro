@@ -27,7 +27,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-win32: LIBS += -L$$PWD/../../build/test/ -lremcu_ir_dll
+win32: LIBS += -L$$PWD/../../build/test/ -lremcu_ir_shared
 
 INCLUDEPATH += $$PWD/../../test
 DEPENDPATH += $$PWD/../../test

@@ -6,95 +6,141 @@
 #include <cstring>
 #include <assert.h>
 
-#include <remcu.h>
-#include <IrTest.h>
+#include "test/IrTest.h"
 
 using namespace std;
-using namespace remcu;
 
+static bool error = false;
+
+static void callback(){
+    cout << "callback()" << endl;
+    error = true;
+}
+
+#ifdef NDEBUG
+    #define assert
+#endif
 
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
 
 #define _STRING_ "123456789abc"
 
-int main()
+void assertErrorTest(uint32_t address){
+    std::cout << "\n----------------------- Test Error -----------------------\n" << endl;
+
+    remcu_setErrorSignalFunc(callback);
+    assert(remcu_getErrorCout() == 0);
+    assert(error == false);
+    irTestSimple(reinterpret_cast<int*>(address));
+    assert(remcu_getErrorCout() > 0);
+    assert(error == true);
+    error = false;
+    remcu_clearErrorCount();
+
+    remcu_setErrorSignalFunc(nullptr);
+    irTestSimple(reinterpret_cast<int*>(address));
+    assert(error == false);
+    remcu_clearErrorCount();
+}
+
+void standartTestAddr(uint32_t address){
+
+    assert(remcu_is_connected());
+
+    int ret = irTest(reinterpret_cast<int*>(address));
+
+    assert(ret == 0);
+
+#define _SIZE 30
+    uint8_t testMessage[_SIZE];
+    for(int i =0; i < _SIZE; i++)
+        testMessage[i] = i;
+
+    uint8_t dist[100] = {'\0'};
+
+    remcu_store2mem(address, testMessage, _SIZE);
+
+    remcu_loadFrMem(address, 100, dist);
+
+    ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
+
+    assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == true);
+    assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
+
+    assert(ret == 0);
+
+    remcu_disconnect();
+
+    assertErrorTest(address);
+
+    assert(remcu_is_connected() == false);
+}
+
+
+int main(int argc, char** argv)
 {
-    cout << "Hello World!" << endl;
+
+#define _SIZE_VERSION 100
+    char version[_SIZE_VERSION] = {'\0'};
+    size_t len = _SIZE_VERSION;
+    assert(remcu_getVersion(version, len));
+    std::cout << "version : " << version << endl;
+
+    if(argc < 3){
+        printf("test requare 2 arguments: host and verbose level\n");
+        printf("optional 3-d arg: testOpenocd(bool)\n");
+        return -1;
+    }
 
     int ret = 0;
 
-    const string host("localhost");
+    const string host(argv[1]);
     const uint32_t address = 0x20000000;
-    const LevelDebug level = static_cast<LevelDebug>(4);
+    const LevelDebug level = static_cast<LevelDebug>(atoi(argv[2]) & 0xF);
+    bool testOpenocd = true;
 
-    setVerboseLevel(level);
+    printf("argc: %d '%s'\n", argc, argv[3]);
 
-    std::cout << "----------------------- Test OpenOCD client -----------------------" << endl;
+    if(argc > 3){
+        if(string(argv[3]).compare("no") == 0){
+            testOpenocd = false;
+        }
+    }
 
-    std::cout << getVersion() << endl;
+    cout << "host: " << host << endl;
+    cout << "address: 0x" << hex << address << endl;
+    cout << "Verbose Level: " << level << endl;
+    remcu_setVerboseLevel(level);
 
-    connect2OpenOCD(host, PORT_TCL);
+    assertErrorTest(address);
 
-    resetRemoteUnit(ResetType::__HALT);
+    assert(remcu_setConfig("ERROR") == false);
 
-    setConfig("TEST_CONFIG_MEM");
+    assert(remcu_setConfig("TEST_CONFIG_MEM"));
 
-    ret = irTest(reinterpret_cast<int*>(address));
+    assert(remcu_is_connected() == false);
 
-    assert(ret == 0);
+    if(testOpenocd){
+        std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
 
-    const char * testMessage = "test message";
+        assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL));
 
-    const size_t _SIZE = strlen(testMessage);
+        assert(remcu_resetRemoteUnit(ResetType::__HALT));
 
-    char dist[100] = {'\0'};
+        standartTestAddr(address);
+    }
 
-    store2addr(address, testMessage, _SIZE);
+    std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
 
-    loadFromAddr(address, 100, dist);
+    assert(remcu_connect2GDB(host.c_str(), PORT_GDB));
 
-    ret = strncmp(testMessage, dist, _SIZE);
+    assert(remcu_resetRemoteUnit(ResetType::__HALT));
 
-    assert(ret == 0);
+    assert(remcu_resetRemoteUnit(ResetType::__INIT) == false);
 
-    disconnect();
+    standartTestAddr(address);
 
-    std::cout << "Errors:" << endl;
+    std::cout << "\n----------------------- SUCCESS TEST -----------------------\n" << endl;
 
-    store2addr(address,dist,1);
-    store2addr(address,nullptr,1);
-    loadFromAddr(address, 10, nullptr);
-
-    std::cout << "----------------------- Test RSP GDB client -----------------------" << endl;
-
-    connect2GDB(host, PORT_GDB);
-
-    resetRemoteUnit(ResetType::__HALT);
-
-    setConfig("TEST_CONFIG_MEM");
-
-#define _SIZE 33
-    uint8_t test_msg[_SIZE];
-    for(int i =0; i < _SIZE; i++)
-        test_msg[i] = i;
-    store2addr(address, (const char *)&test_msg, 10);
-
-    char  buf[_SIZE] = {'@'};
-
-    loadFromAddr(address, 10, buf);
-
-    assert(std::strncmp((char*)test_msg,buf,10) == 0);
-
-    ret = irTest(reinterpret_cast<int*>(0x20000000));
-
-    assert(ret == 0);
-
-    disconnect();
-    std::cout << "Errors:" << endl;
-
-    store2addr(address,dist,1);
-    store2addr(address,nullptr,1);
-    loadFromAddr(address, 10, nullptr);
-    return 0;
 }
