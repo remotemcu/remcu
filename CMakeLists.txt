@@ -71,6 +71,11 @@ add_library(remcu SHARED ${LIB_SOURCE})
 define_file_basename_for_sources(remcu)
 add_dependencies(remcu ${LICENSE_SIGN_FILE})
 
+if(WIN32)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	target_link_libraries(remcu ws2_32)
+endif()
+
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
@@ -92,7 +97,14 @@ add_custom_command(TARGET remcu POST_BUILD
     COMMENT "--------------------------- Archive lib ---------------------------"
 )
 
-if(WIN32)
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-	target_link_libraries(remcu ws2_32)
-endif()
+add_custom_command(TARGET remcu POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E make_directory install
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${ARCHIVE_FILES}
+    ${CMAKE_CURRENT_BINARY_DIR}/install
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${ARCHIVE_FILES}
+    ${CMAKE_CURRENT_BINARY_DIR}/install/include
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "--------------------------- Copy files ---------------------------"
+)
