@@ -95,9 +95,6 @@ bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
     case ResetType::__HALT:
         reset_message.append("halt");
         break;
-    case ResetType::__INIT:
-        reset_message.append("init");
-        break;
     default:
         ADIN_LOG(__ERROR) << "Unknown reset type: " << type;
         return false;

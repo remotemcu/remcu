@@ -21,7 +21,6 @@ extern "C" {
 enum ResetType {
     __RUN = 0,
     __HALT,
-    __INIT
 };
 
 enum LevelDebug { __ERROR = 0,

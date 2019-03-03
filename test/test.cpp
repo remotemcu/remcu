@@ -90,7 +90,7 @@ void standartTestAddr(uint32_t address){
 
     assert(remcu_is_connected() == false);
 }
-
+#include <unistd.h>
 
 int main(int argc, char** argv)
 {
@@ -142,6 +142,8 @@ int main(int argc, char** argv)
 
         assert(remcu_resetRemoteUnit(ResetType::__HALT));
 
+        assert(remcu_resetRemoteUnit(ResetType::__RUN));
+
         standartTestAddr(address);
     }
 
@@ -151,7 +153,7 @@ int main(int argc, char** argv)
 
     assert(remcu_resetRemoteUnit(ResetType::__HALT));
 
-    assert(remcu_resetRemoteUnit(ResetType::__INIT) == false);
+    assert(remcu_resetRemoteUnit(ResetType::__RUN) == false);
 
     standartTestAddr(address);
 
