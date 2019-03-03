@@ -131,7 +131,7 @@ int main(int argc, char** argv)
 
     assert(remcu_setConfig("ERROR") == false);
 
-    assert(remcu_setConfig("TEST_CONFIG_MEM"));
+    assert(remcu_setConfig("TEST"));
 
     assert(remcu_is_connected() == false);
 
