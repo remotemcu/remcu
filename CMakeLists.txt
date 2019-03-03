@@ -74,17 +74,22 @@ add_dependencies(remcu ${LICENSE_SIGN_FILE})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
+
 file(COPY ${COPY_OBJECT_FROM_LIB}
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
 
+file(COPY ${MCU_LIB_PATH}/README.txt
+	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+set(ARCHIVE_FILES $<TARGET_FILE_NAME:remcu> REMCU_LICENSE.txt remcu_include README.txt)
+
 add_custom_command(TARGET remcu POST_BUILD
     COMMAND ${ARCHIVE_COMMAND}
-    $<TARGET_FILE_NAME:remcu>
-    REMCU_LICENSE.txt
-    remcu_include
+    ${ARCHIVE_FILES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "---------------------------Archive lib... ---------------------------"
+    COMMENT "--------------------------- Archive lib ---------------------------"
 )
 
 if(WIN32)
