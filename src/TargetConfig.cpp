@@ -38,15 +38,15 @@ bool setConfig(const std::string target){
 
     clearConfig();
     bool set = false;
-#ifdef _MCU_NAME_LIB_TEST_CONFIG_MEM
-    if(target.compare(_S_("TEST_CONFIG_MEM")) == 0){
+#ifdef _MCU_TYPE_TEST
+    if(target.compare(_S_("TEST")) == 0){
         add_to_mem_interval(0x20000000, 0x20000000 + 200); //SRAM
         add_to_adin_interval(0x20000000, 0x20000000 + 200); //ADIN
         targetMCU.assign(target);
         set = true;
     }
-#elif defined(_MCU_NAME_LIB_STM32F40_41xxx)
-    if(target.compare(_S_("STM32F40_41xxx")) == 0){
+#elif defined(_MCU_TYPE_STM32F4_Discovery)
+    if(target.compare(_S_("STM32F4_Discovery")) == 0){
         add_to_adin_interval(0x20000000,  0x20000000 + (112)*1024); //SRAM
         add_to_adin_interval(0x40000000,  0x40008000); //APB1
         add_to_adin_interval(0x40010000,  0x40016C00); //APB2

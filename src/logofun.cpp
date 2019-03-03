@@ -110,45 +110,15 @@ static void printLine(){
 
 
 std::string getVersion(){
-#ifdef _GIT_TAG_
-    const string GIT_TAG(_GIT_TAG_);
-#else
-    #error unknown _GIT_TAG_
-#endif
 
-#ifdef _GIT_HASH_
-    const string GIT_HASH(_GIT_HASH_);
-#else
-    #error unknown _GIT_HASH_
-#endif
-#ifdef _MCU_NAME_LIB_
-    const string MCU_NAME_LIB(_MCU_NAME_LIB_);
-#else
-    #error unknown _MCU_NAME_LIB_
-#endif
-
-#ifdef _MCU_VERSION_LIB_
-    const string MCU_VERSION_LIB(_MCU_VERSION_LIB_);
-#else
-    #error unknown _MCU_VERSION_LIB_
-#endif
-#ifdef _LICENSE_TYPE_
-    const string LICENSE_TYPE(_LICENSE_TYPE_);
-#else
-    #error unknown _LICENSE_TYPE_
-#endif
-#ifdef _TIMESTAMP_
-    const string TIMESTAMP(_TIMESTAMP_);
-#else
-    #error unknown _TIMESTAMP_
+#ifndef _FULL_VERSION_NAME_
+    #error unknown _FULL_VERSION_NAME_
 #endif
     return
 #ifndef NDEBUG
     string("!DEBUG!-") +
 #endif
-     MCU_NAME_LIB + "-" + MCU_VERSION_LIB + "-"
-        + GIT_TAG + "-" + GIT_HASH  + "-" + LICENSE_TYPE
-        + "-" + TIMESTAMP;
+        string(_S_(_FULL_VERSION_NAME_));
 }
 
 

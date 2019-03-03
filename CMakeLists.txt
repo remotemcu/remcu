@@ -18,6 +18,8 @@ endif()
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+
+include(${MCU_LIB_PATH}/lib.cmake)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(version)
 include(utils)
@@ -72,9 +74,9 @@ add_dependencies(remcu ${LICENSE_SIGN_FILE})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
-file(COPY ${MCU_INCLUDE_PATH}/
+file(COPY ${COPY_OBJECT_FROM_LIB}
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
-	FILES_MATCHING PATTERN "*.h")
+)
 
 add_custom_command(TARGET remcu POST_BUILD
     COMMAND ${ARCHIVE_COMMAND}
