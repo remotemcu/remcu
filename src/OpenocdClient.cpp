@@ -46,7 +46,7 @@ static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, ch
         sizeOp = WORD;
         break;
     default:
-        ADIN_LOG(__ERROR) << "Unknown typesize: " << sizeVal;
+        ADIN_LOG(__ERROR) << _S_("Unknown type raz: ") << sizeVal;
         return false;
     }
 
@@ -74,7 +74,7 @@ static bool parseValue(vector<char> & buffer, llvm_value_type & value){
 
 bool ClientOpenOCD::ping() const {
     static const char _RESPONSE = '*';
-    string pingCommand("ocd_echo ");
+    string pingCommand(_S_("ocd_echo "));
     pingCommand.push_back(_RESPONSE);
     pingCommand.push_back('\x1a');
     size_t lenReceiv;
@@ -86,17 +86,17 @@ bool ClientOpenOCD::ping() const {
 
 
 bool ClientOpenOCD::resetRemoteUnit(const ResetType type) const {
-    string reset_message("reset ");
+    string reset_message(_S_("reset "));
 
     switch (type) {
     case ResetType::__RUN:
-        reset_message.append("run");
+        reset_message.append(_S_("run"));
         break;
     case ResetType::__HALT:
-        reset_message.append("halt");
+        reset_message.append(_S_("halt"));
         break;
     default:
-        ADIN_LOG(__ERROR) << "Unknown reset type: " << type;
+        ADIN_LOG(__ERROR) << _S_("Unknown reset type: ") << type;
         return false;
     }
 

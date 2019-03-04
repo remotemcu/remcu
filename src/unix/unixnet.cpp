@@ -22,7 +22,7 @@ static int current_timeout_sec = -1;
 bool connectTCP(const std::string host, const uint16_t port, const int timeout_sec){
 
     if(connector == NULL){
-        ADIN_LOG(__ERROR) << "internal error";
+        ADIN_LOG(__ERROR) << _S_("internal error");
         return false;
     }
 
@@ -37,13 +37,13 @@ bool connectTCP(const std::string host, const uint16_t port, const int timeout_s
         return false;
     }
 
-     ADIN_LOG(__INFO) << "Connection success " << host << ", port : " << port ;
+    ADIN_LOG(__INFO) << _S_("Connection success ") << host << ", port : " << port ;
     return true;
 }
 
 bool closeTCP(){
     if(stream != NULL){
-        ADIN_LOG(__INFO) << "close connection";
+        ADIN_LOG(__INFO) << _S_("close connection");
         delete stream;
         stream = NULL;
     }
@@ -55,7 +55,7 @@ bool closeTCP(){
 bool sendTCP(const char * buffer, const size_t lenBuffer){
 
     if(stream == NULL){
-        ADIN_LOG(__ERROR) << "Connection close yet ";
+        ADIN_LOG(__ERROR) << _S_("Connection close yet ");
         return false;
     }
 
@@ -72,19 +72,19 @@ bool sendTCP(const char * buffer, const size_t lenBuffer){
 bool receive(char * buffer, size_t & lenBuffer){
 
     if(stream == NULL){
-        ADIN_LOG(__ERROR) << "Connection close yet ";
+        ADIN_LOG(__ERROR) << _S_("Connection close yet ");
         return false;
     }
 
     const ssize_t lenSocket = stream->receive(buffer, lenBuffer, current_timeout_sec);
 
     if(lenSocket <= 0){
-        ADIN_LOG(__ERROR) << "receive response failed, len:" << lenSocket ;
+        ADIN_LOG(__ERROR) << _S_("receive response failed, len:") << lenSocket ;
         return false;
     }
 
     if(lenSocket > static_cast<ssize_t>(lenBuffer - 1)){
-        ADIN_LOG(__ERROR) << "readable buffer is small";
+        ADIN_LOG(__ERROR) << _S_("readable buffer is small");
         return false;
     }
 

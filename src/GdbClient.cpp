@@ -34,7 +34,7 @@ static bool sendAck(const char * token){
 bool ClientGDB::resetRemoteUnit(const ResetType type) const {
 
     if(ResetType::__HALT != type){
-        ADIN_LOG(__ERROR) << "GDB supports only halt reset ";
+        ADIN_LOG(__ERROR) << _S_("GDB supports only halt reset ");
         return false;
     }
 
@@ -78,7 +78,7 @@ static uint8_t getQtyBytes(const llvm_pass_arg sizeValBits ){
     case 32:
         return 4;
     default:
-        ADIN_LOG(__ERROR) << "Unrichable size of type: " << sizeValBits << "-bits";
+        ADIN_LOG(__ERROR) << _S_("Unrichable size of type: ") << sizeValBits << _S_("-bits");
         return 0;
     }
 }
@@ -185,8 +185,8 @@ bool ClientGDB::arrayWrite2RemoteMem(const uintptr_t addr, const uint8_t*  sink,
         (strncmp(start, RESPONSE_OK, strlen(RESPONSE_OK)) != 0))
     {
         const string resp(bufferReceiv.data(), lenBufReceiv);
-        ADIN_LOG(__ERROR) << "GDB server error respose: " << resp;
-        ADIN_LOG(__ERROR) << "len of response : " << lenBufReceiv;
+        ADIN_LOG(__ERROR) << _S_("GDB server error respose: ") << resp;
+        ADIN_LOG(__ERROR) << _S_("len of response : ") << lenBufReceiv;
         return false;
     }
 
@@ -226,8 +226,8 @@ bool ClientGDB::arrayLoadFromRemoteMem(const uintptr_t addr, const size_t size, 
         (strlen(start) < size_receive))
     {
         const string resp(bufferReceiv.data(), lenBufReceiv);
-        ADIN_LOG(__ERROR) << "GDB server error respose: "  << resp;
-        ADIN_LOG(__ERROR) << "len of response : " << size_receive << " [ " << lenBufReceiv << " ]";
+        ADIN_LOG(__ERROR) << _S_("GDB server error respose: ")  << resp;
+        ADIN_LOG(__ERROR) << _S_("len of response : ") << size_receive << " [ " << lenBufReceiv << " ]";
         return false;
     }
 

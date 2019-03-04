@@ -60,8 +60,8 @@ bool connect2ServerLogo(const std::string host, const uint16_t port,
     if(success){
         printLogo();
     } else {
-        ADIN_LOG(__ERROR) << "Connecting failed!";
-        ADIN_LOG(__ERROR) << "Please check server and try again...";
+        ADIN_LOG(__ERROR) << _S_("Connecting failed!");
+        ADIN_LOG(__ERROR) << _S_("Please check server and try again...");
     }
 
     return success;

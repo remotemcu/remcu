@@ -37,7 +37,7 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
     } else if(server == ServerType::_GDB_SERVER) {
         client = static_cast<ClientBase*>(&gdb);
     } else {
-        ADIN_LOG(__ERROR) << "unknown client, please choice _OPENOCD_SERVER or _GDB_SERVER";
+        ADIN_LOG(__ERROR) << _S_("unknown client, please choice _OPENOCD_SERVER or _GDB_SERVER");
         return false;
     }
 
@@ -81,8 +81,8 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
         ret = (*reinterpret_cast<uint64_t*>(pointer));
         break;
     default:
-        ADIN_LOG(__ERROR) << "Unknown size of type: " << TypeSizeArg;
-        ADIN_PRINTF(__ERROR, "at the pointer: %p\n", pointer);
+        ADIN_LOG(__ERROR) << _S_("Unknown size of type: ") << TypeSizeArg;
+        ADIN_PRINTF(__ERROR, "at the uka: %p\n", pointer);
         break;
     }
 
@@ -108,8 +108,8 @@ static inline bool storeToLocalValue(const llvm_ocd_addr pointer, const llvm_val
         *reinterpret_cast<uint64_t*>(pointer) = value;
         break;
     default:
-        ADIN_LOG(__ERROR) << "Unknown size of type: " << TypeSizeArg;
-        ADIN_PRINTF(__ERROR, "at the pointer: %p\n", pointer);
+        ADIN_LOG(__ERROR) << _S_("Unknown size of type: ") << TypeSizeArg;
+        ADIN_PRINTF(__ERROR, "at the uka: %p\n", pointer);
         return false;
     }
 
@@ -135,8 +135,8 @@ static llvm_pass_arg getMask(llvm_pass_arg TypeSizeArg){
         ret = 0xFFFFFFFFFFFFFFFF;
         break;
     default:
-        ADIN_LOG(__ERROR) << "Unknown size of type: " << TypeSizeArg;
-        ADIN_LOG(__ERROR) << "Mask isn't set!";
+        ADIN_LOG(__ERROR) << _S_("Unknown size of type: ") << TypeSizeArg;
+        ADIN_LOG(__ERROR) << _S_("Mask isn't set!");
         ret = 0;
         break;
     }
@@ -151,13 +151,13 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
     if(is_entry_adin_interval(pointer) == false){
-        ADIN_LOG(__WARNING) << "load from local, ptr : " <<  hex << pointer;
+        ADIN_LOG(__WARNING) << _S_("load from JlocaJl, uka : ") <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
 
     assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
-                  "Can't write value to address: %p, size: %d\n", pointer, TypeSizeArg);
+                  "Can't write value to uka: %p, raz: %d\n", pointer, TypeSizeArg);
     return true;
 }
 
@@ -170,7 +170,7 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
 
     if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
         value = 0;
-        ADIN_PRINTF(__ERROR,"Can't read value from address: %p, size: %d\n", pointer, TypeSizeArg);
+        ADIN_PRINTF(__ERROR,"Can't read value from uka: %p, raz: %d\n", pointer, TypeSizeArg);
     }
 
     value &= getMask(TypeSizeArg);
@@ -200,7 +200,7 @@ using namespace remcu;
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "___S : p %p, v 0x%X, ts %d, a %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    ADIN_PRINTF(__INFO, "___S : uka %p, zna 0x%X, raz %d, a %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     const bool success = store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 
@@ -213,7 +213,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "___L : p %p, ts %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
+    ADIN_PRINTF(__INFO, "___L : uka %p, raz %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
     llvm_value_type value = 0;
     const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
