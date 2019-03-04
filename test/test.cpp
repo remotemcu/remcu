@@ -68,21 +68,24 @@ void standartTestAddr(uint32_t address){
 
     #define _SIZE 30
     uint8_t testMessage[_SIZE];
-    for(int i =0; i < _SIZE; i++)
-        testMessage[i] = i;
+    const size_t qty_write = _SIZE - 1;
+    for(int i =0; i < qty_write; i++)
+        testMessage[i] = '0' + i;
+
+    testMessage[_SIZE] = '\0';
 
     uint8_t dist[100] = {'\0'};
 
-    remcu_store2mem(address, testMessage, _SIZE);
+    assert(remcu_store2mem(address, testMessage, _SIZE));
 
-    remcu_loadFrMem(address, 100, dist);
+    assert(remcu_loadFrMem(address, _SIZE, dist));
 
     ret = strncmp((char*)testMessage, (char*)dist, _SIZE);
 
+    assert(ret == 0);
+
     assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == true);
     assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
-
-    assert(ret == 0);
 
     remcu_disconnect();
 
