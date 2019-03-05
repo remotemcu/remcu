@@ -80,8 +80,11 @@ set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE} ${MCU_OBJECT_FILE})
 add_library(remcu SHARED ${LIB_SOURCE})
 define_file_basename_for_sources(remcu)
 add_dependencies(remcu ${LICENSE_SIGN_FILE})
+add_dependencies(remcu MCU_LIB)
 
-add_subdirectory(test EXCLUDE_FROM_ALL)
+if(MCU_TYPE STREQUAL "TEST")
+	add_subdirectory(test EXCLUDE_FROM_ALL)
+endif()
 
 if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)

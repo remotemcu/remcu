@@ -16,10 +16,12 @@ set(CONF_SOURCE ${CMAKE_CURRENT_LIST_DIR}/conf.cpp)
 
 set(MCU_OBJECT_FILE ${CMAKE_CURRENT_LIST_DIR}/build/${MCU_TYPE}.adin.o)
 
-add_custom_command(OUTPUT ${MCU_OBJECT_FILE}
+add_custom_target( MCU_LIB
+	#OUTPUT ${MCU_OBJECT_FILE}
                    COMMAND make all
                    REMCU_PATH_MK=${REMCU_PATH_MK}
                    OUTPUT=${MCU_OBJECT_FILE}
+                   CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
                    COMMENT "---------------- Generating ADIN IR ----------------"
 )
