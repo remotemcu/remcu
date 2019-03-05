@@ -19,7 +19,7 @@ endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 
-include(${MCU_LIB_PATH})
+include(${MCU_LIB_CMAKE})
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(version)

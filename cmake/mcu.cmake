@@ -1,6 +1,6 @@
 
-if(NOT DEFINED MCU_LIB_PATH)
-	message(FATAL_ERROR "******* $MCU_LIB_PATH is not defined! ********")
+if(NOT DEFINED MCU_LIB_CMAKE)
+	message(FATAL_ERROR "******* $MCU_LIB_CMAKE is not defined! ********")
 endif()
 
 if(NOT DEFINED MCU_TYPE)
@@ -14,3 +14,6 @@ endif()
 if(NOT DEFINED CONF_SOURCE)
 	message(FATAL_ERROR "******* $CONF_SOURCE is not defined! ********")
 endif()
+
+
+set(REMCU_PATH_MK ${CMAKE_CURRENT_SOURCE_DIR}/target.mk)
