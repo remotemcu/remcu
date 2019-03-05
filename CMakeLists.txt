@@ -1,5 +1,16 @@
 cmake_minimum_required (VERSION 3.5)
 
+if(NOT DEFINED CMAKE_CXX_COMPILER)
+	message(STATUS "Setting compilator ......")
+	if(WIN32)
+		set(CMAKE_CXX_COMPILER clang-cl)
+	else()
+		set(CMAKE_CXX_COMPILER clang++)
+		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
+		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+	endif()
+endif()
+
 # Write information to the console.
 message("Running CMakeLists.txt for REMCU...")
 
@@ -18,6 +29,7 @@ endif()
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+set(REMCU_PATH_MK ${CMAKE_CURRENT_SOURCE_DIR}/target.mk)
 
 include(${MCU_LIB_CMAKE})
 
@@ -40,14 +52,6 @@ message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
-
-if(WIN32)
-	set(CMAKE_CXX_COMPILER clang-cl)
-else()
-	set(CMAKE_CXX_COMPILER clang++)
-	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
-endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/export)
@@ -104,16 +108,3 @@ add_custom_command(TARGET remcu POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "--------------------------- Archive lib ---------------------------"
 )
-#[[
-add_custom_command(TARGET remcu POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E make_directory install
-    COMMAND ${CMAKE_COMMAND} -E copy
-    ${ARCHIVE_FILES}
-    ${CMAKE_CURRENT_BINARY_DIR}/install
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${ARCHIVE_FILES}
-    ${CMAKE_CURRENT_BINARY_DIR}/install/include
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "--------------------------- Copy files ---------------------------"
-)
-]]
