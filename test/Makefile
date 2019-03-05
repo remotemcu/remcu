@@ -1,20 +1,12 @@
 
-#include $(ADIN_PATH)/adin.mk
-
-BUILD_DIR 	= build
+include $(REMCU_PATH_MK)/remcu.mk
 
 
+all: $(BUILD_DIR)/TEST.adin.o
 
-$(BUILD_DIR)/TEST.adin.o: clean $(BUILD_DIR) IrTest.cpp
-	clang -S -emit-llvm -I../include -I. -I../export IrTest.cpp -o $(BUILD_DIR)/IrTest.cpp.ll
-	$(LLVM_ADIN_PATH)/opt -adin -S $(BUILD_DIR)/IrTest.cpp.ll -o $(BUILD_DIR)/IrTest.cpp.adin.ll
-	clang -c -fPIC $(BUILD_DIR)/IrTest.cpp.adin.ll -o $@
-
-
-$(BUILD_DIR):
-	mkdir -p $@
+$(BUILD_DIR)/TEST.adin.o: clean_build $(BUILD_DIR) IrTest.cpp
+	$(CC) $(IR_FLAGS) IrTest.cpp -o $(BUILD_DIR)/IrTest.cpp.ll
+	$(OPT) $(ADIN_FLAGS) $(BUILD_DIR)/IrTest.cpp.ll -o $(BUILD_DIR)/IrTest.cpp.adin.ll
+	$(CC)  $(CFLAGS) -c $(BUILD_DIR)/IrTest.cpp.adin.ll -o $@
 
 
-.PHONY: clean
-clean:
-	rm -rf $(BUILD_DIR)

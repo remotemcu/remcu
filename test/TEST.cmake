@@ -17,6 +17,7 @@ set(CONF_SOURCE ${CMAKE_CURRENT_LIST_DIR}/conf.cpp)
 set(ADIN_OBJECT_FILE ${CMAKE_CURRENT_LIST_DIR}/build/${MCU_TYPE}.adin.o)
 
 add_custom_command(OUTPUT ${ADIN_OBJECT_FILE}
-                   COMMAND make
+                   COMMAND make all
                    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+                   COMMENT "---------------- Generating ADIN IR ----------------"
 )
