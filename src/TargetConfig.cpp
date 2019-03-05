@@ -19,11 +19,13 @@ using namespace  std;
 
 namespace remcu {
 
+#if 0
 static string targetMCU("unknown");
 
 std::string getCurrentConfig(){
     return targetMCU;
 }
+
 
 bool setConfig(const std::string target){
 
@@ -31,9 +33,7 @@ bool setConfig(const std::string target){
     bool set = false;
 #ifdef _MCU_TYPE_TEST
     if(target.compare(_S_("TEST")) == 0){
-        add_to_mem_interval(0x20000000, 0x20000000 + 200); //SRAM
-        add_to_adin_interval(0x20000000, 0x20000000 + 200); //ADIN
-        targetMCU.assign(target);
+
         set = true;
     }
 #elif defined(_MCU_TYPE_STM32F4_Discovery)
@@ -44,7 +44,12 @@ bool setConfig(const std::string target){
         add_to_adin_interval(0x40020000,  0x40080000); //AHB1
         add_to_adin_interval(0x50000000,  0x50060C00); //AHB2
         add_to_adin_interval(0xA0000000,  0xA0001000); //AHB3
-        targetMCU.assign(target);
+        set = true;
+    }
+ELIFMCU(STM8L15X_MD)
+    if(CHECK("STM8L15X_MD")) == 0){
+        add_to_mem_interval(0, 0x800); //SRAM //SRAM
+        add_to_adin_interval(0x800,  0x10000); //Perephi
         set = true;
     }
 #else
@@ -55,8 +60,10 @@ bool setConfig(const std::string target){
         ADIN_PRINTF(__ERROR, "unknown config", 1);
         return false;
     }
+
+    targetMCU.assign(target);
     return true;
 }
-
+#endif
 
 }

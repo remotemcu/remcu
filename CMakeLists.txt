@@ -19,7 +19,8 @@ endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 
-include(${MCU_LIB_PATH}/lib.cmake)
+include(${MCU_LIB_PATH})
+
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(version)
 include(utils)
@@ -61,13 +62,10 @@ else()
 	SET(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fvisibility=hidden" )
 endif()
 
-set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})
-
-
-add_subdirectory(test)
+set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE})
 
 # shared library
-add_library(remcu SHARED ${LIB_SOURCE})
+add_library(remcu SHARED ${LIB_SOURCE} ${ADIN_OBJECT_FILE})
 define_file_basename_for_sources(remcu)
 add_dependencies(remcu ${LICENSE_SIGN_FILE})
 
@@ -80,11 +78,11 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
 
-file(COPY ${COPY_OBJECT_FROM_LIB}
+file(COPY ${COPY_SOURCE_FROM_LIB}
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}/remcu_include
 )
 
-file(COPY ${MCU_LIB_PATH}/README.txt
+file(COPY ${COPY_DESCRIPTION_FROM_LIB}
 	DESTINATION  ${CMAKE_CURRENT_BINARY_DIR}
 )
 
@@ -96,7 +94,7 @@ add_custom_command(TARGET remcu POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "--------------------------- Archive lib ---------------------------"
 )
-
+#[[
 add_custom_command(TARGET remcu POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E make_directory install
     COMMAND ${CMAKE_COMMAND} -E copy
@@ -108,3 +106,4 @@ add_custom_command(TARGET remcu POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "--------------------------- Copy files ---------------------------"
 )
+]]

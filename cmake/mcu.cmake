@@ -9,6 +9,10 @@ endif()
 
 add_definitions(-D_MCU_TYPE_${MCU_TYPE})
 
-if(NOT DEFINED COPY_OBJECT_FROM_LIB)
-	message(FATAL_ERROR "******* $COPY_OBJECT_FROM_LIB is not defined! ********")
+if(NOT DEFINED COPY_SOURCE_FROM_LIB)
+	message(FATAL_ERROR "******* $COPY_SOURCE_FROM_LIB is not defined! ********")
+endif()
+
+if(NOT DEFINED CONF_SOURCE)
+	message(FATAL_ERROR "******* $CONF_SOURCE is not defined! ********")
 endif()
