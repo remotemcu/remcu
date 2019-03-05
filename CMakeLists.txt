@@ -62,12 +62,14 @@ else()
 	SET(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fvisibility=hidden" )
 endif()
 
-set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE})
+set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE} ${ADIN_OBJECT_FILE})
 
 # shared library
-add_library(remcu SHARED ${LIB_SOURCE} ${ADIN_OBJECT_FILE})
+add_library(remcu SHARED ${LIB_SOURCE})
 define_file_basename_for_sources(remcu)
 add_dependencies(remcu ${LICENSE_SIGN_FILE})
+
+add_subdirectory(test EXCLUDE_FROM_ALL)
 
 if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
