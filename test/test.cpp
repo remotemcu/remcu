@@ -72,7 +72,7 @@ void standartTestAddr(uint32_t address){
     for(int i =0; i < qty_write; i++)
         testMessage[i] = '0' + i;
 
-    testMessage[_SIZE] = '\0';
+    testMessage[_SIZE - 1] = '\0';
 
     uint8_t dist[100] = {'\0'};
 
