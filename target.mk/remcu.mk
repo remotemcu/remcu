@@ -6,23 +6,39 @@ ifneq (,$(findstring CYGWIN,$(OS_NAME)))
 OS_NAME = CYGWIN
 endif
 
+
+ifndef LLVM_ADIN_PATH
+$(error "LLVM_ADIN_PATH variable not set!")
+endif
+
+
+
 ifeq ($(OS_NAME),CYGWIN)
-CC			= "$(CLANG_PATH)clang++"
+#CC			= "$(CLANG_PATH)clang++"
+CLANG 		= "$(CLANG_PATH)clang++"
 AR 			= "$(CLANG_PATH)llvm-ar"
+LD 			= "$(CLANG_PATH)llvm-link"
 ifeq ($(CMAKE_BUILD_TYPE),Debug)
 IR_FLAGS = -D_DEBUG -D_MT -D_DLL 
 endif
 else
-CC			= clang++
+#CC			= clang++
+CLANG 		= clang++
 AR 			= llvm-ar
-CFLAGS 		= -fPIC
+LD 			= llvm-link
+COMPILE_FLAGS 		= -fPIC
 endif
+
+LD = llvm-link
 
 OPT			= "$(LLVM_ADIN_PATH)opt"
 
 IR_FLAGS += -S -emit-llvm
-ADIN_FLAGS = -adin -S
+OPT_FLAGS = -adin -S
 
+
+
+all: clean_build $(BUILD_DIR) $(OUTPUT)
 
 
 .PHONY: clean_build
@@ -32,4 +48,4 @@ clean_build:
 $(BUILD_DIR):
 	mkdir -p $@
 
-all: clean_build $(BUILD_DIR) $(OUTPUT)
+print-%  : ; @echo $* = $($*)
