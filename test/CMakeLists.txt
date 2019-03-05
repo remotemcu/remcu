@@ -56,9 +56,9 @@ add_executable(test_static test.cpp ${LIB_SOURCE})
 define_file_basename_for_sources(test_static)
 define_file_basename_for_sources(test_shared)
 
-#add_dependencies(test_static ${TEST_IR_ADIN_LL_O})
+#add_dependencies(test_static ${MCU_OBJECT_FILE})
 #add_dependencies(test_static ${LICENSE_SIGN_FILE})
-#add_dependencies(remcu_ir_shared ${TEST_IR_ADIN_LL_O})
+#add_dependencies(remcu_ir_shared ${MCU_OBJECT_FILE})
 
 if(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)

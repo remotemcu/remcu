@@ -62,7 +62,15 @@ else()
 	SET(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fvisibility=hidden" )
 endif()
 
-set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE} ${ADIN_OBJECT_FILE})
+
+SET_SOURCE_FILES_PROPERTIES(
+  ${MCU_OBJECT_FILE}
+  PROPERTIES
+  EXTERNAL_OBJECT true
+  GENERATED true
+  )
+
+set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE} ${MCU_OBJECT_FILE})
 
 # shared library
 add_library(remcu SHARED ${LIB_SOURCE})
