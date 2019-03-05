@@ -19,15 +19,6 @@ using namespace  std;
 
 namespace remcu {
 
-bool add_to_adin_interval(const llvm_ocd_addr start, const llvm_ocd_addr end);
-
-void clear_all_adin_interval();
-
-void clearConfig(){
-    clear_all_adin_interval();
-    clear_all_mem_interval();
-}
-
 static string targetMCU("unknown");
 
 std::string getCurrentConfig(){

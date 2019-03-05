@@ -17,6 +17,10 @@ typedef struct {
 static vector<AddrInterval> adinIntervals;
 static vector<AddrInterval> memIntervals;
 
+void clearConfig(){
+    clear_all_adin_interval();
+    clear_all_mem_interval();
+}
 
 static bool add_to_interval(vector<AddrInterval> & intervals, const llvm_ocd_addr start, const llvm_ocd_addr end){
     if(start >= end){
