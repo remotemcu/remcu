@@ -46,14 +46,6 @@ extern "C"{
      return returnStr(str, len, version);
  }
 
- bool remcu_setConfig(const char* target){
-     return remcu::setConfig(string(target));
- }
-
- void remcu_clearConfig(){
-     return remcu::clearConfig();
- }
-
  bool remcu_getCurrentConfig(char* str, size_t & len){
      const string & config = remcu::getCurrentConfig();
      return returnStr(str, len, config);

@@ -132,10 +132,6 @@ int main(int argc, char** argv)
 
     assertErrorTest(address);
 
-    assert(remcu_setConfig("ERROR") == false);
-
-    assert(remcu_setConfig("TEST"));
-
     assert(remcu_is_connected() == false);
 
     if(testOpenocd){

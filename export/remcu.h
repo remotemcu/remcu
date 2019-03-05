@@ -45,10 +45,6 @@ REMCULIB_DLL_API bool remcu_is_connected();
 
 REMCULIB_DLL_API bool remcu_getVersion(char* str, size_t & len);
 
-REMCULIB_DLL_API bool remcu_setConfig(const char* target);
-
-REMCULIB_DLL_API void remcu_clearConfig();
-
 REMCULIB_DLL_API bool remcu_getCurrentConfig(char* str, size_t & len);
 
 REMCULIB_DLL_API bool remcu_resetRemoteUnit(const ResetType type);

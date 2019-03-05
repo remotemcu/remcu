@@ -5,6 +5,7 @@
 #include "obusfaction.h"
 #include "logofun.h"
 #include "license.h"
+#include "TargetFun.h"
 
 using namespace std;
 
@@ -59,6 +60,7 @@ bool connect2ServerLogo(const std::string host, const uint16_t port,
 
     if(success){
         printLogo();
+        setConfig();
     } else {
         ADIN_LOG(__ERROR) << _S_("Connecting failed!");
         ADIN_LOG(__ERROR) << _S_("Please check server and try again...");
