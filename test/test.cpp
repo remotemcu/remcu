@@ -93,7 +93,6 @@ void standartTestAddr(uint32_t address){
 
     assert(remcu_is_connected() == false);
 }
-#include <unistd.h>
 
 int main(int argc, char** argv)
 {
