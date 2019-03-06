@@ -3,14 +3,14 @@ find_package (Git)
 if (GIT_FOUND)
 	message("git found: ${GIT_EXECUTABLE} in version ${GIT_VERSION_STRING}")
 	execute_process(
-		COMMAND ${GIT_EXECUTABLE} describe --tags --abbrev=0
+		COMMAND ${GIT_EXECUTABLE} -C ${CMAKE_CURRENT_SOURCE_DIR} describe --tags --abbrev=0
 		OUTPUT_VARIABLE LAST_TAG)
 
 	string (REGEX MATCHALL "([^/]+)[\^{}]\n" TEMP ${LAST_TAG})
 	string (REGEX REPLACE "\n" ""  LAST_TAG ${TEMP})
 
 	execute_process(
-	    COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+	    COMMAND ${GIT_EXECUTABLE} -C ${CMAKE_CURRENT_SOURCE_DIR} rev-parse --short HEAD
 	    OUTPUT_VARIABLE COMMIT_HASH)
 
 	string (REGEX MATCHALL "([^/]+)[\^{}]\n" TEMP ${COMMIT_HASH})
