@@ -45,8 +45,6 @@ REMCULIB_DLL_API bool remcu_is_connected();
 
 REMCULIB_DLL_API bool remcu_getVersion(char* str, size_t & len);
 
-REMCULIB_DLL_API bool remcu_getCurrentConfig(char* str, size_t & len);
-
 REMCULIB_DLL_API bool remcu_resetRemoteUnit(const ResetType type);
 
 REMCULIB_DLL_API void remcu_setVerboseLevel(const LevelDebug level);

@@ -115,10 +115,6 @@ int main(int argc, char** argv)
 
     assertErrorTest(address);
 
-    assert(remcu_setConfig("ERROR") == false);
-
-    assert(remcu_setConfig("TEST_CONFIG_MEM"));
-
     assert(remcu_is_connected() == false);
 
     if(testOpenocd){
@@ -137,7 +133,7 @@ int main(int argc, char** argv)
 
     assert(remcu_resetRemoteUnit(ResetType::__HALT));
 
-    assert(remcu_resetRemoteUnit(ResetType::__INIT) == false);
+    assert(remcu_resetRemoteUnit(ResetType::__RUN) == false);
 
     standartTestAddr(address);
 

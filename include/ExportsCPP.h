@@ -25,8 +25,6 @@ namespace remcu {
 
  void clearConfig();
 
- std::string getCurrentConfig();
-
  bool resetRemoteUnit(const ResetType type);
 
  void setVerboseLevel(const LevelDebug level);
