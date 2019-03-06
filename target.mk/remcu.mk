@@ -14,22 +14,20 @@ endif
 
 
 ifeq ($(OS_NAME),CYGWIN)
-#CC			= "$(CLANG_PATH)clang++"
-CLANG 		= "$(CLANG_PATH)clang++"
-AR 			= "$(CLANG_PATH)llvm-ar"
-LD 			= "$(CLANG_PATH)llvm-link"
+CLANG			= "$(CLANG_PATH)clang"
+CLANGPP 		= "$(CLANG_PATH)clang++"
+AR 			= "$(LLVM_ADIN_PATH)llvm-ar"
+LD 			= "$(LLVM_ADIN_PATH)llvm-link"
 ifeq ($(CMAKE_BUILD_TYPE),Debug)
 IR_FLAGS = -D_DEBUG -D_MT -D_DLL 
 endif
 else
-#CC			= clang++
-CLANG 		= clang++
+CLANG			= clang
+CLANGPP 		= clang++
 AR 			= llvm-ar
 LD 			= llvm-link
 COMPILE_FLAGS 		= -fPIC
 endif
-
-LD = llvm-link
 
 OPT			= "$(LLVM_ADIN_PATH)opt"
 
