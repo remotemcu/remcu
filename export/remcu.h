@@ -16,7 +16,9 @@
   #endif
 #endif
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
 enum ResetType {
     __RUN = 0,
@@ -59,5 +61,8 @@ REMCULIB_DLL_API bool remcu_store2mem(const uintptr_t addr, const uint8_t* sink,
 
 REMCULIB_DLL_API bool remcu_loadFrMem(const uintptr_t addr, const size_t size, uint8_t* dist);
 
+#ifdef __cplusplus
 } //extern "C"
+#endif
+
 #endif // REMCU_H
