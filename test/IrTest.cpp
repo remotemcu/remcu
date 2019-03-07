@@ -17,6 +17,19 @@ typedef struct __attribute__((packed)) {
     int32_t field_3_32;
 } test_pack_struct;
 
+#define A1_VALUE 0x12345678
+#define A2_VALUE 0x87654321
+
+struct {
+    unsigned int        a1;
+    unsigned int        a2;
+} test_struct_load = {.a1 = A1_VALUE, .a2 = A2_VALUE};
+
+#define LONG_VALUE 0x123456789ABCDEF
+
+uint64_t test_global_var = LONG_VALUE;
+
+
 int irTest(int* addr){
 
     const uint32_t  VALUE32 = 0x12345678;
@@ -25,6 +38,14 @@ int irTest(int* addr){
 
     test_unpack_struct * unpack = reinterpret_cast<test_unpack_struct*>(addr);
     test_pack_struct * pack = reinterpret_cast<test_pack_struct*>(addr);
+
+    printf("\ntest_global_var: %p - v: %lx \n\n",&test_global_var, test_global_var);
+
+    assert(test_global_var == LONG_VALUE);
+
+    printf("\ntest_struct_load: %p - a1: %x - a2: %x\n\n",&test_struct_load, test_struct_load.a1, test_struct_load.a2 );
+
+    assert(test_struct_load.a1 == A1_VALUE);
 
     *addr = 0;
     *addr = VALUE32;

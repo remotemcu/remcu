@@ -96,6 +96,7 @@ void standartTestAddr(uint32_t address){
 
 int main(int argc, char** argv)
 {
+    int sanbox[11] = {0};
 
 #define _SIZE_VERSION 100
     char version[_SIZE_VERSION] = {'\0'};
@@ -137,6 +138,8 @@ int main(int argc, char** argv)
         std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
 
         assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL));
+
+        assert(irTest(sanbox) == 0);
 
         assert(remcu_resetRemoteUnit(ResetType::__HALT));
 

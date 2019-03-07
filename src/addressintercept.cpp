@@ -116,7 +116,7 @@ static inline bool storeToLocalValue(const llvm_ocd_addr pointer, const llvm_val
     return true;
 }
 
-static llvm_pass_arg getMask(llvm_pass_arg TypeSizeArg){
+static llvm_value_type getMask(llvm_pass_arg TypeSizeArg){
     llvm_value_type ret = 0;
     switch (TypeSizeArg) {
     case 1:
@@ -151,13 +151,13 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
     if(is_entry_adin_interval(pointer) == false){
-        ADIN_LOG(__WARNING) << _S_("load from JlocaJl, uka : ") <<  hex << pointer;
+        ADIN_LOG(__INFO) << _S_("_s lo, u : ") <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
 
     assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
-                  "Can't write value to uka: %p, raz: %d\n", pointer, TypeSizeArg);
+                  "Can't write value to u: %p, raz: %d\n", pointer, TypeSizeArg);
     return true;
 }
 
@@ -165,17 +165,20 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
 {
     assert_1message(is_empty_adin_interval() == false, "MCU is not set. Please input kind of MCU.");
 
-    if(is_entry_adin_interval(pointer) == false)
-        return loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
+    bool success = true;
 
-    if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
+    if(is_entry_adin_interval(pointer) == false){
+        ADIN_LOG(__INFO) << _S_("_l lo, u : ") <<  hex << pointer;
+        value = loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
+    } else if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
         value = 0;
-        ADIN_PRINTF(__ERROR,"Can't read value from uka: %p, raz: %d\n", pointer, TypeSizeArg);
+        ADIN_PRINTF(__ERROR,"Can't read value from u: %p, raz: %d\n", pointer, TypeSizeArg);
+        success = false;
     }
 
     value &= getMask(TypeSizeArg);
 
-    return true;
+    return success;
 }
 
 bool store2addr(const uintptr_t addr, const uint8_t* sink, const size_t size){
@@ -200,7 +203,7 @@ using namespace remcu;
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "___S : uka %p, zna 0x%X, raz %d, a %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    ADIN_PRINTF(__INFO, ">>> : u %p, z 0x%X, r %d, a %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     const bool success = store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 
@@ -213,7 +216,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "___L : uka %p, raz %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
+    ADIN_PRINTF(__INFO, "<<< : u %p, r %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
     llvm_value_type value = 0;
     const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
@@ -222,6 +225,8 @@ extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_
         value = 0;
         errorAppear();
     }
+
+    ADIN_PRINTF(__INFO, "_L : av 0x%X\n", value);
 
     return value;
 }
