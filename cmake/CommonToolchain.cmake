@@ -16,18 +16,22 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	endif()
 	message(STATUS ".... ${CMAKE_CXX_COMPILER} ")
 
-	set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
-	set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
-
-	if(WIN32)
-	else()
-		set(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fPIC" )
-		set(CMAKE_C_FLAGS "-fPIC" )
-		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fvisibility=hidden -s")
-		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fvisibility=hidden -s")
-	endif()
-
 	set(MCU_INCLUDE_MK_FILE ${REMCU_VM_PATH}/mcu_util/common.mk)
 else()
 	message(STATUS "CMAKE_TOOLCHAIN_FILE : ${CMAKE_TOOLCHAIN_FILE}")
 endif()
+
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+
+if(WIN32)
+else()
+	set(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fPIC" )
+	set(CMAKE_C_FLAGS "-fPIC" )
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fvisibility=hidden -s")
+	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fvisibility=hidden -s")
+endif()
+
+message("CMAKE_C_FLAGS_RELEASE : ${CMAKE_C_FLAGS_RELEASE} ")
+message("CMAKE_CXX_FLAGS_RELEASE : ${CMAKE_CXX_FLAGS_RELEASE} ")

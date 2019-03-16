@@ -17,7 +17,7 @@ set(ARCHIVE_FILES $<TARGET_FILE_NAME:remcu>
 file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/README.txt
       DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
       )
-
+#[[
 add_custom_command(TARGET remcu POST_BUILD
     COMMAND strip --strip-all $<TARGET_FILE_NAME:remcu>
     COMMAND ${CMAKE_COMMAND} -E tar cf ${FULL_ARCHIVE_NAME}.${ARCHIVE_SUFFIX} --format=${ARCHIVE_FORMAT} --
@@ -25,3 +25,4 @@ add_custom_command(TARGET remcu POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "--------------------------- Archive lib ---------------------------"
 )
+]]
