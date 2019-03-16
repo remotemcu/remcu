@@ -17,6 +17,7 @@ set(ARCHIVE_ROOT_PAT ${CMAKE_CURRENT_BINARY_DIR})
 set(REMCU_VM_BUILD_PATH build_remcu_object)
 
 include(archive)
+include(CommonToolchain)
 
 add_subdirectory(${REMCU_VM_PATH} ${REMCU_VM_BUILD_PATH})
 
