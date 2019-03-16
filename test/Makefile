@@ -1,5 +1,5 @@
 
-include $(REMCU_PATH_MK)/remcu.mk
+include $(MCU_MAKEFILE_PATH)
 
 
 $(OUTPUT): IrTest.cpp

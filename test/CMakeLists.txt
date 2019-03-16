@@ -27,7 +27,7 @@ include(McuCommon)
 
 add_custom_target( MCU_LIB
                    COMMAND make all
-                   REMCU_PATH_MK=${REMCU_PATH_MK}
+                   MCU_MAKEFILE_PATH=${MCU_MAKEFILE_PATH}
                    OUTPUT=${MCU_OBJECT_FILE}
                    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
