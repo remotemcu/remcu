@@ -17,6 +17,7 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	message(STATUS ".... ${CMAKE_CXX_COMPILER} ")
 
 	set(MCU_INCLUDE_MK_FILE ${REMCU_VM_PATH}/mcu_util/common.mk)
+	set(STRIP_COMMAND strip)
 else()
 	message(STATUS "CMAKE_TOOLCHAIN_FILE : ${CMAKE_TOOLCHAIN_FILE}")
 endif()
