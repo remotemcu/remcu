@@ -16,6 +16,8 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	endif()
 	message(STATUS ".... ${CMAKE_CXX_COMPILER} ")
 
+	set(CMAKE_CXX_STANDARD 14)
+
 	set(MCU_INCLUDE_MK_FILE ${REMCU_VM_PATH}/mcu_util/common.mk)
 	set(STRIP_COMMAND strip)
 else()

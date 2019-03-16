@@ -48,30 +48,3 @@ file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.h
 add_executable(test_shared test.cpp)
 target_include_directories(test_shared PRIVATE ${ALL_INCLUDE_DIR})
 target_link_libraries(test_shared remcu)
-
-#[[
-function(copy_target_files INCLUDE_DIR_PATH README_DIR_PATH UTIL_DIR_PATH)
-	message(STATUS "Copy Header to: ${INCLUDE_DIR_PATH}")
-
-	FILE(GLOB COPY_SOURCE_FROM_LIB "${TARGET_DIR_PATH}/*.h")
-	file(COPY ${COPY_SOURCE_FROM_LIB}
-		DESTINATION  ${INCLUDE_DIR_PATH}
-		)
-
-    file(INSTALL ${TARGET_DIR_PATH}/platform/devices/MK64F12/include/
-    	DESTINATION ${INCLUDE_DIR_PATH}/MK64F12/include/
-    	FILES_MATCHING PATTERN "*.h"
-    	)
-    file(INSTALL ${TARGET_DIR_PATH}/platform/hal/src/sim/MK64F12/
-    	DESTINATION ${INCLUDE_DIR_PATH}/src/sim/MK64F12/
-    	FILES_MATCHING PATTERN "*.h"
-    	)
-    file(INSTALL ${TARGET_DIR_PATH}/platform/system/src/clock/MK64F12/
-    	DESTINATION ${INCLUDE_DIR_PATH}/src/clock/MK64F12/
-    	FILES_MATCHING PATTERN "*.h"
-    	)
-    file(COPY "${TARGET_DIR_PATH}/README.txt"
-		DESTINATION  ${README_DIR_PATH}
-		)
-endfunction()
-]]
