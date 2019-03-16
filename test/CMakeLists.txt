@@ -16,7 +16,9 @@ set(FULL_NAME_MCU_LIB ${MCU_TYPE}-${MCU_LIB_NAME}-${MCU_MAJOR_VERSION_LIB}-${MCU
 
 set(CONF_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/conf.cpp)
 
-set(MCU_OBJECT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/build/${MCU_TYPE}.adin.o)
+set(BUILD_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${FULL_NAME_MCU_LIB})
+
+set(MCU_OBJECT_FILE ${BUILD_DIRECTORY}/${MCU_TYPE}.adin.o)
 
 set(LICENSE_TYPE EDU)
 
@@ -28,9 +30,10 @@ include(McuCommon)
 add_custom_target( MCU_LIB
                    COMMAND make all
                    MCU_UTIL_PATH=${MCU_UTIL_PATH}
-                   TARGET_MK=${MCU_COMMON_MK_PATH}
+                   TARGET_MK=${MCU_INCLUDE_MK_FILE}
                    OUTPUT=${MCU_OBJECT_FILE}
                    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                   BUILD_DIRECTORY=${BUILD_DIRECTORY}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                    COMMENT "---------------- Generating ADIN IR ----------------"
 )

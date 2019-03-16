@@ -1,4 +1,4 @@
-BUILD_DIR 	= build
+BUILD_DIR 	= $(BUILD_DIRECTORY)
 
 OS_NAME := $(shell uname)
 
