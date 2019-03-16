@@ -142,7 +142,7 @@ if(NOT DEFINED TARGET_REMCU_OS_NAME)
 endif()
 
 if(DEFINED OPTION_DESCRIPTOR)
-		message(WARNING "******* set option descriptor ${OPTION_DESCRIPTOR} ********")
+	message(WARNING "******* set option descriptor ${OPTION_DESCRIPTOR} ********")
 else()
 	set(OPTION_DESCRIPTOR C_INTERFACE)
 endif()

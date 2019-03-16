@@ -27,7 +27,8 @@ include(McuCommon)
 
 add_custom_target( MCU_LIB
                    COMMAND make all
-                   MCU_MAKEFILE_PATH=${MCU_MAKEFILE_PATH}
+                   MCU_UTIL_PATH=${MCU_UTIL_PATH}
+                   TARGET_MK=${MCU_COMMON_MK_PATH}
                    OUTPUT=${MCU_OBJECT_FILE}
                    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -40,6 +41,10 @@ file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.h
       DESTINATION ${ALL_INCLUDE_DIR}
       )
 
+
+add_executable(test_shared test.cpp)
+target_include_directories(test_shared PRIVATE ${ALL_INCLUDE_DIR})
+target_link_libraries(test_shared remcu)
 
 #[[
 function(copy_target_files INCLUDE_DIR_PATH README_DIR_PATH UTIL_DIR_PATH)

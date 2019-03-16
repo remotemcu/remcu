@@ -20,4 +20,5 @@ include(archive)
 
 add_subdirectory(${REMCU_VM_PATH} ${REMCU_VM_BUILD_PATH})
 
-set(MCU_MAKEFILE_PATH ${REMCU_VM_PATH}/Makefiles/common.mk)
+set(MCU_UTIL_PATH ${REMCU_VM_PATH}/mcu_util/)
+set(MCU_COMMON_MK_PATH ${REMCU_VM_PATH}/mcu_util/common.mk)

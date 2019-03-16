@@ -3,7 +3,9 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "remcu_exports_symbol_enter.h"
 #include "IrTest.h"
+#include "remcu_exports_symbol_exit.h"
 
 typedef struct {
     int8_t  field_1_8;

@@ -1,6 +1,7 @@
 
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string>
 #include <iostream>
@@ -15,7 +16,8 @@
 #include "obusfaction.h"
 #include "logofun.h"
 */
-#include "test/IrTest.h"
+#include "IrTest.h"
+#include "remcu.h"
 
 
 #pragma clang diagnostic ignored "-Wall"
@@ -52,7 +54,7 @@ void assertErrorTest(uint32_t address){
     error = false;
     remcu_clearErrorCount();
 
-    remcu_setErrorSignalFunc(nullptr);
+    remcu_setErrorSignalFunc(NULL);
     irTestSimple(reinterpret_cast<int*>(address));
     assert(error == false);
     remcu_clearErrorCount();
@@ -141,9 +143,9 @@ int main(int argc, char** argv)
 
         assert(irTest(sanbox) == 0);
 
-        assert(remcu_resetRemoteUnit(ResetType::__HALT));
+        assert(remcu_resetRemoteUnit(__HALT));
 
-        assert(remcu_resetRemoteUnit(ResetType::__RUN));
+        assert(remcu_resetRemoteUnit(__RUN));
 
         standartTestAddr(address);
     }
@@ -152,9 +154,9 @@ int main(int argc, char** argv)
 
     assert(remcu_connect2GDB(host.c_str(), PORT_GDB));
 
-    assert(remcu_resetRemoteUnit(ResetType::__HALT));
+    assert(remcu_resetRemoteUnit(__HALT));
 
-    assert(remcu_resetRemoteUnit(ResetType::__RUN) == false);
+    assert(remcu_resetRemoteUnit(__RUN) == false);
 
     standartTestAddr(address);
 

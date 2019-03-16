@@ -6,11 +6,9 @@ ifneq (,$(findstring CYGWIN,$(OS_NAME)))
 OS_NAME = CYGWIN
 endif
 
-
 ifndef LLVM_ADIN_PATH
 $(error "LLVM_ADIN_PATH variable not set!")
 endif
-
 
 
 ifeq ($(OS_NAME),CYGWIN)
@@ -33,7 +31,7 @@ LD 			= "$(LLVM_ADIN_PATH)llvm-link"
 IR_FLAGS += -S -emit-llvm
 OPT_FLAGS = -adin -S
 
-
+IR_FLAGS += -I $(MCU_UTIL_PATH)/include_export
 
 all: clean_build $(BUILD_DIR) $(OUTPUT)
 

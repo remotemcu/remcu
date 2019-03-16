@@ -1,9 +1,9 @@
 
-include $(MCU_MAKEFILE_PATH)
+include $(TARGET_MK)
 
 
 $(OUTPUT): IrTest.cpp
-	$(CLANGPP) $(IR_FLAGS) -I../include -I. -I../export IrTest.cpp -o $(BUILD_DIR)/IrTest.cpp.ll
+	$(CLANGPP) $(IR_FLAGS) -I. IrTest.cpp -o $(BUILD_DIR)/IrTest.cpp.ll
 	$(OPT) $(OPT_FLAGS) $(BUILD_DIR)/IrTest.cpp.ll -o $(BUILD_DIR)/IrTest.cpp.adin.ll
 	$(CLANGPP)  $(COMPILE_FLAGS) -c $(BUILD_DIR)/IrTest.cpp.adin.ll -o $@
 
