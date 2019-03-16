@@ -33,6 +33,8 @@ OPT_FLAGS = -adin -S
 
 IR_FLAGS += -I $(MCU_UTIL_PATH)/include_export
 
+IR_SUFFIX = ll
+
 all: clean_build $(BUILD_DIR) $(OUTPUT)
 
 
