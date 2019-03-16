@@ -3,7 +3,7 @@ set(MCU_TYPE TEST)
 
 set(MCU_LIB_NAME TEST_LIB)
 
-set(CMAKE_REMCU_OS_NAME testing)
+set(TARGET_REMCU_OS_NAME testing)
 
 set(MCU_MAJOR_VERSION_LIB 1)
 

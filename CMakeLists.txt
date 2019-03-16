@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.5)
-
+#[[
 if(NOT DEFINED CMAKE_CXX_COMPILER)
 	message(STATUS "Setting compilator ......")
 	if(WIN32)
@@ -7,7 +7,7 @@ if(NOT DEFINED CMAKE_CXX_COMPILER)
 	else()
 		set(CMAKE_CXX_COMPILER clang++)
 		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
-		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s") #!! -s
 	endif()
 endif()
 
@@ -32,17 +32,19 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(REMCU_PATH_MK ${CMAKE_CURRENT_SOURCE_DIR}/target.mk)
 
 include(${MCU_LIB_CMAKE})
+]]
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(version)
+include(CommonToolchain)
+
+include(GitDesc)
 include(utils)
 include(license)
-include(mcu)
-include(archive)
+#include(mcu)
+#include(archive)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
 # have all targets (exe, lib, dll) as projects (.vcproj)
-project(remcu CXX)
+#project(remcu CXX)
 
 # detect operating system and host processor
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
@@ -51,11 +53,10 @@ message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -s")
+#set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -s")
+#set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG -s")
+#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s") #!! -s
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/export)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCE)
 
@@ -63,23 +64,23 @@ if(WIN32)
 	set(NET_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/win/winsock2net)
 else()
 	aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src/unix NET_SOURCE)
-	SET(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fvisibility=hidden" )
+	# debug
+	#set(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -fvisibility=hidden -fPIC" )
 endif()
 
+set(LIB_SOURCE ${SOURCE} ${NET_SOURCE})
 
-SET_SOURCE_FILES_PROPERTIES(
-  ${MCU_OBJECT_FILE}
-  PROPERTIES
-  EXTERNAL_OBJECT true
-  GENERATED true
-  )
+add_library(remcu_object OBJECT ${LIB_SOURCE} ${CONF_SOURCE})
 
-set(LIB_SOURCE ${SOURCE} ${NET_SOURCE} ${CONF_SOURCE} ${MCU_OBJECT_FILE})
+define_file_basename_for_sources(remcu_object)
 
-# shared library
-add_library(remcu SHARED ${LIB_SOURCE})
-define_file_basename_for_sources(remcu)
-add_dependencies(remcu ${LICENSE_SIGN_FILE})
+target_compile_definitions(remcu_object PRIVATE _LICENSE_TYPE_=\"${LICENSE_TYPE}\")
+
+target_include_directories(remcu_object PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(remcu_object PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/export)
+target_include_directories(remcu_object PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+#[[
 add_dependencies(remcu MCU_LIB)
 
 if(MCU_TYPE STREQUAL "TEST")
@@ -87,7 +88,7 @@ if(MCU_TYPE STREQUAL "TEST")
 endif()
 
 if(WIN32)
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	target_compile_definitions(-D_CRT_SECURE_NO_WARNINGS)
 	target_link_libraries(remcu ws2_32)
 endif()
 
@@ -109,3 +110,49 @@ add_custom_command(TARGET remcu POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "--------------------------- Archive lib ---------------------------"
 )
+]]
+
+set(LICENSE_SIGN_SCRIPT license.py)
+set(LICENSE_SIGN_FILE REMCU_LICENSE.txt)
+
+add_custom_target (
+  ${LICENSE_SIGN_FILE}
+  COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/${LICENSE_SIGN_SCRIPT}
+  -int ${LICENSE_FILE_PATH}
+  -out ${ARCHIVE_ROOT_PAT}/${LICENSE_SIGN_FILE}
+  -t ${LICENSE_TYPE}
+  )
+
+
+add_dependencies(remcu_object ${LICENSE_SIGN_FILE})
+
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
+	DESTINATION ${ALL_INCLUDE_DIR}
+)
+
+
+if(NOT DEFINED TARGET_REMCU_OS_NAME)
+	if(NOT DEFINED ENV{TARGET_REMCU_OS_NAME})
+		message(WARNING "******* $TARGET_REMCU_OS_NAME is not defined! ********")
+		set(TARGET_REMCU_OS_NAME "undefined_os")
+	else()
+		set(TARGET_REMCU_OS_NAME $ENV{TARGET_REMCU_OS_NAME})
+	endif()
+endif()
+
+if(DEFINED OPTION_DESCRIPTOR)
+		message(WARNING "******* set option descriptor ${OPTION_DESCRIPTOR} ********")
+else()
+	set(OPTION_DESCRIPTOR C_INTERFACE)
+endif()
+
+get_git_describe(${CMAKE_CURRENT_SOURCE_DIR} GIT_DESCRIPTION)
+
+set(FULL_VERSION_NAME ${FULL_NAME_MCU_LIB}-${OPTION_DESCRIPTOR}-${TARGET_REMCU_OS_NAME}-${GIT_DESCRIPTION}-${LICENSE_TYPE})
+
+
+target_compile_definitions(remcu_object PRIVATE _FULL_VERSION_NAME_=\"${FULL_VERSION_NAME}\")
+
+
+set(FULL_ARCHIVE_NAME remcu-${FULL_VERSION_NAME} PARENT_SCOPE)

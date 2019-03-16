@@ -1,69 +1,69 @@
+cmake_minimum_required (VERSION 3.5)
+
+project(Test CXX)
+
+set(MCU_TYPE TEST)
+
+set(MCU_LIB_NAME TEST_LIB)
+
+set(TARGET_REMCU_OS_NAME testing)
+
+set(MCU_MAJOR_VERSION_LIB 1)
+
+set(MCU_MINOR_VERSION_LIB 00)
+
+set(FULL_NAME_MCU_LIB ${MCU_TYPE}-${MCU_LIB_NAME}-${MCU_MAJOR_VERSION_LIB}-${MCU_MINOR_VERSION_LIB} )
+
+set(CONF_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/conf.cpp)
+
+set(MCU_OBJECT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/build/${MCU_TYPE}.adin.o)
+
+set(LICENSE_TYPE EDU)
+
+
+set(CMAKE_MODULE_PATH ${REMCU_VM_PATH}/cmake)
+
+include(McuCommon)
+
+add_custom_target( MCU_LIB
+                   COMMAND make all
+                   REMCU_PATH_MK=${REMCU_PATH_MK}
+                   OUTPUT=${MCU_OBJECT_FILE}
+                   CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                   COMMENT "---------------- Generating ADIN IR ----------------"
+)
+
+include(shared)
+
+file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.h
+      DESTINATION ${ALL_INCLUDE_DIR}
+      )
+
 
 #[[
-if(WIN32)
-  #
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CLANG_IR_OPTIONS -D_MT -D_DLL)
-    message("WIN debug option: -D_DEBUG")
-    list(APPEND CLANG_IR_OPTIONS -D_DEBUG)
-  endif()
-else()
-  set(CLANG_IR2OBJ_OPTIONS -fPIC)
-endif()
+function(copy_target_files INCLUDE_DIR_PATH README_DIR_PATH UTIL_DIR_PATH)
+	message(STATUS "Copy Header to: ${INCLUDE_DIR_PATH}")
 
-set(TEST_IR_LL IrTest.ll)
-set(TEST_IR_ADIN_LL IrTest.adin.ll)
-set(TEST_IR_ADIN_LL_O IrTest.adin.ll.obj)
+	FILE(GLOB COPY_SOURCE_FROM_LIB "${TARGET_DIR_PATH}/*.h")
+	file(COPY ${COPY_SOURCE_FROM_LIB}
+		DESTINATION  ${INCLUDE_DIR_PATH}
+		)
 
-add_custom_target (
-  ${TEST_IR_LL}
-  COMMAND clang -S -emit-llvm ${CLANG_IR_OPTIONS} ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.cpp 
-  -I${CMAKE_CURRENT_SOURCE_DIR}/../export
-  -I${CMAKE_CURRENT_SOURCE_DIR}/../include
-  -I${CMAKE_CURRENT_SOURCE_DIR}/
-  -o ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_LL}
-  )
-
-add_custom_target (
-  ${TEST_IR_ADIN_LL}
-  COMMAND ${ADIN_OPT} -S -adin ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_LL}
-  -o ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL}
-  DEPENDS ${TEST_IR_LL}
-  )
-
-add_custom_target (
-  ${TEST_IR_ADIN_LL_O}
-  COMMAND clang -c ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL}
-  ${CLANG_IR2OBJ_OPTIONS}
-  -o ${CMAKE_CURRENT_BINARY_DIR}/${TEST_IR_ADIN_LL_O}
-  DEPENDS ${TEST_IR_ADIN_LL}
-  )
-
-SET_SOURCE_FILES_PROPERTIES(
-  ${TEST_IR_ADIN_LL_O}
-  PROPERTIES
-  EXTERNAL_OBJECT true
-  GENERATED true
-  )
+    file(INSTALL ${TARGET_DIR_PATH}/platform/devices/MK64F12/include/
+    	DESTINATION ${INCLUDE_DIR_PATH}/MK64F12/include/
+    	FILES_MATCHING PATTERN "*.h"
+    	)
+    file(INSTALL ${TARGET_DIR_PATH}/platform/hal/src/sim/MK64F12/
+    	DESTINATION ${INCLUDE_DIR_PATH}/src/sim/MK64F12/
+    	FILES_MATCHING PATTERN "*.h"
+    	)
+    file(INSTALL ${TARGET_DIR_PATH}/platform/system/src/clock/MK64F12/
+    	DESTINATION ${INCLUDE_DIR_PATH}/src/clock/MK64F12/
+    	FILES_MATCHING PATTERN "*.h"
+    	)
+    file(COPY "${TARGET_DIR_PATH}/README.txt"
+		DESTINATION  ${README_DIR_PATH}
+		)
+endfunction()
 ]]
-
-add_executable(test_shared test.cpp)
-target_link_libraries(test_shared remcu)
-
-add_executable(test_static test.cpp ${LIB_SOURCE})
-
-
-define_file_basename_for_sources(test_static)
-define_file_basename_for_sources(test_shared)
-
-#add_dependencies(test_static ${MCU_OBJECT_FILE})
-#add_dependencies(test_static ${LICENSE_SIGN_FILE})
-#add_dependencies(remcu_ir_shared ${MCU_OBJECT_FILE})
-
-if(WIN32)
-  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-  target_link_libraries(test_static ws2_32)
-  #target_link_libraries(remcu_ir_shared ws2_32)
-endif()
-
-
