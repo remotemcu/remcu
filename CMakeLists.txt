@@ -80,6 +80,10 @@ target_include_directories(remcu_object PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/incl
 target_include_directories(remcu_object PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/export)
 target_include_directories(remcu_object PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+if(WIN32)
+  target_compile_definitions(remcu_object PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
+
 #[[
 add_dependencies(remcu MCU_LIB)
 

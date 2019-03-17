@@ -25,3 +25,8 @@ add_custom_command(TARGET remcu POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "--------------------------- Archive lib ---------------------------"
 )
+
+if(WIN32)
+  #target_compile_definitions(remcu PRIVATE _CRT_SECURE_NO_WARNINGS)
+  target_link_libraries(remcu ws2_32)
+endif()

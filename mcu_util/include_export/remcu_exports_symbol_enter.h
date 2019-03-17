@@ -1,0 +1,1 @@
+#pragma clang attribute push (__declspec(dllexport), apply_to = function)
