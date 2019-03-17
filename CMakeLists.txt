@@ -135,6 +135,13 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
 	DESTINATION ${ALL_INCLUDE_DIR}
 )
 
+execute_process(
+	COMMAND ${CMAKE_COMMAND} -E touch 
+		${ALL_INCLUDE_DIR}/remcu_exports_symbol_enter.h
+		${ALL_INCLUDE_DIR}/remcu_exports_symbol_exit.h
+	)
+
+
 
 if(NOT DEFINED TARGET_REMCU_OS_NAME)
 	if(NOT DEFINED ENV{TARGET_REMCU_OS_NAME})
