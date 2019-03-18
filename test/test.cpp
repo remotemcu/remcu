@@ -39,6 +39,7 @@ static void callback(){
 
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
+static const int DEFAULT_TIMEOUT = 1;
 
 #define _STRING_ "123456789abc"
 
@@ -101,10 +102,9 @@ int main(int argc, char** argv)
     int sanbox[11] = {0};
 
 #define _SIZE_VERSION 100
-    char version[_SIZE_VERSION] = {'\0'};
-    size_t len = _SIZE_VERSION;
-    assert(remcu_getVersion(version, len));
-    std::cout << "version : " << version << endl;
+
+    assert(remcu_getVersion());
+    std::cout << "version : " << remcu_getVersion() << endl;
 
     if(argc < 3){
         printf("test requare 2 arguments: host and verbose level\n");
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
     if(testOpenocd){
         std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
 
-        assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL));
+        assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL, DEFAULT_TIMEOUT));
 
         assert(irTest(sanbox) == 0);
 
@@ -152,7 +152,7 @@ int main(int argc, char** argv)
 
     std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
 
-    assert(remcu_connect2GDB(host.c_str(), PORT_GDB));
+    assert(remcu_connect2GDB(host.c_str(), PORT_GDB, DEFAULT_TIMEOUT));
 
     assert(remcu_resetRemoteUnit(__HALT));
 

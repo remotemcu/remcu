@@ -36,20 +36,20 @@ typedef void (*ErrorSignalFunc)();
 #define _DEFAULT_TIMEOUT_SEC 3
 
 REMCULIB_DLL_API bool remcu_connect2OpenOCD(const char* host, const uint16_t port,
-                      const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+                      const int timeout_sec);
 
 REMCULIB_DLL_API bool remcu_connect2GDB(const char* host, const uint16_t port,
-                       const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
+                       const int timeout_sec);
 
 REMCULIB_DLL_API bool remcu_disconnect();
 
 REMCULIB_DLL_API bool remcu_is_connected();
 
-REMCULIB_DLL_API bool remcu_getVersion(char* str, size_t & len);
+REMCULIB_DLL_API const char * remcu_getVersion();
 
-REMCULIB_DLL_API bool remcu_resetRemoteUnit(const ResetType type);
+REMCULIB_DLL_API bool remcu_resetRemoteUnit(const enum ResetType type);
 
-REMCULIB_DLL_API void remcu_setVerboseLevel(const LevelDebug level);
+REMCULIB_DLL_API void remcu_setVerboseLevel(const enum LevelDebug level);
 
 REMCULIB_DLL_API void remcu_setErrorSignalFunc(ErrorSignalFunc callback);
 

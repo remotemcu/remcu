@@ -4,7 +4,7 @@
 
 using namespace std;
 using namespace remcu;
-
+#if 0
 static bool returnStr(char* str, size_t & len, const string & ret){
     const size_t fact_size = ret.size();
     const size_t need_size = fact_size + 1;
@@ -20,7 +20,7 @@ static bool returnStr(char* str, size_t & len, const string & ret){
     len = need_size;
     return true;
 }
-
+#endif
 extern "C"{
 
  bool remcu_connect2OpenOCD(const char* host, const uint16_t port,
@@ -41,9 +41,9 @@ extern "C"{
      return remcu::pingServer();
  }
 
- bool remcu_getVersion(char* str, size_t & len){
-     const string & version = remcu::getVersion();
-     return returnStr(str, len, version);
+ const char * remcu_getVersion(){
+     const static string version = remcu::getVersion();
+     return version.c_str();
  }
 
  bool remcu_resetRemoteUnit(const ResetType type){
