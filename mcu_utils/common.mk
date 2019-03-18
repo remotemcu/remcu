@@ -28,10 +28,10 @@ endif
 OPT			= "$(LLVM_ADIN_PATH)opt"
 LD 			= "$(LLVM_ADIN_PATH)llvm-link"
 
-IR_FLAGS += -S -emit-llvm
+IR_FLAGS += -S -emit-llvm -DREMCU_LIB
 OPT_FLAGS = -adin -S
 
-IR_FLAGS += -I $(MCU_UTIL_PATH)/include_export
+IR_FLAGS += -I $(MCU_UTIL_PATH)/include_utils
 
 IR_SUFFIX = ll
 

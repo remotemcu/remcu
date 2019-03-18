@@ -14,9 +14,11 @@ endif()
 set(ALL_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/remcu_include)
 set(ARCHIVE_ROOT_PAT ${CMAKE_CURRENT_BINARY_DIR})
 
+set(BUILD_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${FULL_NAME_MCU_LIB})
+
 set(REMCU_VM_BUILD_PATH build_remcu_object)
 
-set(MCU_UTIL_PATH ${REMCU_VM_PATH}/mcu_util/)
+set(MCU_UTIL_PATH ${REMCU_VM_PATH}/mcu_utils/)
 
 include(archive)
 include(CommonToolchain)
