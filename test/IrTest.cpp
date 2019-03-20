@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "remcu_exports_symbol_enter.h"
 #include "IrTest.h"
@@ -27,10 +28,14 @@ struct {
     unsigned int        a2;
 } test_struct_load = {.a1 = A1_VALUE, .a2 = A2_VALUE};
 
+typedef struct {
+    char                    Reserved3[1];
+    test_unpack_struct        test;       /**< \brief Offset: 0x20 (R/W 32) OSC8M Control A */
+} MemCpyStruct;
+
 #define LONG_VALUE 0x123456789ABCDEF
 
 uint64_t test_global_var = LONG_VALUE;
-
 
 int irTest(int* addr){
 
@@ -40,6 +45,30 @@ int irTest(int* addr){
 
     test_unpack_struct * unpack = reinterpret_cast<test_unpack_struct*>(addr);
     test_pack_struct * pack = reinterpret_cast<test_pack_struct*>(addr);
+    MemCpyStruct * memcpy_struct = reinterpret_cast<MemCpyStruct*>(addr);
+
+    memcpy_struct->test.field_1_8  = VALUE8;
+    memcpy_struct->test.field_2_16 = VALUE16;
+    memcpy_struct->test.field_3_32 = VALUE32;
+    test_unpack_struct getMemCpyStruct = memcpy_struct->test;
+    assert(getMemCpyStruct.field_1_8 == VALUE8);
+    assert(getMemCpyStruct.field_2_16 == VALUE16);
+    assert(getMemCpyStruct.field_3_32 == VALUE32);
+
+    memset(memcpy_struct, 0, sizeof (MemCpyStruct));
+    assert(memcpy_struct->test.field_1_8 == 0);
+    assert(memcpy_struct->test.field_2_16 == 0);
+    assert(memcpy_struct->test.field_3_32 == 0);
+
+    memcpy_struct->test = getMemCpyStruct;
+    assert(memcpy_struct->test.field_1_8 == VALUE8);
+    assert(memcpy_struct->test.field_2_16 == VALUE16);
+    assert(memcpy_struct->test.field_3_32 == VALUE32);
+
+    memset(&getMemCpyStruct, 0, sizeof (getMemCpyStruct));
+    assert(getMemCpyStruct.field_1_8 == 0);
+    assert(getMemCpyStruct.field_2_16 == 0);
+    assert(getMemCpyStruct.field_3_32 == 0);
 
     printf("\ntest_global_var: %p - v: %lx \n\n",&test_global_var, test_global_var);
 

@@ -197,6 +197,33 @@ bool loadFromAddr(const uintptr_t addr, const size_t size, uint8_t* dist){
     return true;
 }
 
+static const llvm_pass_arg SIZE_MEM_FUN_OPERAND = 8;
+static const llvm_pass_arg ALIGN_MEM_FUN_OPERAND = 1;
+
+bool adin_memcpy(llvm_pass_addr dest, const llvm_pass_addr src, const llvm_pass_arg size){
+    llvm_value_type tmp = 0;
+    for(llvm_pass_arg i=0; i < size; i++){
+        assert_1message(
+            load(reinterpret_cast<llvm_ocd_addr>(src+i), tmp, SIZE_MEM_FUN_OPERAND, ALIGN_MEM_FUN_OPERAND),
+            "error laod to mcp");
+        tmp &= 0xFF;
+        assert_1message(
+            store(reinterpret_cast<llvm_ocd_addr>(dest+i), tmp, SIZE_MEM_FUN_OPERAND, ALIGN_MEM_FUN_OPERAND),
+            "error write to mcp");
+    }
+    return true;
+}
+
+bool adin_memset(llvm_pass_addr dest, const llvm_pass_arg val, const llvm_pass_arg size){
+    const uint8_t val8 = val & 0xFF;
+    for(llvm_pass_arg i=0; i < size; i++){
+        assert_1message(
+            store(reinterpret_cast<llvm_ocd_addr>(dest+i), val8, SIZE_MEM_FUN_OPERAND, ALIGN_MEM_FUN_OPERAND),
+            "error mse");
+    }
+    return true;
+}
+
 } //namespace
 
 using namespace remcu;
@@ -229,4 +256,28 @@ extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_
     ADIN_PRINTF(__INFO, "_L : av 0x%X\n", value);
 
     return value;
+}
+
+extern "C" void __adin_memcpy_(llvm_pass_addr dest, const llvm_pass_addr src, const llvm_pass_arg size)
+{
+    ADIN_PRINTF(__INFO, "mc : ud %p, us %p, r %d\n", dest, src, size);
+    const bool success = adin_memcpy(dest, src, size);
+    if(success == false){
+        errorAppear();
+    }
+}
+#if 0
+extern "C" void __adin_memmove_(llvm_pass_addr dest, const llvm_pass_addr src, const llvm_pass_arg size)
+{
+    ADIN_PRINTF(__INFO, "mm : ud %p, us %p, r %d\n", dest, src, size);
+
+}
+#endif
+extern "C" void __adin_memset_(llvm_pass_addr dest, const llvm_pass_arg val, const llvm_pass_arg size)
+{
+    ADIN_PRINTF(__INFO, "ms : u %p, v %x, r %d\n", dest, val, size);
+    const bool success = adin_memset(dest, val, size);
+    if(success == false){
+        errorAppear();
+    }
 }
