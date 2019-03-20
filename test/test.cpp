@@ -62,6 +62,9 @@ void assertErrorTest(uint32_t address){
 }
 
 void standartTestAddr(uint32_t address){
+    int sanbox[111] = {0};
+
+    assert(irTest(sanbox) == 0);
 
     assert(remcu_is_connected());
 
@@ -99,8 +102,6 @@ void standartTestAddr(uint32_t address){
 
 int main(int argc, char** argv)
 {
-    int sanbox[11] = {0};
-
 #define _SIZE_VERSION 100
 
     assert(remcu_getVersion());
@@ -141,11 +142,9 @@ int main(int argc, char** argv)
 
         assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL, DEFAULT_TIMEOUT));
 
-        assert(irTest(sanbox) == 0);
+        assert(remcu_resetRemoteUnit(__RUN));
 
         assert(remcu_resetRemoteUnit(__HALT));
-
-        assert(remcu_resetRemoteUnit(__RUN));
 
         standartTestAddr(address);
     }
