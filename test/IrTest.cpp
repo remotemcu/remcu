@@ -111,7 +111,7 @@ int irTest(int* addr){
     pack->field_2_16  = VALUE16;
     pack->field_3_32  = VALUE32;
 
-    assert(addr[0] == ( (VALUE32 << 24) | (VALUE16 << 8) | VALUE8) );
+    assert(addr[0] == ((VALUE32 << 24) | (VALUE16 << 8) | VALUE8) );
     assert(addr[1] == (VALUE32 >> 8));
 
     *addr = 0;

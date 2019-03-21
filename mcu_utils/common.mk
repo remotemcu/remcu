@@ -23,6 +23,10 @@ CLANG			= clang
 CLANGPP 		= clang++
 AR 			= llvm-ar
 COMPILE_FLAGS 		= -fPIC
+ifeq ($(CMAKE_BUILD_TYPE),Debug)
+IR_FLAGS 			+= -g
+COMPILE_FLAGS 		+= -g
+endif
 endif
 
 OPT			= "$(LLVM_ADIN_PATH)opt"
