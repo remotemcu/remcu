@@ -6,7 +6,7 @@
 #include <cstring>
 #include <assert.h>
 
-#include "test/IrTest.h"
+#include "test/Ir.h"
 
 using namespace std;
 

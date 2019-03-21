@@ -39,7 +39,6 @@ include(CommonToolchain)
 include(GitDesc)
 include(utils)
 include(license)
-#include(mcu)
 #include(archive)
 
 # Maps to a solution file (Tutorial.sln). The solution will 
@@ -84,9 +83,8 @@ if(WIN32)
   target_compile_definitions(remcu_object PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 
+#add_dependencies(remcu_object IR_TEST_OBJECT_FILE)
 #[[
-add_dependencies(remcu MCU_LIB)
-
 if(MCU_TYPE STREQUAL "TEST")
 	add_subdirectory(test EXCLUDE_FROM_ALL)
 endif()

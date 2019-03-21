@@ -21,7 +21,7 @@ set(LICENSE_TYPE EDU)
 set(CMAKE_MODULE_PATH ${REMCU_VM_PATH}/cmake)
 
 include(McuCommon)
-
+#[[]]
 add_custom_target( MCU_LIB
                    COMMAND make all
                    MCU_UTIL_PATH=${MCU_UTIL_PATH}
@@ -35,7 +35,7 @@ add_custom_target( MCU_LIB
 
 include(shared)
 
-file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/IrTest.h
+file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/Ir.h
       DESTINATION ${ALL_INCLUDE_DIR}
       )
 

@@ -1,10 +1,11 @@
 
 include $(TARGET_MK)
 
+SRC = Ir.cpp
 
-$(OUTPUT): IrTest.cpp
-	$(CLANGPP) $(IR_FLAGS) -I. IrTest.cpp -o $(BUILD_DIR)/IrTest.cpp.$(IR_SUFFIX)
-	$(OPT) $(OPT_FLAGS) $(BUILD_DIR)/IrTest.cpp.ll -o $(BUILD_DIR)/IrTest.cpp.adin.ll
-	$(CLANGPP)  $(COMPILE_FLAGS) -c $(BUILD_DIR)/IrTest.cpp.adin.ll -o $@
+$(OUTPUT): $(SRC)
+	$(CLANGPP) $(IR_FLAGS) -I. $(SRC) -o $(BUILD_DIR)/$(SRC).$(IR_SUFFIX)
+	$(OPT) $(OPT_FLAGS) $(BUILD_DIR)/$(SRC).ll -o $(BUILD_DIR)/$(SRC).adin.ll
+	$(CLANGPP)  $(COMPILE_FLAGS) -c $(BUILD_DIR)/$(SRC).adin.ll -o $@
 
 

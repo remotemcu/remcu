@@ -1,6 +1,7 @@
 
 #include "logger.h"
 #include "assertion.h"
+#include "IrTest.h"
 
 using namespace std;
 using namespace remcu;
@@ -74,5 +75,12 @@ extern "C"{
      return remcu::loadFrMem(addr, size, dist);
  }
 
+ const char* remcu_targetRAMtest(uintptr_t ramAddr){
+     const char* ret = IR_RamTest(reinterpret_cast<int*>(ramAddr));
+     if(ret != NULL){
+         ADIN_LOG(__ERROR) << ret;
+     }
+     return ret;
+ }
 
 }

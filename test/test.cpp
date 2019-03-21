@@ -16,7 +16,7 @@
 #include "obusfaction.h"
 #include "logofun.h"
 */
-#include "IrTest.h"
+#include "Ir.h"
 #include "remcu.h"
 
 
@@ -49,28 +49,29 @@ void assertErrorTest(uint32_t address){
     remcu_setErrorSignalFunc(callback);
     assert(remcu_getErrorCout() == 0);
     assert(error == false);
-    irTestSimple(reinterpret_cast<int*>(address));
+    simpleTest(reinterpret_cast<int*>(address));
     assert(remcu_getErrorCout() > 0);
     assert(error == true);
     error = false;
     remcu_clearErrorCount();
 
     remcu_setErrorSignalFunc(NULL);
-    irTestSimple(reinterpret_cast<int*>(address));
+    simpleTest(reinterpret_cast<int*>(address));
     assert(error == false);
     remcu_clearErrorCount();
 }
 
-void standartTestAddr(uint32_t address){
+void standartTestAddr(uintptr_t address){
     int sanbox[111] = {0};
+    int ret = 0;
 
-    assert(irTest(sanbox) == 0);
+    assert(remcu_targetRAMtest(reinterpret_cast<uintptr_t>(sanbox)) == NULL);
 
     assert(remcu_is_connected());
 
-    int ret = irTest(reinterpret_cast<int*>(address));
+    const char* error = remcu_targetRAMtest(address);
 
-    assert(ret == 0);
+    assert(error == NULL);
 
     #define _SIZE 30
     uint8_t testMessage[_SIZE];
@@ -116,7 +117,7 @@ int main(int argc, char** argv)
     int ret = 0;
 
     const string host(argv[1]);
-    const uint32_t address = 0x20000000;
+    const uintptr_t address = 0x20000000;
     const LevelDebug level = static_cast<LevelDebug>(atoi(argv[2]) & 0xF);
     bool testOpenocd = true;
 

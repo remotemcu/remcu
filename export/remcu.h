@@ -61,6 +61,8 @@ REMCULIB_DLL_API bool remcu_store2mem(const uintptr_t addr, const uint8_t* sink,
 
 REMCULIB_DLL_API bool remcu_loadFrMem(const uintptr_t addr, const size_t size, uint8_t* dist);
 
+REMCULIB_DLL_API const char* remcu_targetRAMtest(uintptr_t ramAddr);
+
 #ifdef __cplusplus
 } //extern "C"
 #endif

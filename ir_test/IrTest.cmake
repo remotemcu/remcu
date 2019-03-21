@@ -1,30 +1,22 @@
 
-set(MCU_TYPE TEST)
+set(BUILD_IR_TEST_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/IrTest)
 
-set(MCU_LIB_NAME TEST_LIB)
+set(IR_TEST_OBJECT_FILE ${BUILD_IR_TEST_DIRECTORY}/IrTest.adin.o)
 
-set(TARGET_REMCU_OS_NAME testing)
+#message(FATAL_ERROR "******* $IR_TEST_OBJECT_FILE ${IR_TEST_OBJECT_FILE} ********")
 
-set(MCU_MAJOR_VERSION_LIB 1)
-
-set(MCU_MINOR_VERSION_LIB 00)
-
-set(FULL_NAME_MCU_LIB ${MCU_TYPE}-${MCU_LIB_NAME}-${MCU_MAJOR_VERSION_LIB}-${MCU_MINOR_VERSION_LIB} )
-
-set(CONF_SOURCE ${CMAKE_CURRENT_LIST_DIR}/conf.cpp)
-
-set(MCU_OBJECT_FILE ${CMAKE_CURRENT_LIST_DIR}/build/${MCU_TYPE}.adin.o)
-
-add_custom_target( MCU_LIB
-	#OUTPUT ${MCU_OBJECT_FILE}
+add_custom_target( IR_TEST_OBJ
                    COMMAND make all
-                   REMCU_PATH_MK=${REMCU_PATH_MK}
-                   OUTPUT=${MCU_OBJECT_FILE}
+                   MCU_UTIL_PATH=${MCU_UTIL_PATH}
+                   TARGET_MK=${MCU_INCLUDE_MK_FILE}
+                   OUTPUT=${IR_TEST_OBJECT_FILE}
                    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                   BUILD_DIRECTORY=${BUILD_IR_TEST_DIRECTORY}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-                   COMMENT "---------------- Generating ADIN IR ----------------"
+                   COMMENT "---------------- Generating IR Test ----------------"
 )
 
+#[[
 set(TARGET_DIR_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 function(copy_target_files INCLUDE_DIR_PATH README_DIR_PATH UTIL_DIR_PATH)
@@ -51,3 +43,4 @@ function(copy_target_files INCLUDE_DIR_PATH README_DIR_PATH UTIL_DIR_PATH)
 		DESTINATION  ${README_DIR_PATH}
 		)
 endfunction()
+]]
