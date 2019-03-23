@@ -12,7 +12,7 @@
 
 # define assert_message(expr)							\
   if(expr){								\
-    __ASSERT_VOID_CAST (0);						\
+    (void)(0);						\
    } else { return #expr; }
 
 
