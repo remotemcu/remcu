@@ -7,6 +7,10 @@ if(NOT DEFINED CONF_SOURCE)
 	message(FATAL_ERROR "******* $CONF_SOURCE is not defined! ********")
 endif()
 
+if(NOT DEFINED LICENSE_TYPE)
+	message(WARNING "******* $LICENSE_TYPE is not defined! set EDU license ********")
+endif()
+
 set(ALL_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/remcu_include)
 set(ARCHIVE_ROOT_PAT ${CMAKE_CURRENT_BINARY_DIR})
 
