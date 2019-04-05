@@ -41,15 +41,11 @@ bool ClientGDB::resetRemoteUnit(const ResetType type) const {
     static const char * RESET_COMMAND = "$R#52";
     const size_t size = strlen(RESET_COMMAND);
 
-    size_t lenReceiv;
-    if(commandSendAndGetResponse(RESET_COMMAND, size,
-                                  bufferReceiv, lenReceiv, *TOKEN_ACK_SUCCESS) == false){
-        ADIN_PRINTF(__INFO, "wait OK\n", 0);
-    }
+    ADIN_LOG(__INFO) << "!";
 
-    if(readBeforeToken(bufferReceiv, lenReceiv, TOKEN_CHECKSUM) == false){
-        ADIN_PRINTF(__INFO, "failed OK .. continue \n", 0);
-    }
+    size_t lenReceiv;
+    assert_1message(commandSendAndGetResponse(RESET_COMMAND, size,
+                                              bufferReceiv, lenReceiv, *TOKEN_ACK_SUCCESS), "can't send reset command");
 
     assert_1message(sendAck(TOKEN_ACK_SUCCESS), "can't send ACK");
 
