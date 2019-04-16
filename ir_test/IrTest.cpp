@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-#if 0
+#if 1
 #include "remcu_exports_symbol_enter.h"
 #include "IrTest.h"
 #include "remcu_exports_symbol_exit.h"
@@ -78,11 +78,11 @@ static uint64_t test_global_var = LONG_VALUE;
     assert_message(getMemCpyStruct.field_2_16 == 0);
     assert_message(getMemCpyStruct.field_3_32 == 0);
 
-    printf("\ntest_global_var: %p - v: %lx \n\n",&test_global_var, test_global_var);
+    //printf("\ntest_global_var: %p - v: %lx \n\n",&test_global_var, test_global_var);
 
     assert_message(test_global_var == LONG_VALUE);
 
-    printf("\ntest_struct_load: %p - a1: %x - a2: %x\n\n",&test_struct_load, test_struct_load.a1, test_struct_load.a2 );
+    //printf("\ntest_struct_load: %p - a1: %x - a2: %x\n\n",&test_struct_load, test_struct_load.a1, test_struct_load.a2 );
 
     assert_message(test_struct_load.a1 == A1_VALUE);
 
