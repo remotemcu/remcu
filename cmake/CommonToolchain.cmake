@@ -25,7 +25,7 @@ else()
 endif()
 
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -pthread")
 set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
 
 if(WIN32)

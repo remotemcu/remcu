@@ -25,6 +25,9 @@ static ClientGDB gdb;
 
 static ClientBase * client = static_cast<ClientBase*>(&dummy);
 
+
+void startVM(const char * options);
+
 bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
                     const int timeout_sec){
 
@@ -41,7 +44,11 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
         return false;
     }
 
-    return client->connect(host,port, timeout_sec);
+    assert_1message(client->connect(host,port, timeout_sec), "connect server error");
+
+    startVM("start");
+
+    return true;
 }
 
 bool disconnect(){
