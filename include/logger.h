@@ -24,13 +24,13 @@ public:
             std::cout << getNameOfLevel(level) << "$"
                       << fileName
                       << "/" << funcName << ":"
-                      << line << ": ";
+                      << std::dec << line << ": ";
     }
 
     Log(const LevelDebug level, const int line) {
         cLevel = level;
         if (cLevel <= gLevel)
-            std::cout << getNameOfLevel(level) << "$"<< line << ": ";
+            std::cout << getNameOfLevel(level) << "$"<< std::dec << line << ": ";
     }
 
     template <class T> Log &operator<<(const T &v) {

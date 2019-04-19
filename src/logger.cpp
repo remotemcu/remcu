@@ -40,7 +40,7 @@ int Log::loggerf (const LevelDebug level, const std::string &fileName,
         return 0;
 
     std::cout << getNameOfLevel(level) << "$"
-              << fileName << "/" << funcName << ":" << line << ": ";
+              << fileName << "/" << funcName << ":" << std::dec << line << ": ";
 
     va_list args;
     va_start(args, __format);
@@ -58,7 +58,7 @@ int Log::loggerf (const LevelDebug level, const int line,
     if (level > gLevel)
         return 0;
 
-    std::cout << getNameOfLevel(level) << "$" << line << ": ";
+    std::cout << getNameOfLevel(level) << "$" << std::dec << line << ": ";
 
     va_list args;
     va_start(args, __format);
