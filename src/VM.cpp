@@ -1,5 +1,11 @@
 
 #ifdef NDEBUG
+#include <thread>
+
+#include "logger.h"
+
+using namespace std;
+
 static
 #include "vm_encript/vm.bin.h"
 
@@ -7,15 +13,6 @@ unsigned char * vm_blob_bin(){
 
     return blob_bin;
 }
-
-
-#endif
-
-#include <thread>
-
-#include "logger.h"
-
-using namespace std;
 
 namespace remcu {
 
@@ -73,8 +70,6 @@ static void threadVM_Fun()
     }
 }
 
-
-
 void startVM(const char * options){
     thread thread_VM(threadVM_Fun);
     if(options == nullptr)
@@ -86,3 +81,13 @@ void startVM(const char * options){
 }
 
 } //namespace
+
+#else
+
+namespace remcu {
+void startVM(const char * options){
+    (void)options;
+}
+} //namespace
+
+#endif
