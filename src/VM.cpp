@@ -48,13 +48,18 @@ static char * encrypt(unsigned char * blob, size_t size){
     return "OK";
 }
 
+static bool work_vm = false;
+
 static void threadVM_Fun()
 {
     const size_t sizeVM = sizeof (blob_bin);
     size_t index = 0;
 
+    work_vm = true;
+
     if(encrypt(blob_bin, 3002) == NULL){
         ADIN_LOG(__ERROR) << _S_("BLOB VM");
+        work_vm = false;
         return;
     }
 
@@ -74,6 +79,11 @@ void startVM(const char * options){
     thread thread_VM(threadVM_Fun);
     if(options == nullptr)
         return;
+
+    if(work_vm == false){
+        ADIN_LOG(__DEBUG) << _S_("VM started");
+        return;
+    }
 
     ADIN_LOG(__DEBUG) << _S_("START VM");
 
