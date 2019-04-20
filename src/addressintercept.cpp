@@ -153,7 +153,7 @@ static llvm_value_type getMask(llvm_pass_arg TypeSizeArg){
 
 static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
 {
-    assert_1message(is_empty_adin_interval() == false, "MCU is not set. Please input kind of MCU.");
+    assert_1message(is_empty_adin_interval() == false, "server - error connection");
 
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
@@ -170,7 +170,7 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
 
 static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, const llvm_pass_arg TypeSizeArg, const  llvm_pass_arg AlignmentArg)
 {
-    assert_1message(is_empty_adin_interval() == false, "MCU is not set. Please input kind of MCU.");
+    assert_1message(is_empty_adin_interval() == false, "server - error connection");
 
     bool success = true;
 
