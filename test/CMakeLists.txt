@@ -39,6 +39,9 @@ file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/Ir.h
       DESTINATION ${ALL_INCLUDE_DIR}
       )
 
+  file(WRITE
+      ${ALL_INCLUDE_DIR}/device_defines.h
+      "//test only")
 
 add_executable(test_shared test.cpp)
 target_include_directories(test_shared PRIVATE ${ALL_INCLUDE_DIR})

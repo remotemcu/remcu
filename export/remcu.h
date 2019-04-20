@@ -27,6 +27,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #ifndef __EXPORT
 #define __EXPORT
@@ -90,5 +91,7 @@ REMCULIB_DLL_API const char* remcu_targetRAMtest(uintptr_t ramAddr);
 #ifdef __cplusplus
 } //extern "C"
 #endif
+
+#include "device_defines.h"
 
 #endif // REMCU_H
