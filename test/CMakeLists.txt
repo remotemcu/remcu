@@ -46,3 +46,6 @@ file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/Ir.h
 add_executable(test_shared test.cpp)
 target_include_directories(test_shared PRIVATE ${ALL_INCLUDE_DIR})
 target_link_libraries(test_shared remcu)
+
+enable_testing()
+add_subdirectory(gtest)
