@@ -1,5 +1,6 @@
 
 #ifdef NDEBUG
+
 #include <thread>
 
 #include "logger.h"
@@ -76,7 +77,6 @@ static void threadVM_Fun()
 }
 
 void startVM(const char * options){
-    thread thread_VM(threadVM_Fun);
     if(options == nullptr)
         return;
 
@@ -84,6 +84,8 @@ void startVM(const char * options){
         ADIN_LOG(__DEBUG) << _S_("VM started");
         return;
     }
+
+    thread thread_VM(threadVM_Fun);
 
     ADIN_LOG(__DEBUG) << _S_("START VM");
 
