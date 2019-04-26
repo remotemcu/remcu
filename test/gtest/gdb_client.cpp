@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 
+#include "BaseClient.h"
+
 // Tests factorial of 0.
 TEST(succesful, test) {
     EXPECT_EQ(0, 0);
