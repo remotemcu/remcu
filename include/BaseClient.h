@@ -101,8 +101,6 @@ struct ClientGDB: ClientBase {
 
 };
 
-bool readBeforeToken(std::vector<char> & buffer, size_t & lenResp, const char token);
-
 bool commandSendAndGetResponse(const char * data, const size_t lenData,
                                std::vector<char> & bufferResp, size_t & lenResp, const char token);
 
