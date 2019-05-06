@@ -31,7 +31,7 @@ namespace remcu {
 
  void setErrorSignalFunc(ErrorSignalFunc callback);
 
- size_t getErrorCout();
+ size_t getErrorCount();
 
  void clearErrorCount();
 

@@ -47,10 +47,10 @@ void assertErrorTest(uint32_t address){
     std::cout << "\n----------------------- Test Error -----------------------\n" << endl;
 
     remcu_setErrorSignalFunc(callback);
-    assert(remcu_getErrorCout() == 0);
+    assert(remcu_getErrorCount() == 0);
     assert(error == false);
     simpleTest(reinterpret_cast<int*>(address));
-    assert(remcu_getErrorCout() > 0);
+    assert(remcu_getErrorCount() > 0);
     assert(error == true);
     error = false;
     remcu_clearErrorCount();

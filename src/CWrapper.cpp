@@ -59,8 +59,8 @@ extern "C"{
      remcu::setErrorSignalFunc(callback);
  }
 
- size_t remcu_getErrorCout(){
-     return remcu::getErrorCout();
+ size_t remcu_getErrorCount(){
+     return remcu::getErrorCount();
  }
 
  void remcu_clearErrorCount(){

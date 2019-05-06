@@ -18,7 +18,7 @@ void setErrorSignalFunc(ErrorSignalFunc callback){
     error_callback = callback;
 }
 
-size_t getErrorCout(){
+size_t getErrorCount(){
     return error_count;
 }
 

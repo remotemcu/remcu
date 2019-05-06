@@ -78,7 +78,7 @@ REMCULIB_DLL_API void remcu_setVerboseLevel(const enum LevelDebug level);
 
 REMCULIB_DLL_API void remcu_setErrorSignalFunc(ErrorSignalFunc callback);
 
-REMCULIB_DLL_API size_t remcu_getErrorCout();
+REMCULIB_DLL_API size_t remcu_getErrorCount();
 
 REMCULIB_DLL_API void remcu_clearErrorCount();
 
