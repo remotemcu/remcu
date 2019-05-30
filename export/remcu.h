@@ -54,8 +54,6 @@ enum LevelDebug { __ERROR = 0,
                   __WARNING, __INFO,
                   __DEBUG, __ALL_LOG };
 
-typedef void (*ErrorSignalFunc)();
-
 #define _MEM_OPERATION_SIZE 33
 
 #define _DEFAULT_TIMEOUT_SEC 3
@@ -75,8 +73,6 @@ REMCULIB_DLL_API const char * remcu_getVersion();
 REMCULIB_DLL_API bool remcu_resetRemoteUnit(const enum ResetType type);
 
 REMCULIB_DLL_API void remcu_setVerboseLevel(const enum LevelDebug level);
-
-REMCULIB_DLL_API void remcu_setErrorSignalFunc(ErrorSignalFunc callback);
 
 REMCULIB_DLL_API size_t remcu_getErrorCount();
 

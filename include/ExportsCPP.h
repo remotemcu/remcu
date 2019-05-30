@@ -9,6 +9,8 @@
 
 namespace remcu {
 
+typedef void (*ErrorSignalFunc)();
+
  bool connect2OpenOCD(const std::string host, const uint16_t port,
                                       const int timeout_sec = _DEFAULT_TIMEOUT_SEC);
 
