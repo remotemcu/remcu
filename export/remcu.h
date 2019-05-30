@@ -10,13 +10,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes with
- * Infineon Technologies AG !dave@infineon.com).
+ * RemoteLabX remotelabx.com (remcu@remotelabx.com)
  *********************************************************************************************************************
  *
  * Change History
  * --------------
  *
- * 2019-05-25:
+ * 2019-06-15:
  *     - Initial version
  *
  * @endcond
