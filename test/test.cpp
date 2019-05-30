@@ -91,8 +91,8 @@ void standartTestAddr(uintptr_t address){
 
     assert(ret == 0);
 
-    assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY-1) == true);
-    assert(remcu_store2mem(address, testMessage, _SIZE_ONE_MEMPCY) == false);
+    assert(remcu_store2mem(address, testMessage, _MEM_OPERATION_SIZE-1) == true);
+    assert(remcu_store2mem(address, testMessage, _MEM_OPERATION_SIZE) == false);
 
     remcu_disconnect();
 

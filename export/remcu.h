@@ -56,7 +56,7 @@ enum LevelDebug { __ERROR = 0,
 
 typedef void (*ErrorSignalFunc)();
 
-#define _SIZE_ONE_MEMPCY 33
+#define _MEM_OPERATION_SIZE 33
 
 #define _DEFAULT_TIMEOUT_SEC 3
 
