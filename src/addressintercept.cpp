@@ -28,6 +28,11 @@ static ClientBase * client = static_cast<ClientBase*>(&dummy);
 
 void startVM(const char * options);
 
+bool pingServer(){
+    ADIN_PRINTF(__INFO, "Ping server ... \n", 0);
+    return client->ping();
+}
+
 bool connect2Server(const std::string host, const uint16_t port, const ServerType server,
                     const int timeout_sec){
 
@@ -46,6 +51,8 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
 
     assert_1message(client->connect(host,port, timeout_sec), "connect server error");
 
+    assert_1message(pingServer(), "ping server error");
+
     startVM("start");
 
     return true;
@@ -56,11 +63,6 @@ bool disconnect(){
     ADIN_PRINTF(__INFO, "Close connection: %b\n", succes);
     client = static_cast<ClientBase*>(&dummy);
     return succes;
-}
-
-bool pingServer(){
-    ADIN_PRINTF(__INFO, "Ping server ... \n", 0);
-    return client->ping();
 }
 
 bool resetRemoteUnit(const ResetType type){
