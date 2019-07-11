@@ -17,7 +17,7 @@ IN_TEXT_LICENSE_FILE = args.int
 OUT_LECENSE_ASIGN = args.out
 TYPE = args.t
 
-print IN_TEXT_LICENSE_FILE, OUT_LECENSE_ASIGN
+print(IN_TEXT_LICENSE_FILE, OUT_LECENSE_ASIGN)
 
 
 if TYPE == 'EDU' :
@@ -39,7 +39,7 @@ text_trim += TYPE
 
 HASH_LICENSE = hashlib.sha256(text_trim.encode('utf-8')).hexdigest()
 
-print ">", HASH_LICENSE
+print(">", HASH_LICENSE)
 
 with open(OUT_LECENSE_ASIGN, 'w+') as outFile:
 	outFile.write(text)
