@@ -159,7 +159,9 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
 
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
-    if(is_entry_adin_interval(pointer) == false){
+    const bool isLocalValue = is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false;
+
+    if(isLocalValue){
         ADIN_LOG(__INFO) << _S_("_s lo, u : ") <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
@@ -176,7 +178,9 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
 
     bool success = true;
 
-    if(is_entry_adin_interval(pointer) == false){
+    const bool isLocalValue = is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false;
+
+    if(isLocalValue){
         ADIN_LOG(__INFO) << _S_("_l lo, u : ") <<  hex << pointer;
         value = loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
     } else if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
