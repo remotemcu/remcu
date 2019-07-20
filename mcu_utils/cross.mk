@@ -14,6 +14,7 @@ LD 			= "$(LLVM_ADIN_PATH)llvm-link"
 
 IR_FLAGS += --target=arm-linux-gnueabihf
 
+#Pizdec!!!!!!
 IR_FLAGS += -Xclang -load -Xclang /home/ser/MOCD/AddressInterceptor/AddressInterceptorLib/build/../../AddressInterception/build/src/libAddressInterceptorPassModule.so
 
 IR_SUFFIX = adin.ll
