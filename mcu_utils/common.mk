@@ -6,6 +6,8 @@ IR_FLAGS += -S -emit-llvm -DREMCU_LIB
 
 IR_FLAGS += -I $(MCU_UTIL_PATH)/include_utils
 
+CBE = echo
+
 all: clean_build $(BUILD_DIR) $(OUTPUT)
 
 
