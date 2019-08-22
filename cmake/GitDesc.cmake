@@ -26,7 +26,7 @@ function(get_git_describe repo_path return_var)
 	else()
 	#	add_definitions(-DCOMMIT_HASH=hz)
 	#	add_definitions(-DLAST_TAG=hz)
-		set(ret "hz")
+		set(ret "patchz")
 	endif (GIT_FOUND)
 
 	set(${return_var} ${ret} PARENT_SCOPE)
