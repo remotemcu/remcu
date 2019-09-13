@@ -29,10 +29,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#ifndef __EXPORT
-#define __EXPORT
-#endif
-
 #ifndef REMCULIB_DLL_API
   #if defined(_WIN32) || defined(WIN32)
     #define REMCULIB_DLL_API __declspec(dllimport)
