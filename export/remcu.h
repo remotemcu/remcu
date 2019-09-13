@@ -84,10 +84,10 @@ REMCULIB_DLL_API bool remcu_connect2GDB(const char* host, const uint16_t port,
 REMCULIB_DLL_API bool remcu_disconnect();
 
 /**
- * @brief remcu_is_connected
+ * @brief remcu_isConnected
  * @return Returns true if an attempt to connect is successful
  */
-REMCULIB_DLL_API bool remcu_is_connected();
+REMCULIB_DLL_API bool remcu_isConnected();
 
 /**
  * @brief remcu_getVersion

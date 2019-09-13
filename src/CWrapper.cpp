@@ -38,7 +38,7 @@ extern "C"{
      return remcu::disconnect();
  }
 
- bool remcu_is_connected(){
+ bool remcu_isConnected(){
      return remcu::pingServer();
  }
 
