@@ -10,7 +10,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes with
- * RemoteLabX remotemcu.com (remcu@remotemcu.com)
+ * remotemcu.com (remcu@remotemcu.com)
  *********************************************************************************************************************
  *
  * Change History
