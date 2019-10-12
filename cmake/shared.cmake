@@ -21,7 +21,7 @@ add_dependencies(remcu MCU_LIB)
 add_dependencies(remcu IR_TEST_OBJ)
 add_dependencies(remcu remcu_object)
 
-set(ARCHIVE_FILES $<TARGET_FILE_NAME:remcu> 
+list(APPEND ARCHIVE_FILES $<TARGET_FILE_NAME:remcu> 
   ${CMAKE_CURRENT_BINARY_DIR}/REMCU_LICENSE.txt ${ALL_INCLUDE_DIR} 
   ${CMAKE_CURRENT_BINARY_DIR}/README.txt)
 
