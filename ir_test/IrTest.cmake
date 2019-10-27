@@ -9,6 +9,7 @@ add_custom_target( IR_TEST_OBJ
                    COMMAND make all
                    MCU_UTIL_PATH=${MCU_UTIL_PATH}
                    TARGET_MK=${MCU_INCLUDE_MK_FILE}
+                   CROSS_MK_FILE=${CROSS_MK_FILE}
                    OUTPUT=${IR_TEST_OBJECT_FILE}
                    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    BUILD_DIRECTORY=${BUILD_IR_TEST_DIRECTORY}
