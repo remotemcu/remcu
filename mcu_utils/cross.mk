@@ -22,7 +22,7 @@ endif
 #IR_FLAGS += -Xclang -load -Xclang /home/ser/MOCD/AddressInterceptor/AddressInterceptorLib/build/../../AddressInterception/build/src/libAddressInterceptorPassModule.so
 #IR_SUFFIX = adin.ll
 
-IR_SUFFIX = ll
+#IR_SUFFIX = ll
 
 ifdef CROSS_MK_FILE
 include $(CROSS_MK_FILE)

@@ -8,6 +8,8 @@ IR_FLAGS += -I $(MCU_UTIL_PATH)/include_utils
 
 CBE = echo
 
+IR_SUFFIX = ll
+
 all: clean_build $(BUILD_DIR) $(OUTPUT)
 
 
