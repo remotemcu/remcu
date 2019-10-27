@@ -137,6 +137,7 @@ execute_process(
 	COMMAND ${CMAKE_COMMAND} -E touch 
 		${ALL_INCLUDE_DIR}/remcu_exports_symbol_enter.h
 		${ALL_INCLUDE_DIR}/remcu_exports_symbol_exit.h
+		${ALL_INCLUDE_DIR}/__init__.py
 	)
 
 
