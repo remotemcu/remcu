@@ -24,6 +24,8 @@ if TYPE == 'EDU' :
 	TYPE = 'EDU'
 elif TYPE == 'COM':
 	TYPE = 'COM'
+elif TYPE == 'CMT':
+	TYPE = 'CMT'
 else :
 	raise Exception('unknow license')
 
