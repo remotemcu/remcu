@@ -1,5 +1,6 @@
 *******************************************************************
 It is a free license for commercial use.
+email: license@remotemcu.com
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT

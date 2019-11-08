@@ -1,7 +1,9 @@
 *******************************************************************
-It is Education license.
+It is Community license.
 
 REMCU lib can freely be used for non-profit educational purposes without any limitation. Simply download and install it and start development of your new projects. No registration or activation process is required.
+
+If you are an individual working on your own devices to sell or for any other purpose, you may use the software to develop and test it without any limitation.
 
 In cooperation with organization, REMCU Lib can be made available free of charge for commercial use. A free commercial license may be used to develop applications, devices and test for certain devices from a silicon vendor. Free licenses can be gotten through the license request dialog.
 email: license@remotemcu.com
