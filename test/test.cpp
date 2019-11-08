@@ -46,7 +46,7 @@ static const int DEFAULT_TIMEOUT = 1;
 void assertErrorTest(uint32_t address){
     std::cout << "\n----------------------- Test Error -----------------------\n" << endl;
 
-    remcu_setErrorSignalFunc(callback);
+    //remcu_setErrorSignalFunc(callback);
     assert(remcu_getErrorCount() == 0);
     assert(error == false);
     simpleTest(reinterpret_cast<int*>(address));
@@ -55,7 +55,7 @@ void assertErrorTest(uint32_t address){
     error = false;
     remcu_clearErrorCount();
 
-    remcu_setErrorSignalFunc(NULL);
+    //remcu_setErrorSignalFunc(NULL);
     simpleTest(reinterpret_cast<int*>(address));
     assert(error == false);
     remcu_clearErrorCount();
@@ -67,7 +67,7 @@ void standartTestAddr(uintptr_t address){
 
     assert(remcu_targetRAMtest(reinterpret_cast<uintptr_t>(sanbox)) == NULL);
 
-    assert(remcu_is_connected());
+    assert(remcu_isConnected());
 
     const char* error = remcu_targetRAMtest(address);
 
@@ -98,7 +98,7 @@ void standartTestAddr(uintptr_t address){
 
     assertErrorTest(address);
 
-    assert(remcu_is_connected() == false);
+    assert(remcu_isConnected() == false);
 }
 
 int main(int argc, char** argv)
@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 
     assertErrorTest(address);
 
-    assert(remcu_is_connected() == false);
+    assert(remcu_isConnected() == false);
 
     if(testOpenocd){
         std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;

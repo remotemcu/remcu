@@ -46,7 +46,7 @@ void assertErrorTest(uint32_t address){
 
 void standartTestAddr(uint32_t address){
 
-    assert(remcu_is_connected());
+    assert(remcu_isConnected());
 
     int ret = irTest(reinterpret_cast<int*>(address));
 
@@ -74,7 +74,7 @@ void standartTestAddr(uint32_t address){
 
     assertErrorTest(address);
 
-    assert(remcu_is_connected() == false);
+    assert(remcu_isConnected() == false);
 }
 
 
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 
     assertErrorTest(address);
 
-    assert(remcu_is_connected() == false);
+    assert(remcu_isConnected() == false);
 
     if(testOpenocd){
         std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
