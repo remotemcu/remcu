@@ -171,7 +171,13 @@ if(CONSTEXPR_STRING_OBUSFICATION_DISABLE)
 endif(CONSTEXPR_STRING_OBUSFICATION_DISABLE)
 
 
+option(HIDE_SOURCE_INFO_IN_LOG "hide name of source file in log" ON)
 option(LICENSE_FILE_SKIP_ERROR "Skipping error of license file" ON)
+
+if(HIDE_SOURCE_INFO_IN_LOG)
+	target_compile_definitions(remcu_object PRIVATE HIDE_SOURCE_INFO_IN_LOG)
+endif(HIDE_SOURCE_INFO_IN_LOG)
+
 if(LICENSE_FILE_SKIP_ERROR)
 	target_compile_definitions(remcu_object PRIVATE LICENSE_FILE_SKIP_ERROR)
 endif(LICENSE_FILE_SKIP_ERROR)

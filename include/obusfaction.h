@@ -132,7 +132,7 @@ public:
 #else   //CONSTEXPR_STRING_OBUSFICATION_DISABLE
 
 #define _S_(str) std::string(str)
-#define _D_(str) ("hz")
+#define _D_(str) std::string(str)
 
 #endif //CONSTEXPR_STRING_OBUSFICATION_DISABLE
 

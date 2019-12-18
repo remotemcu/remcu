@@ -61,6 +61,20 @@ public:
     #define __BASENAME_SRC__ "unknown"
 #endif
 
+#ifdef HIDE_SOURCE_INFO_IN_LOG
+    #ifdef __BASENAME_SRC__
+        #undef __BASENAME_SRC__
+    #endif
+
+    #define __BASENAME_SRC__ "#"
+
+    #ifdef __FUNCTION__
+        #undef __FUNCTION__
+    #endif
+
+    #define __FUNCTION__ "#"
+#endif
+
 #ifdef NDEBUG
 
 #define ADIN_LOG(LEVEL) Log((LEVEL), _D_(__BASENAME_SRC__), _D_(__FUNCTION__), __LINE__)
