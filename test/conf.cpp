@@ -1,5 +1,5 @@
 
-#include "TargetFun.h"
+#include "target.h"
 #include "AddressInterval.h"
 
 namespace remcu {

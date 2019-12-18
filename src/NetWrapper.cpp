@@ -5,7 +5,7 @@
 #include "obusfaction.h"
 #include "logofun.h"
 #include "license.h"
-#include "TargetFun.h"
+#include "target.h"
 
 using namespace std;
 

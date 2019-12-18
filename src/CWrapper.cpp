@@ -2,7 +2,7 @@
 #include "logger.h"
 #include "assertion.h"
 #include "IrTest.h"
-#include "TargetFun.h"
+#include "target.h"
 
 using namespace std;
 using namespace remcu;
