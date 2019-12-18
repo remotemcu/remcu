@@ -53,7 +53,11 @@ bool connect2ServerLogo(const std::string host, const uint16_t port,
 
     if(ret != ErrorLicense_Type::_NO_ERROR){
         ADIN_LOG(__ERROR) << _S_("license err: '") << ret;
+#ifdef LICENSE_FILE_SKIP_ERROR
+        ADIN_LOG(__ERROR) << _S_("skip license file");
+#else
         return false;
+#endif //LICENSE_FILE_SKIP_ERROR
     }
 
     const bool success = connect2Server(host, port, server, timeout_sec);
