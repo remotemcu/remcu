@@ -1,5 +1,5 @@
 *******************************************************************
-It is Community license.
+It is a Community license.
 
 REMCU lib can freely be used for non-profit educational purposes without any 
 limitation. Simply download and install it and start development of your new 
