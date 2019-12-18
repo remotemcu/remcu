@@ -7,6 +7,8 @@ namespace remcu {
 
 void setConfig();
 
+uint32_t get_RAM_addr_for_test();
+
 std::string getCurrentConfig();
 
 } //namespace

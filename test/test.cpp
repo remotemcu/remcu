@@ -65,11 +65,11 @@ void standartTestAddr(uintptr_t address){
     int sanbox[111] = {0};
     int ret = 0;
 
-    assert(remcu_targetRAMtest(reinterpret_cast<uintptr_t>(sanbox)) == NULL);
+    assert(remcu_debuggerTest() == NULL);
 
     assert(remcu_isConnected());
 
-    const char* error = remcu_targetRAMtest(address);
+    const char* error = remcu_debuggerTest();
 
     assert(error == NULL);
 

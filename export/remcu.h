@@ -157,7 +157,7 @@ REMCULIB_DLL_API bool remcu_loadFrMem(const uintptr_t addr, const size_t count, 
  * else the function returns error message (char array)
  * Don't free the pointer after use!
  */
-REMCULIB_DLL_API const char* remcu_targetRAMtest(uintptr_t ramAddr);
+REMCULIB_DLL_API const char* remcu_debuggerTest();
 
 #ifdef __cplusplus
 } //extern "C"
