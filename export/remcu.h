@@ -149,10 +149,8 @@ REMCULIB_DLL_API bool remcu_store2mem(const uintptr_t addr, const uint8_t* src, 
 REMCULIB_DLL_API bool remcu_loadFrMem(const uintptr_t addr, const size_t count, uint8_t* dest);
 
 /**
- * @brief remcu_targetRAMtest
- * Performs RAM test of remote MCU
- * @param ramAddr - start address of RAM.
- * Example: it may be 0x20000000 for ARM cortex M* core
+ * @brief remcu_debuggerTest
+ * Performs test of debugger and debug server while mcu is connected.
  * @return If no error occurs, the function returns NULL
  * else the function returns error message (char array)
  * Don't free the pointer after use!
