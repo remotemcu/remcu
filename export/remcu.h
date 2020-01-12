@@ -57,7 +57,7 @@ enum LevelDebug { __ERROR = 0,
 /**
  * @brief remcu_connect2OpenOCD
  * The function is used to create a connection to the OpenOCD server destination
- * @param host - ip of OpenOCD server "XXX.XXX.XXX.XXX" or "localhost"
+ * @param host - ip address of OpenOCD server "XXX.XXX.XXX.XXX". If the server runs on the host machine, the argument should be "localhost" or "127.0.0.1" value.
  * @param port - port of OpenOCD server. Default is 6666
  * @param timeout_sec - An attempt to connect timed out without establishing a connection.
  * @return If no error occurs, function returns true
@@ -68,7 +68,7 @@ REMCULIB_DLL_API bool remcu_connect2OpenOCD(const char* host, const uint16_t por
 /**
  * @brief remcu_connect2GDB
  * The function is used to create a connection to the GDB server destination
- * @param host - ip of GDB server "XXX.XXX.XXX.XXX" or "localhost"
+ * @param host - ip address of GDB server "XXX.XXX.XXX.XXX". If the server runs on the host machine, the argument should be "localhost" or "127.0.0.1" value.
  * @param port - port of GDB server. Default of OpenOCD is 3333
  * @param timeout_sec - An attempt to connect timed out without establishing a connection.
  * @return If no error occurs, function returns true
@@ -97,10 +97,10 @@ REMCULIB_DLL_API const char * remcu_getVersion();
 
 /**
  * @brief remcu_resetRemoteUnit
- * Performs as hard a reset as possible
+ * The function performs a reset of remote target(MCU or SoC)
  * @param The parameter specifies what should happen after the reset
- * - __RUN Let the target run
- * - __HALT Immediately halt the target
+ * - __RUN (enum value 0) Let the target run
+ * - __HALT (enum value 1) Immediately halt the target
  * @return If no error occurs, function returns true
  */
 REMCULIB_DLL_API bool remcu_resetRemoteUnit(const enum ResetType type);
@@ -109,10 +109,10 @@ REMCULIB_DLL_API bool remcu_resetRemoteUnit(const enum ResetType type);
  * @brief remcu_setVerboseLevel
  * The function sets the verbose level. There are several levels of verboseness one can choose from.
  * @param level
- * level 0 is almost silent, producing only necessary messages
- * level 1 is good for most purposes, where as,
- * level 2 is good when developing a new pipeline.
- * level 3 is good for debugging, especially when getting un-expected results.
+ * level __ERROR (enum value 0) is almost silent, producing only necessary messages.
+ * level __WARNING (enum value 1) is good for most purposes, where as.
+ * level __INFO (enum value 2) is good when developing a new pipeline.
+ * level __DEBUG (enum value 3) is good for debugging, especially when getting un-expected results.
  */
 REMCULIB_DLL_API void remcu_setVerboseLevel(const enum LevelDebug level);
 
