@@ -8,24 +8,49 @@ namespace remcu {
 
 LevelDebug Log::gLevel = __ERROR;
 
+static const char * license_type = _LICENSE_TYPE_;
+
 
 void setVerboseLevel(LevelDebug level){
-    Log::setGLevel(level);
+#ifdef NDEBUG
+    const std::string LT(license_type);
+    bool no_comm_license = false;
+    no_comm_license |= LT == std::string(_S_("EDU"));
+    no_comm_license |= LT == std::string(_S_("CMT"));
+    if(no_comm_license){
+        switch (level) {
+        case LevelDebug::__ERROR:
+        case LevelDebug::__WARNING:
+        case LevelDebug::__INFO:
+            break;
+        case LevelDebug::__DEBUG:
+        case LevelDebug::__ALL_LOG:
+        default:
+            level = LevelDebug::__INFO;
+            break;
+        }
+    }
+#endif
+     Log::setGLevel(level);
 }
 
 const char * Log::getNameOfLevel(const LevelDebug level){
+    static const std::string ERROR(_S_("(ERROR)"));
+    static const std::string INFO(_S_("(INFO)"));
+    static const std::string WARNING(_S_("(WARNING)"));
+    static const std::string DEBUG(_S_("(DEBUG)"));
 
     switch (level) {
     case LevelDebug::__ERROR:
-        return "(ERROR)";
-    case LevelDebug::__INFO:
-        return "(INFO)";
+        return ERROR.data();
     case LevelDebug::__WARNING:
-        return "(WARNING)";
+        return WARNING.data();
+    case LevelDebug::__INFO:
+        return INFO.data();
     case LevelDebug::__DEBUG:
-        return "(DEBUG)";
+        return DEBUG.data();
     case LevelDebug::__ALL_LOG:
-        return "(DEBUG)";
+        return DEBUG.data();
     default:
         return "! It's very strangly !";
     }
