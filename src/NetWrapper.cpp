@@ -54,7 +54,8 @@ bool connect2ServerLogo(const std::string host, const uint16_t port,
     if(ret != ErrorLicense_Type::_NO_ERROR){
         ADIN_LOG(__ERROR) << _S_("license err: '") << ret;
 #ifdef LICENSE_FILE_SKIP_ERROR
-        ADIN_LOG(__ERROR) << _S_("skip license file");
+        ADIN_LOG(__ERROR) << _S_("License file REMCU_LICENSE.txt absent");
+        showLicesne();
 #else
         return false;
 #endif //LICENSE_FILE_SKIP_ERROR

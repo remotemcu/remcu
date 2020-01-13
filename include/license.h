@@ -15,6 +15,8 @@ enum ErrorLicense_Type{
 
 size_t checkLicense();
 
+void showLicesne();
+
 }
 
 
