@@ -59,7 +59,7 @@ enum LevelDebug { __ERROR = 0,
  * The function is used to create a connection to the OpenOCD server destination
  * @param host - ip address of OpenOCD server "XXX.XXX.XXX.XXX". If the server runs on the host machine, the argument should be "localhost" or "127.0.0.1" value.
  * @param port - port of OpenOCD server. Default is 6666
- * @param timeout_sec - An attempt to connect timed out without establishing a connection.
+ * @param timeout_sec - This parameter specifies the length of time, in seconds, to wait for a response when establishing communications. It can not be negative!
  * @return If no error occurs, function returns true
  */
 REMCULIB_DLL_API bool remcu_connect2OpenOCD(const char* host, const uint16_t port,
@@ -70,7 +70,7 @@ REMCULIB_DLL_API bool remcu_connect2OpenOCD(const char* host, const uint16_t por
  * The function is used to create a connection to the GDB server destination
  * @param host - ip address of GDB server "XXX.XXX.XXX.XXX". If the server runs on the host machine, the argument should be "localhost" or "127.0.0.1" value.
  * @param port - port of GDB server. Default of OpenOCD is 3333
- * @param timeout_sec - An attempt to connect timed out without establishing a connection.
+ * @param timeout_sec - This parameter specifies the length of time, in seconds, to wait for a response when establishing communications. It can not be negative!
  * @return If no error occurs, function returns true
  */
 REMCULIB_DLL_API bool remcu_connect2GDB(const char* host, const uint16_t port,
