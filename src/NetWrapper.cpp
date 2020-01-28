@@ -61,6 +61,11 @@ bool connect2ServerLogo(const std::string host, const uint16_t port,
 #endif //LICENSE_FILE_SKIP_ERROR
     }
 
+    if(timeout_sec < 0){
+        ADIN_LOG(__ERROR) << _S_("timeout can't be negative | current timeout : ") << timeout_sec;
+        return false;
+    }
+
     const bool success = connect2Server(host, port, server, timeout_sec);
 
     if(success){
