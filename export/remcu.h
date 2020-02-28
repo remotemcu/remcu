@@ -134,7 +134,7 @@ REMCULIB_DLL_API void remcu_clearErrorCount();
  * Copies count bytes from the local object pointed to by src to the remote MCU memory to by RAM address
  * @param addr - RAM MCU address to copy to. Example: it may be 0x20000000 for ARM cortex M* core
  * @param src - pointer to the memory location to copy from
- * @param count - number of bytes to copy. The param has to be no more than MAX_MEM_OPERATION_SIZE and less MIN_MEM_OPERATION_SIZE !
+ * @param count - number of bytes to copy. The parameter has to be no more than MAX_MEM_OPERATION_SIZE and less MIN_MEM_OPERATION_SIZE !
  * @return If no error occurs, function returns true
  */
 REMCULIB_DLL_API bool remcu_store2mem(const uintptr_t addr, const uint8_t* src, const size_t count);
@@ -143,7 +143,7 @@ REMCULIB_DLL_API bool remcu_store2mem(const uintptr_t addr, const uint8_t* src, 
  * @brief remcu_loadFrMem
  * Copies count bytes from the remote MCU memory to by RAM address to the object pointed to by dest.
  * @param addr - RAM MCU address to copy from. Example: it may be 0x20000000 for ARM cortex M* core
- * @param count - number of bytes to copy. The param has to be no more than MAX_MEM_OPERATION_SIZE and less MIN_MEM_OPERATION_SIZE !
+ * @param count - number of bytes to copy. The parameter has to be no more than MAX_MEM_OPERATION_SIZE and less MIN_MEM_OPERATION_SIZE !
  * @param dest - pointer to the memory location to copy to
  * @return If no error occurs, function returns true
  */
