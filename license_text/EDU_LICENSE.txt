@@ -5,7 +5,7 @@ REMCU lib can freely be used for non-profit educational purposes without any
 limitation. Simply download and install it and start development of your new 
 projects. No registration or activation process is required.
 
-Сommercial and Extended licenses can be gotten through the license request dialog.
+Commercial and Extended licenses can be gotten through the license request dialog.
 email: license@remotemcu.com
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS

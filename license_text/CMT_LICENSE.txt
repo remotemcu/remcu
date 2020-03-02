@@ -8,7 +8,7 @@ projects. No registration or activation process is required.
 If you are an individual working on your own devices to sell or for any other 
 purpose, you may use the software to develop and test it without any limitation.
 
-Сommercial and Extended licenses can be gotten through the license request dialog.
+Commercial and Extended licenses can be gotten through the license request dialog.
 email: license@remotemcu.com
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
