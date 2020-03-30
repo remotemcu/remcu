@@ -1,0 +1,16 @@
+
+
+if(NOT DEFINED LLVM_ADIN_PATH)
+	set(LLVM_ADIN_PATH /home/ser/MOCD/LLVM/adin-600-build/bin/)
+endif()
+
+
+set(CMAKE_CXX_STANDARD 14)
+
+set(STRIP_ARGUMENT --strip-all)
+
+set(CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE} "-O2 -DNDEBUG -pthread -fvisibility=hidden -s"
+ CACHE STRING "Linux x64 CMAKE_CXX_FLAGS_RELEASE: ${CMAKE_CXX_FLAGS_RELEASE}")
+
+set(CMAKE_CXX_FLAGS  ${CMAKE_CXX_FLAGS} "-fno-rtti -fno-exceptions -fPIC " 
+	CACHE STRING "Linux x64 CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")

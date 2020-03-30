@@ -20,9 +20,9 @@ set(MCU_OBJECT_FILE ${BUILD_DIRECTORY}/${MCU_TYPE}.adin.o)
 
 set(REMCU_VM_BUILD_PATH build_remcu_object)
 
-set(MCU_UTIL_PATH ${REMCU_VM_PATH}/mcu_utils/)
-
 include(archive)
 include(CommonToolchain)
+include(adin_make_flags)
 
 add_subdirectory(${REMCU_VM_PATH} ${REMCU_VM_BUILD_PATH})
+

@@ -1,17 +1,25 @@
 
+if(DEFINED REMCU_PREBUILD_CONFIG_FILE)
+      include(REMCU_PREBUILD_CONFIG_FILE)
+endif()
+
 set(BUILD_IR_TEST_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/IrTest)
 
 set(IR_TEST_OBJECT_FILE ${BUILD_IR_TEST_DIRECTORY}/IrTest.adin.o)
 
 #message(FATAL_ERROR "******* $IR_TEST_OBJECT_FILE ${IR_TEST_OBJECT_FILE} ********")
 
+include(adin_make_flags)
+
 add_custom_target( IR_TEST_OBJ
                    COMMAND make all
-                   MCU_UTIL_PATH=${MCU_UTIL_PATH}
-                   TARGET_MK=${MCU_INCLUDE_MK_FILE}
-                   CROSS_MK_FILE=${CROSS_MK_FILE}
+                   ${IR_TEST_MAKE_ARGUMENTS}
+                   # LLVM_ADIN_PATH=${LLVM_ADIN_PATH}
+                   # MCU_UTIL_PATH=${MCU_UTIL_PATH}
+                   # TARGET_MK=${MCU_INCLUDE_MK_FILE}
+                   # CROSS_MK_FILE=${CROSS_MK_FILE}
+                   # CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    OUTPUT=${IR_TEST_OBJECT_FILE}
-                   CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    BUILD_DIRECTORY=${BUILD_IR_TEST_DIRECTORY}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
                    COMMENT "---------------- Generating IR Test ----------------"

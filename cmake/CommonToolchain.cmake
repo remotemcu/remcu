@@ -5,7 +5,12 @@ if (NOT EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
   endif()
 endif()
 
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+	message(error "not defined toolchain file")
+endif()
 
+
+#[[
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	message(STATUS "Setting TOOLCHAIN --->")
 	message(STATUS "Redefine compilator ${CMAKE_CXX_COMPILER} on ... ")
@@ -44,6 +49,6 @@ else()
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fvisibility=hidden -s")
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fvisibility=hidden -s")
 endif()
-
+]]
 message("CMAKE_C_FLAGS_RELEASE : ${CMAKE_C_FLAGS_RELEASE} ")
 message("CMAKE_CXX_FLAGS_RELEASE : ${CMAKE_CXX_FLAGS_RELEASE} ")
