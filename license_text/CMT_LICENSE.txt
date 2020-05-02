@@ -1,14 +1,19 @@
 *******************************************************************
 It is a Community license.
 
-REMCU lib can freely be used for non-profit educational purposes without any 
-limitation. Simply download and install it and start development of your new 
-projects. No registration or activation process is required.
+REMCU Lib can freely be used for commercial and non-profit educational purposes under
+CC BY-ND 4.0 License (https://creativecommons.org/licenses/by-nd/4.0/) without any
+commercial limitation. Simply download and install it and start development of
+your new projects. No registration or activation process is required.
 
-If you are an individual working on your own devices to sell or for any other 
-purpose, you may use the software to develop and test it without any limitation.
+RESTRICTIONS:
+You may not:
+a. decompile, disassemble, reverse engineer, or otherwise attempt to derive the
+source code of the software,
+b. remove or alter any trademark, logo, copyright or other proprietary notices,
+legends, symbols or labels of the software.
 
-Commercial and Extended licenses can be gotten through the license request dialog.
+Extended licenses can be gotten through the license request dialog.
 email: license@remotemcu.com
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
