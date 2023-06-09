@@ -21,11 +21,9 @@ function(get_git_describe repo_path return_var)
 		message("git : ${LAST_TAG} @ ${COMMIT_HASH}")
 
 		set(ret ${LAST_TAG}-${COMMIT_HASH})
-	#	add_definitions(-D_GIT_HASH_=\"${COMMIT_HASH}\")
-	#	add_definitions(-D_GIT_TAG_=\"${LAST_TAG}\" )
+
 	else()
-	#	add_definitions(-DCOMMIT_HASH=hz)
-	#	add_definitions(-DLAST_TAG=hz)
+
 		set(ret "patchz")
 	endif (GIT_FOUND)
 
