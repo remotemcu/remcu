@@ -148,6 +148,32 @@ static llvm_value_type getMask(llvm_pass_arg TypeSizeArg){
     return ret;
 }
 
+#ifdef CHECK_ADDITIONAL
+static inline bool checkAdditionalLocal(const llvm_ocd_addr pointer){
+    bool isLocal = true;
+    #if INTPTR_MAX == INT64_MAX     //64 bit
+        isLocal = pointer > 0xFFFFFFFFUL; //check 64 adress
+    #elif INTPTR_MAX == INT32_MAX    // 32-bit
+        #warning Unavailable 32 bit local adress check 
+    #else
+    #error Unknown pointer size or missing size macros!
+    #endif
+    return isLocal;
+}
+
+static inline bool checkAdditionalRemote(const llvm_ocd_addr pointer){
+    bool isRemote = true;
+    #if INTPTR_MAX == INT64_MAX     //64 bit
+        isRemote = pointer < 0xFFFFFFFFUL; //check 64 adress
+    #elif INTPTR_MAX == INT32_MAX    // 32-bit
+        #warning Unavailable 32 bit local adress check 
+    #else
+    #error Unknown pointer size or missing size macros!
+    #endif
+    return isRemote;
+}
+#endif
+
 static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
 {
     assert_1message(is_empty_adin_interval() == false, "server - error connection");
@@ -157,10 +183,23 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     const bool isLocalValue = is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false;
 
     if(isLocalValue){
+    #ifdef CHECK_ADDITIONAL
+         if(checkAdditionalLocal(pointer) == false){
+            ADIN_LOG(__ERROR) << _S_("Pointer is not local") << pointer;
+            return false;
+         }
+    #endif
         ADIN_LOG(__INFO) << _S_("_s lo, u : ") <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
+
+    #ifdef CHECK_ADDITIONAL
+         if(checkAdditionalRemote(pointer) == false){
+            ADIN_LOG(__ERROR) << _S_("Pointer is not remote") << pointer;
+            return false;
+         }
+    #endif
 
     assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
                   "Can't write value to u: %p, raz: %d\n", pointer, TypeSizeArg);
@@ -173,15 +212,31 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
 
     bool success = true;
 
+    value = 0;
+
     const bool isLocalValue = is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false;
 
     if(isLocalValue){
+    #ifdef CHECK_ADDITIONAL
+         if(checkAdditionalLocal(pointer) == false){
+            ADIN_LOG(__ERROR) << _S_("Pointer is not local") << pointer;
+            return false;
+         }
+    #endif
         ADIN_LOG(__INFO) << _S_("_l lo, u : ") <<  hex << pointer;
         value = loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
-    } else if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
-        value = 0;
-        ADIN_PRINTF(__ERROR,"Can't read value from u: %p, raz: %d\n", pointer, TypeSizeArg);
-        success = false;
+    } else {
+    #ifdef CHECK_ADDITIONAL
+         if(checkAdditionalRemote(pointer) == false){
+            ADIN_LOG(__ERROR) << _S_("Pointer is not remote") << pointer;
+            return false;
+         }
+    #endif
+         if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
+            value = 0;
+            ADIN_PRINTF(__ERROR,"Can't read value from u: %p, raz: %d\n", pointer, TypeSizeArg);
+            success = false;
+        }
     }
 
     value &= getMask(TypeSizeArg);
