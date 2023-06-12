@@ -25,9 +25,6 @@ static ClientGDB gdb;
 
 static ClientBase * client = static_cast<ClientBase*>(&dummy);
 
-
-void startVM(const char * options);
-
 bool pingServer(){
     ADIN_PRINTF(__INFO, "Ping server ... \n", 0);
     return client->ping();
@@ -52,8 +49,6 @@ bool connect2Server(const std::string host, const uint16_t port, const ServerTyp
     assert_1message(client->connect(host,port, timeout_sec), "connect server error");
 
     assert_1message(pingServer(), "ping server error");
-
-    startVM("start");
 
     return true;
 }
