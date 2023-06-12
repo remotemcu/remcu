@@ -1,10 +1,4 @@
 
-
-if(NOT DEFINED LLVM_ADIN_PATH)
-	set(LLVM_ADIN_PATH /home/ser/MOCD/LLVM/adin-600-build/bin/)
-endif()
-
-
 set(CMAKE_CXX_STANDARD 14)
 
 set(STRIP_ARGUMENT --strip-all)
