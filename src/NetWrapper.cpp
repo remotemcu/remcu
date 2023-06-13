@@ -49,18 +49,6 @@ bool connect2ServerLogo(const std::string host, const uint16_t port,
                         const ServerType server = ServerType::_DUMMY_SERVVER,
                         const int timeout_sec = _DEFAULT_TIMEOUT_SEC){
 
-    const size_t ret = checkLicense();
-
-    if(ret != ErrorLicense_Type::_NO_ERROR){
-        ADIN_LOG(__DEBUG) << _S_("license err: '") << ret;
-#ifdef LICENSE_FILE_SKIP_ERROR
-        ADIN_LOG(__DEBUG) << _S_("License file REMCU_LICENSE.txt absent");
-        showLicesne();
-#else
-        return false;
-#endif //LICENSE_FILE_SKIP_ERROR
-    }
-
     if(timeout_sec < 0){
         ADIN_LOG(__ERROR) << _S_("timeout can't be negative | current timeout : ") << timeout_sec;
         return false;
