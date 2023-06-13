@@ -96,7 +96,7 @@ void showLicesne(){
         cout << _S_("...") << endl;
     } else {
         cout << 
-        #include "../LICENSE.txt"
+        "***\n Licensed under the Apache License, Version 2.0 (the 'License')\n***"
          << endl;
     }
 }
