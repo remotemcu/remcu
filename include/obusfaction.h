@@ -4,7 +4,7 @@
 #include <cstring>
 #include <string>
 
-#ifndef CONSTEXPR_STRING_OBUSFICATION_DISABLE
+#ifdef CONSTEXPR_STRING_OBUSFICATION_ENABLE
 
 namespace remcu
 {
