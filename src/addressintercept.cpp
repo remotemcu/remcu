@@ -86,7 +86,7 @@ static inline llvm_value_type loadLocalReturnValue(const llvm_ocd_addr pointer, 
         break;
     default:
         ADIN_LOG(__ERROR) << _S_("Unknown size of type: ") << TypeSizeArg;
-        ADIN_PRINTF(__ERROR, "at the uka: %p\n", pointer);
+        ADIN_PRINTF(__ERROR, "at the address: %p\n", pointer);
         break;
     }
 
@@ -113,7 +113,7 @@ static inline bool storeToLocalValue(const llvm_ocd_addr pointer, const llvm_val
         break;
     default:
         ADIN_LOG(__ERROR) << _S_("Unknown size of type: ") << TypeSizeArg;
-        ADIN_PRINTF(__ERROR, "at the uka: %p\n", pointer);
+        ADIN_PRINTF(__ERROR, "at the address: %p\n", pointer);
         return false;
     }
 
@@ -189,7 +189,7 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
             return false;
          }
     #endif
-        ADIN_LOG(__INFO) << _S_("_s lo, u : ") <<  hex << pointer;
+        ADIN_LOG(__INFO) << "store by address: " <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
@@ -202,7 +202,7 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     #endif
 
     assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
-                  "Can't write value to u: %p, raz: %d\n", pointer, TypeSizeArg);
+                  "Can't write value to addr: %p, typesize: %d\n", pointer, TypeSizeArg);
     return true;
 }
 
@@ -223,7 +223,7 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
             return false;
          }
     #endif
-        ADIN_LOG(__INFO) << _S_("_l lo, u : ") <<  hex << pointer;
+        ADIN_LOG(__INFO) << "load by address : " <<  hex << pointer;
         value = loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
     } else {
     #ifdef CHECK_ADDITIONAL
@@ -234,7 +234,7 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
     #endif
          if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
             value = 0;
-            ADIN_PRINTF(__ERROR,"Can't read value from u: %p, raz: %d\n", pointer, TypeSizeArg);
+            ADIN_PRINTF(__ERROR,"Can't read value from addr: %p, typesize: %d\n", pointer, TypeSizeArg);
             success = false;
         }
     }
@@ -268,11 +268,11 @@ bool adin_memcpy(llvm_pass_addr dest, const llvm_pass_addr src, const llvm_pass_
     for(llvm_pass_arg i=0; i < size; i++){
         assert_1message(
             load(reinterpret_cast<llvm_ocd_addr>(src+i), tmp, SIZE_MEM_FUN_OPERAND, ALIGN_MEM_FUN_OPERAND),
-            "error laod to mcp");
+            "error load using memcpy operation");
         tmp &= 0xFF;
         assert_1message(
             store(reinterpret_cast<llvm_ocd_addr>(dest+i), tmp, SIZE_MEM_FUN_OPERAND, ALIGN_MEM_FUN_OPERAND),
-            "error write to mcp");
+            "error store using memcpy operation");
     }
     return true;
 }
@@ -282,7 +282,7 @@ bool adin_memset(llvm_pass_addr dest, const llvm_pass_arg val, const llvm_pass_a
     for(llvm_pass_arg i=0; i < size; i++){
         assert_1message(
             store(reinterpret_cast<llvm_ocd_addr>(dest+i), val8, SIZE_MEM_FUN_OPERAND, ALIGN_MEM_FUN_OPERAND),
-            "error mse");
+            "error memset operation");
     }
     return true;
 }
@@ -293,7 +293,7 @@ using namespace remcu;
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, ">>> : u %p, z 0x%X, r %d, a %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    ADIN_PRINTF(__INFO, "adin store : addr %p, value 0x%X, size %d, align %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     const bool success = store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 
@@ -306,7 +306,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "<<< : u %p, r %d, a %d\n", pointer, TypeSizeArg, AlignmentArg);
+    ADIN_PRINTF(__INFO, "adin load: addr %p, size %d, align %d\n", pointer, TypeSizeArg, AlignmentArg);
     llvm_value_type value = 0;
     const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
@@ -316,14 +316,14 @@ extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_
         errorAppear();
     }
 
-    ADIN_PRINTF(__INFO, "_L : av 0x%X\n", value);
+    ADIN_PRINTF(__INFO, "adin load value: 0x%X\n", value);
 
     return value;
 }
 
 extern "C" void __adin_memcpy_(llvm_pass_addr dest, const llvm_pass_addr src, const llvm_pass_arg size)
 {
-    ADIN_PRINTF(__INFO, "mc : ud %p, us %p, r %d\n", dest, src, size);
+    ADIN_PRINTF(__INFO, "memcpy : dest %p, src %p, size %d\n", dest, src, size);
     const bool success = adin_memcpy(dest, src, size);
     if(success == false){
         errorAppear();
@@ -338,7 +338,7 @@ extern "C" void __adin_memmove_(llvm_pass_addr dest, const llvm_pass_addr src, c
 #endif
 extern "C" void __adin_memset_(llvm_pass_addr dest, const llvm_pass_arg val, const llvm_pass_arg size)
 {
-    ADIN_PRINTF(__INFO, "ms : u %p, v %x, r %d\n", dest, val, size);
+    ADIN_PRINTF(__INFO, "memset : addr %p, value %x, size %d\n", dest, val, size);
     const bool success = adin_memset(dest, val, size);
     if(success == false){
         errorAppear();
