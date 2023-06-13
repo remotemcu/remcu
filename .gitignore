@@ -3,8 +3,9 @@
 *.files
 *.creator
 *.config
-*.creator.user
-
+*.creator.user.*
+OCDlib.*
+test-*
 *.o
 *.ll
 
