@@ -6,7 +6,7 @@ endif()
 include(${CMAKE_CURRENT_LIST_DIR}/vars.cmake)
 
 set(MCU_INCLUDE_MK_FILE ${REMCU_VM_PATH}/mcu_utils/linux.mk)
-set(STRIP_COMMAND strip)
+#set(STRIP_COMMAND strip)
 
 include(${REMCU_VM_PATH}/cmake/common_linux_flags.cmake)
 
