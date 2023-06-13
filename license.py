@@ -8,7 +8,7 @@ parser.add_argument(
 
 parser.add_argument("-out", help="fiel for lib", default='REMCU_LICENSE.txt')
 
-parser.add_argument("-t", help="type", default='UNKNOW')
+parser.add_argument("-t", help="type", default='Apache_2.0')
 
 args = parser.parse_args()
 
@@ -18,17 +18,6 @@ OUT_LECENSE_ASIGN = args.out
 TYPE = args.t
 
 print(IN_TEXT_LICENSE_FILE, OUT_LECENSE_ASIGN)
-
-
-if TYPE == 'EDU' :
-	TYPE = 'EDU'
-elif TYPE == 'COM':
-	TYPE = 'COM'
-elif TYPE == 'CMT':
-	TYPE = 'CMT'
-else :
-	raise Exception('unknow license')
-
 
 text = ''
 

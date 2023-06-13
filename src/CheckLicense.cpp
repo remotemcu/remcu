@@ -72,15 +72,9 @@ size_t checkLicense(){
         return error;
     }
 
-    //cout << "buf: '" << text << "'" << endl;
-
     text += string(license_type);
 
     const string hash_hex_str = picosha2::hash256_hex_string(text);
-
-    //cout << "hash_hex_str: '" << hash_hex_str << "'" << endl;
-
-    //cout << "read hash: '" << line << "'" << endl;
 
     if(strncmp(sign.data()+1, hash_hex_str.data(), hash_hex_str.size()) != 0){
         error |= setErrorBit(ErrorLicense_Type::_WRONG_SIZE);
@@ -96,27 +90,14 @@ size_t checkLicense(){
 void showLicesne(){
     const string LT(license_type);
     if( LT == string(_S_("EDU")) ){
-        cout << _S_("\n******************************************************************* \n\nIt is Education license. \n \nREMCU lib can freely be used for non-profit educational purposes without any  \nlimitation. Simply download and install it and start development of your new  \nprojects. No registration or activation process is required. \n \nСommercial and Extended licenses can be gotten through the license request dialog.\nemail: license@remotemcu.com \n See REMCU_LICENSE.txt file\n\n******************************************************************* \n")
+        cout << _S_("...")
              << endl;
     } else if( LT == string(_S_("CMT")) ){
-        cout << _S_("It is a Community license.\n"
-"\n"
-"REMCU Lib can freely be used for commercial and non-profit educational purposes under\n"
-"CC BY-ND 4.0 License (https://creativecommons.org/licenses/by-nd/4.0/) without any\n"
-"commercial limitation. Simply download and install it and start development of\n"
-"your new projects. No registration or activation process is required.\n"
-"\n"
-"RESTRICTIONS:\n"
-"You may not:\n"
-"a. decompile, disassemble, reverse engineer, or otherwise attempt to derive the\n"
-"source code of the software,\n"
-"b. remove or alter any trademark, logo, copyright or other proprietary notices,\n"
-"legends, symbols or labels of the software.\n"
-"\n"
-"Extended licenses can be gotten through the license request dialog.\n"
-"email: license@remotemcu.com\n") << endl;
+        cout << _S_("...") << endl;
     } else {
-        cout << _S_("Commercial Licesne") << endl;
+        cout << 
+        #include "../LICENSE.txt"
+         << endl;
     }
 }
 

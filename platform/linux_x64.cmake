@@ -12,4 +12,4 @@ include(${REMCU_VM_PATH}/cmake/common_linux_flags.cmake)
 
 set(TARGET_REMCU_OS_NAME Linux_x64_r)
 
-set(LICENSE_TYPE CMT)
+set(LICENSE_TYPE APACHE_2.0)
