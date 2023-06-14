@@ -24,7 +24,7 @@ function(get_git_describe repo_path return_var)
 
 	else()
 
-		set(ret "patchz")
+		set(ret "no_git_info")
 	endif (GIT_FOUND)
 
 	set(${return_var} ${ret} PARENT_SCOPE)
