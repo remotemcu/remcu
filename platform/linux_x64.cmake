@@ -1,7 +1,5 @@
-if(NOT DEFINED CMAKE_CXX_COMPILER)
-	set(CMAKE_CXX_COMPILER clang++) 
-	#maybe need : CACHE STRING "Linux x64 CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}"
-endif()
+set(CMAKE_CXX_COMPILER clang++)
+set(CMAKE_C_COMPILER clang)
 
 include(${CMAKE_CURRENT_LIST_DIR}/vars.cmake)
 
