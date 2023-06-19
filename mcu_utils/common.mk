@@ -19,8 +19,8 @@ CBE = echo
 
 IR_SUFFIX = ll
 
-OPT			= "$(LLVM_ADIN_PATH)opt"
-LD 			= "$(LLVM_ADIN_PATH)llvm-link"
+OPT			= "$(LLVM_ADIN_PATH)/opt"
+LD 			= "$(LLVM_ADIN_PATH)/llvm-link"
 
 all: clean_build $(BUILD_DIR) $(OUTPUT)
 
