@@ -1,3 +1,4 @@
+cmake_minimum_required (VERSION 3.5)
 
 if(DEFINED REMCU_PREBUILD_CONFIG_FILE)
       include(REMCU_PREBUILD_CONFIG_FILE)
