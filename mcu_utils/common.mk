@@ -3,6 +3,10 @@ ifndef LLVM_ADIN_PATH
 $(error "LLVM_ADIN_PATH variable not set!")
 endif
 
+CLANG			= clang
+CLANGPP 		= clang++
+AR 				= llvm-ar
+
 BUILD_DIR 	= $(BUILD_DIRECTORY)
 
 OPT_FLAGS += -adin -S

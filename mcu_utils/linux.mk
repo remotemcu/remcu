@@ -1,8 +1,4 @@
 
-
-CLANG			= clang
-CLANGPP 		= clang++
-AR 				= llvm-ar
 COMPILE_FLAGS 	= -fPIC
 
 ifeq ($(CMAKE_BUILD_TYPE),Debug)
