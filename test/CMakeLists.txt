@@ -37,6 +37,7 @@ add_custom_target( MCU_LIB
                    # BUILD_DIRECTORY=${BUILD_DIRECTORY}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                    COMMENT "---------------- Generating ADIN IR ----------------"
+                   BYPRODUCTS ${MCU_OBJECT_FILE}
 )
 
 include(shared)

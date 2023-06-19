@@ -17,4 +17,5 @@ add_custom_target( IR_TEST_OBJ
                    BUILD_DIRECTORY=${BUILD_IR_TEST_DIRECTORY}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
                    COMMENT "---------------- Generating IR Test ----------------"
+                    BYPRODUCTS ${IR_TEST_OBJECT_FILE}
 )
