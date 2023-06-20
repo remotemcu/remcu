@@ -26,3 +26,5 @@ include(adin_make_flags)
 
 add_subdirectory(${REMCU_VM_PATH} ${REMCU_VM_BUILD_PATH})
 
+set(MCU_UTIL_PATH ${REMCU_VM_PATH}/mcu_utils/)
+
