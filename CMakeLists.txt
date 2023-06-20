@@ -109,3 +109,7 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8) # 64 bit
 endif()
 
 set(FULL_ARCHIVE_NAME remcu-${FULL_VERSION_NAME} PARENT_SCOPE)
+
+add_custom_target(PrintMessage ALL 
+	COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green 
+			"*********** Final ${FULL_VERSION_NAME}  ****************")
