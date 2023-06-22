@@ -22,7 +22,6 @@ set(REMCU_VM_BUILD_PATH build_remcu_object)
 
 include(archive)
 include(CommonToolchain)
-include(adin_make_flags)
 
 add_subdirectory(${REMCU_VM_PATH} ${REMCU_VM_BUILD_PATH})
 

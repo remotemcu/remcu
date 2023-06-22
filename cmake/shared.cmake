@@ -44,6 +44,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
   )
 endif()
 
+
+install(TARGETS remcu DESTINATION ${FULL_ARCHIVE_NAME})
+install(DIRECTORY ${ALL_INCLUDE_DIR} 
+    DESTINATION ${FULL_ARCHIVE_NAME})
+
 if(WIN32)
   #target_compile_definitions(remcu PRIVATE _CRT_SECURE_NO_WARNINGS)
   target_link_libraries(remcu ws2_32)
