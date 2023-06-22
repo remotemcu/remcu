@@ -33,6 +33,15 @@ file(INSTALL ${REMCU_VM_PATH}/README.txt
       DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
       )
 
+
+if(WIN32)
+  set(ARCHIVE_FORMAT zip)
+  set(ARCHIVE_SUFFIX zip)
+else()
+  set(ARCHIVE_FORMAT gnutar)
+  set(ARCHIVE_SUFFIX tar)
+endif()
+
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
   add_custom_command(TARGET remcu POST_BUILD
 # if need strip, uncomment
