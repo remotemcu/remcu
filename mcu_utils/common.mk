@@ -14,6 +14,7 @@ OPT_FLAGS += -adin -S
 IR_FLAGS += -S -emit-llvm -DREMCU_LIB
 
 IR_FLAGS += -I $(MCU_UTIL_PATH)/include_utils
+IR_FLAGS += $(COMPILE_FLAGS)
 
 CBE = echo
 
@@ -38,7 +39,7 @@ print-%  : ; @echo $* = $($*)
 LOCAL_CFLAGS = $(DEFS) $(INCLUDE_LOCAL) $(EXTRA_FLAGS)
 
 IR_FILES += $(C_SRC:.c=.ll)
-
+IR_FILES += $(CPP_SRC:.cpp=.ll)
 
 $(OUTPUT): $(IR_FILES)
 	$(LD) -v $(BUILD_DIR)/*.adin.ll -S -o $@.ll
@@ -59,3 +60,6 @@ REMCU_C: $(IR_FILES)
 
 	#$(CLANG) $(COMPILE_FLAGS) -c $(BUILD_DIR)/$(notdir $<).adin.ll -o $(BUILD_DIR)/$(notdir $<).adin.o
 
+%.ll: %.cpp
+	$(CLANGPP) $(IR_FLAGS) $(LOCAL_CFLAGS) -c $< -o $(BUILD_DIR)/$(notdir $<).$(IR_SUFFIX)
+	$(OPT) $(OPT_FLAGS) $(BUILD_DIR)/$(notdir $<).ll -o  $(BUILD_DIR)/$(notdir $<).adin.ll
