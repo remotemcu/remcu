@@ -105,9 +105,7 @@ if(LICENSE_FILE_SKIP_ERROR)
 endif(LICENSE_FILE_SKIP_ERROR)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8) # 64 bit
-	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-		target_compile_definitions(remcu_object PRIVATE CHECK_ADDITIONAL)
-	endif()
+	target_compile_definitions(remcu_object PRIVATE FAST_CHECK_LOCAL_64BIT_ADDRESS)
 endif()
 
 set(FULL_ARCHIVE_NAME remcu-${FULL_VERSION_NAME} PARENT_SCOPE)

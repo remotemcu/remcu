@@ -148,31 +148,24 @@ static llvm_value_type getMask(llvm_pass_arg TypeSizeArg){
     return ret;
 }
 
-#ifdef CHECK_ADDITIONAL
-static inline bool checkAdditionalLocal(const llvm_ocd_addr pointer){
-    bool isLocal = true;
-    #if INTPTR_MAX == INT64_MAX     //64 bit
-        isLocal = pointer > 0xFFFFFFFFUL; //check 64 adress
-    #elif INTPTR_MAX == INT32_MAX    // 32-bit
-        #warning Unavailable 32 bit local adress check 
-    #else
-    #error Unknown pointer size or missing size macros!
-    #endif
-    return isLocal;
-}
+#ifdef FAST_CHECK_LOCAL_64BIT_ADDRESS
+    #if INTPTR_MAX == INT64_MAX
 
-static inline bool checkAdditionalRemote(const llvm_ocd_addr pointer){
-    bool isRemote = true;
-    #if INTPTR_MAX == INT64_MAX     //64 bit
-        isRemote = pointer < 0xFFFFFFFFUL; //check 64 adress
-    #elif INTPTR_MAX == INT32_MAX    // 32-bit
-        #warning Unavailable 32 bit local adress check 
-    #else
-    #error Unknown pointer size or missing size macros!
-    #endif
-    return isRemote;
-}
-#endif
+        static inline bool fast_check_64bit_addr(const llvm_ocd_addr pointer){
+            bool isLocal = pointer > 0xFFFFFFFFUL; //check 64 adress
+            return isLocal;
+        }
+
+    #else //INTPTR_MAX == INT64_MAX
+        #error Unavailable 32 bit local adress check 
+    #endif //INTPTR_MAX == INT64_MAX
+
+#else //FAST_CHECK_LOCAL_64BIT_ADDRESS
+
+    #define fast_check_64bit_addr(X) false
+
+#endif //FAST_CHECK_LOCAL_64BIT_ADDRESS
+
 
 static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type value, const llvm_pass_arg TypeSizeArg, const llvm_pass_arg DECL_UNUSED AlignmentArg)
 {
@@ -180,26 +173,14 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
 
     const llvm_pass_arg val = value & getMask(TypeSizeArg);
 
-    const bool isLocalValue = is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false;
+    const bool isLocalValue = fast_check_64bit_addr(pointer) || 
+    (is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false);
 
     if(isLocalValue){
-    #ifdef CHECK_ADDITIONAL
-         if(checkAdditionalLocal(pointer) == false){
-            ADIN_LOG(__ERROR) << _S_("Pointer is not local") << pointer;
-            return false;
-         }
-    #endif
         ADIN_LOG(__INFO) << "store by address: " <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
-
-    #ifdef CHECK_ADDITIONAL
-         if(checkAdditionalRemote(pointer) == false){
-            ADIN_LOG(__ERROR) << _S_("Pointer is not remote") << pointer;
-            return false;
-         }
-    #endif
 
     assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
                   "Can't write value to addr: %p, typesize: %d\n", pointer, TypeSizeArg);
@@ -214,24 +195,13 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
 
     value = 0;
 
-    const bool isLocalValue = is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false;
+    const bool isLocalValue = fast_check_64bit_addr(pointer) || 
+    (is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false);
 
     if(isLocalValue){
-    #ifdef CHECK_ADDITIONAL
-         if(checkAdditionalLocal(pointer) == false){
-            ADIN_LOG(__ERROR) << _S_("Pointer is not local") << pointer;
-            return false;
-         }
-    #endif
         ADIN_LOG(__INFO) << "load by address : " <<  hex << pointer;
         value = loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
     } else {
-    #ifdef CHECK_ADDITIONAL
-         if(checkAdditionalRemote(pointer) == false){
-            ADIN_LOG(__ERROR) << _S_("Pointer is not remote") << pointer;
-            return false;
-         }
-    #endif
          if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
             value = 0;
             ADIN_PRINTF(__ERROR,"Can't read value from addr: %p, typesize: %d\n", pointer, TypeSizeArg);
