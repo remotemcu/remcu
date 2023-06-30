@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.5)
 
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-	message(error "not defined toolchain file")
+	message(FATAL_ERROR " not defined toolchain file")
 endif()
 
 include(GitDesc)
