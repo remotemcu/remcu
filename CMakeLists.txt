@@ -93,7 +93,7 @@ if(CONSTEXPR_STRING_OBUSFICATION_ENABLE)
 endif(CONSTEXPR_STRING_OBUSFICATION_ENABLE)
 
 
-option(HIDE_SOURCE_INFO_IN_LOG "hide name of source file in log" ON)
+option(HIDE_SOURCE_INFO_IN_LOG "hide name of source file in log" OFF)
 option(LICENSE_FILE_SKIP_ERROR "Skipping error of license file" ON)
 
 if(HIDE_SOURCE_INFO_IN_LOG)
