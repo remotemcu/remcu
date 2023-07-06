@@ -36,6 +36,8 @@ $(BUILD_DIR):
 print-%  : ; @echo $* = $($*)
 
 
+INCLUDE_LOCAL  += $(foreach INC,$(addprefix $(PRJ_PATH),$(INC_PATH)),-I$(INC))
+
 LOCAL_CFLAGS = $(DEFS) $(INCLUDE_LOCAL) $(EXTRA_FLAGS)
 
 IR_FILES += $(C_SRC:.c=.ll)
