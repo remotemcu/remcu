@@ -10,8 +10,6 @@ set(MCU_TYPE TEST)
 
 set(MCU_LIB_NAME TEST_LIB)
 
-set(TARGET_REMCU_OS_NAME testing)
-
 set(MCU_MAJOR_VERSION_LIB 1)
 
 set(MCU_MINOR_VERSION_LIB 00)
@@ -29,8 +27,3 @@ file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/Ir.h
 add_executable(test_shared test.cpp)
 target_include_directories(test_shared PRIVATE ${ALL_INCLUDE_DIR})
 target_link_libraries(test_shared remcu)
-
-# if(NOT DEFINED WIN32 AND ${CMAKE_VERSION} VERSION_GREATER "3.8.0")
-#       enable_testing()
-#       add_subdirectory(gtest)
-# endif()
