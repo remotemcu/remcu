@@ -108,7 +108,7 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8) # 64 bit
 	target_compile_definitions(remcu_object PRIVATE FAST_CHECK_LOCAL_64BIT_ADDRESS)
 endif()
 
-set(FULL_ARCHIVE_NAME remcu-${FULL_VERSION_NAME} PARENT_SCOPE)
+set(FULL_ARCHIVE_NAME remcu-${FULL_NAME_MCU_LIB} PARENT_SCOPE)
 
 add_custom_target(PrintMessage ALL 
 	COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green 
