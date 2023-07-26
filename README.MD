@@ -17,3 +17,7 @@ By employing this interception and redirection mechanism, **REMCU** Toolkit enab
 ## How to Use
 
 Examples to use in [Examples](https://github.com/remotemcu/remcu_examples) and the [Tutorials](https://remotemcu.com/tutorials)
+
+## How to Build
+
+The library is built as part of [REMCU CHIP SDK Collection](https://github.com/remotemcu/remcu-chip-sdks)
