@@ -11,4 +11,4 @@ set(MCU_INCLUDE_MK_FILE ${REMCU_VM_PATH}/mcu_utils/windows.mk)
 
 set(LICENSE_TYPE APACHE_2.0)
 
-set(TARGET_REMCU_OS_NAME WINx64)
+set(TARGET_REMCU_OS_NAME Windows_x64)

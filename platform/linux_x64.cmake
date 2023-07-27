@@ -8,6 +8,6 @@ set(MCU_INCLUDE_MK_FILE ${REMCU_VM_PATH}/mcu_utils/linux.mk)
 
 include(${REMCU_VM_PATH}/cmake/common_linux_flags.cmake)
 
-set(TARGET_REMCU_OS_NAME Linux_x64_r)
+set(TARGET_REMCU_OS_NAME Linux_x64)
 
 set(LICENSE_TYPE APACHE_2.0)
