@@ -48,7 +48,7 @@ add_custom_target (
   )
 
 
-add_dependencies(remcu_object ${LICENSE_SIGN_FILE})
+# add_dependencies(remcu_object ${LICENSE_SIGN_FILE})
 
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/export/remcu.h
