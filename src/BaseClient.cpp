@@ -21,7 +21,16 @@ vector<char> ClientBase::bufferSend(0x100,'\0');
 vector<char> ClientBase::bufferReceiv(0x100,'\0');
 
 bool ClientBase::connect(const std::string host, const uint16_t port, const int timeout_sec) const {
-    return connectTCP(host, port, timeout_sec);
+    if(connectTCP(host, port, timeout_sec))
+        if(this->provisioning())
+            return true;
+        else
+            this->close();
+    return false;
+}
+
+bool ClientBase::provisioning() const {
+    return true;
 }
 
 bool ClientBase::close() const {

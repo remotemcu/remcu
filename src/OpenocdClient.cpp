@@ -20,8 +20,15 @@ namespace remcu {
 
 #define COMMAND_TOKEN '\x1a'
 
-static const char * loadTempCommand = "ocd_md%c 0x%lX\x1a";
+static const char * loadTempCommandOld = "ocd_md%c 0x%lX\x1a";
+static const char * loadTempCommandNew = "md%c 0x%lX\x1a";
+static const char * loadTempCommand = loadTempCommandOld;
+
 static const char * storeTempCommand = "mw%c 0x%lX 0x%lX\x1a";
+
+static const char * loadArrayTempCommandOld = "ocd_mdb 0x%lX %d\x1a";
+static const char * loadArrayTempCommandNew = "mdb 0x%lX %d\x1a";
+static const char * loadArrayTempCommand = loadArrayTempCommandOld;
 
 enum SizeOperation_t {
     BYTE = 'b', HALF_WORD = 'h', WORD = 'w'
@@ -53,6 +60,7 @@ static bool getMaskAndSize(const llvm_pass_arg sizeVal, llvm_pass_arg & mask, ch
     return true;
 }
 
+// todo: check len 
 static bool parseValue(vector<char> & buffer, llvm_value_type & value){
 
     char * p = buffer.data();
@@ -82,6 +90,66 @@ bool ClientOpenOCD::ping() const {
                                               bufferReceiv, lenReceiv, COMMAND_TOKEN),
                     "Server disconnect already");
     return true;
+}
+
+// GNU MCU Eclipse OpenOCD, 64-bitOpen On-Chip Debugger 0.10.0+dev-00593-g23ad80df4 (2019-04-22-20:18)
+// https://github.com/ilg-archived/openocd/releases/tag/v0.10.0-12-20190422
+// xPack Open On-Chip Debugger 0.12.0-01004-g9ea7f3d64-dirty (2023-01-30-15:03)
+// https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.12.0-1/
+const string ver1 = string("GNU MCU Eclipse OpenOCD, 64-bitOpen On-Chip Debugger 0.10.0+dev-00593-g23ad80df4");
+const string ver2 = string("xPack Open On-Chip Debugger 0.12.0-01004-g9ea7f3d64");
+
+
+bool ClientOpenOCD::provisioning() const {
+    string version;
+    if(get_version(version) == false)
+        return false;
+
+    ADIN_LOG(__INFO) << "openocd version: '" << version << "'";
+
+    // to do: check array versions in the loop
+    if(version.rfind(ver1) == 0){
+        ADIN_LOG(__INFO) << "supported OpenOCD version. Use Old command version";
+        loadTempCommand = loadTempCommandOld;
+        loadArrayTempCommand = loadArrayTempCommandOld;
+        return true;
+    }
+    if(version.rfind(ver2) == 0){
+        ADIN_LOG(__INFO) << "supported OpenOCD version. Use New command version";
+        loadTempCommand = loadTempCommandNew;
+        loadArrayTempCommand = loadArrayTempCommandNew;
+        return true;
+    }
+
+    ADIN_LOG(__ERROR) << "\n\n ********************* Error ********************\n\n";
+
+    ADIN_LOG(__ERROR) << "The OpenOCD '" << version << "' version";
+    ADIN_LOG(__ERROR) << "you are currently using is not supported.";
+    ADIN_LOG(__ERROR) << "To ensure optimal compatibility and functionality,";
+    ADIN_LOG(__ERROR) << "we recommend exclusively utilizing version downloadable from here:"; 
+    ADIN_LOG(__ERROR) << "https://github.com/ilg-archived/openocd/releases/tag/v0.10.0-12-20190422";
+    ADIN_LOG(__ERROR) << "or version 0.12 (available from here:";
+    ADIN_LOG(__ERROR) << "https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.12.0-1/";
+    ADIN_LOG(__ERROR) << "If you are certain that your specific use case necessitates a different version,";
+    ADIN_LOG(__ERROR) << "please be advised that modifications to this file will be required";
+
+    ADIN_LOG(__ERROR) << "\n\n ^^^^^^^^^^^^^^^^^^^^ Error ^^^^^^^^^^^^^^^^^^^^\n\n";
+
+    return false;
+}
+
+
+bool ClientOpenOCD::get_version(string & version) const {
+    string versionCommand("version");
+    versionCommand.push_back('\x1a');
+    size_t lenReceiv;
+    assert_1message(commandSendAndGetResponse(versionCommand.c_str(), versionCommand.size(),
+                                              bufferReceiv, lenReceiv, COMMAND_TOKEN),
+                    "Server disconnect already");
+
+    version = string(bufferReceiv.data(), lenReceiv);
+
+    return true;    
 }
 
 
@@ -143,6 +211,7 @@ bool ClientOpenOCD::loadFromRemoteAddr(const llvm_ocd_addr addr, llvm_value_type
     return true;
 }
 
+// todo: DEPRECATED! use 'write_memory' not 'array2mem'
 static const char * array2memTemplate = "array unset MASS; array set MASS { %s }; array2mem MASS %d 0x%x %d\x1a";
 static const char * arrayFirstPart = "array unset MASS; array set MASS {";
 static const char * arraySecondPart = " }; array2mem MASS 8 0x%x %d\x1a";
@@ -198,7 +267,6 @@ bool ClientOpenOCD::arrayWrite2RemoteMem(const uintptr_t addr, const uint8_t*  s
     return commandSendAndGetResponse(bufferSend.data(), pos, bufferReceiv, lenBufReceiv, COMMAND_TOKEN);
 }
 
-static const char * loadArrayTempCommand = "ocd_mdb 0x%lX %d\x1a";
 static const size_t qty_value_in_row = 32;
 static const size_t qty_service_bytes = 12;
 static const size_t _GAP = 100;

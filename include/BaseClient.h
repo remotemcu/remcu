@@ -28,6 +28,8 @@ struct ClientBase {
 
     virtual bool ping() const ;
 
+    virtual bool provisioning() const;
+
     bool close() const ;
 
 protected:
@@ -82,6 +84,12 @@ struct ClientOpenOCD: ClientBase {
     bool resetRemoteUnit(const ResetType) const ;
 
     bool ping() const ;
+
+    bool provisioning() const;
+
+private:
+
+    bool get_version(std::string & version) const;
 
 };
 
