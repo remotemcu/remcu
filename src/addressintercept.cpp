@@ -177,13 +177,13 @@ static inline bool store(const llvm_ocd_addr pointer, const llvm_value_type valu
     (is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false);
 
     if(isLocalValue){
-        ADIN_LOG(__INFO) << "store by address: " <<  hex << pointer;
+        ADIN_LOG(__DEBUG) << "store by local's address: " <<  hex << pointer;
         assert_1message(storeToLocalValue(pointer, value, TypeSizeArg, AlignmentArg), "error local load");
         return true;
     }
 
     assert_printf(client->store2RemoteAddr(pointer, val, TypeSizeArg),
-                  "Can't write value to addr: %p, typesize: %d\n", pointer, TypeSizeArg);
+                  "Can't write value to chip's addr: %p, typesize: %d\n", pointer, TypeSizeArg);
     return true;
 }
 
@@ -199,12 +199,12 @@ static inline bool load(const llvm_ocd_addr pointer, llvm_value_type & value, co
     (is_entry_adin_interval(pointer) == false && is_entry_mem_interval(pointer) == false);
 
     if(isLocalValue){
-        ADIN_LOG(__INFO) << "load by address : " <<  hex << pointer;
+        ADIN_LOG(__DEBUG) << "load by local's  address : " <<  hex << pointer;
         value = loadLocalReturnValue(pointer, TypeSizeArg, AlignmentArg);
     } else {
          if(client->loadFromRemoteAddr(pointer, value, TypeSizeArg) == false){
             value = 0;
-            ADIN_PRINTF(__ERROR,"Can't read value from addr: %p, typesize: %d\n", pointer, TypeSizeArg);
+            ADIN_PRINTF(__ERROR,"Can't read value from chip's addr: %p, typesize: %d\n", pointer, TypeSizeArg);
             success = false;
         }
     }
@@ -263,7 +263,7 @@ using namespace remcu;
 
 extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "adin store : addr %p, value 0x%X, size %d, align %d\n", pointer, value, TypeSizeArg, AlignmentArg );
+    ADIN_PRINTF(__DEBUG, "adin store : addr %p, value 0x%X, size %d, align %d\n", pointer, value, TypeSizeArg, AlignmentArg );
     const bool success = store(reinterpret_cast<llvm_ocd_addr>(pointer),
                    value, TypeSizeArg, AlignmentArg);
 
@@ -276,7 +276,7 @@ extern "C" void __adin_store_(llvm_pass_addr pointer, llvm_value_type value, llv
 
 extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_arg TypeSizeArg, llvm_pass_arg AlignmentArg)
 {
-    ADIN_PRINTF(__INFO, "adin load: addr %p, size %d, align %d\n", pointer, TypeSizeArg, AlignmentArg);
+    ADIN_PRINTF(__DEBUG, "adin load: addr %p, size %d, align %d\n", pointer, TypeSizeArg, AlignmentArg);
     llvm_value_type value = 0;
     const bool success = load(reinterpret_cast<llvm_ocd_addr>(pointer), value,
                   TypeSizeArg, AlignmentArg);
@@ -286,14 +286,14 @@ extern "C" llvm_value_type __adin_load_(const llvm_pass_addr pointer, llvm_pass_
         errorAppear();
     }
 
-    ADIN_PRINTF(__INFO, "adin load value: 0x%X\n", value);
+    ADIN_PRINTF(__DEBUG, "adin load value: 0x%X\n", value);
 
     return value;
 }
 
 extern "C" void __adin_memcpy_(llvm_pass_addr dest, const llvm_pass_addr src, const llvm_pass_arg size)
 {
-    ADIN_PRINTF(__INFO, "memcpy : dest %p, src %p, size %d\n", dest, src, size);
+    ADIN_PRINTF(__DEBUG, "memcpy : dest %p, src %p, size %d\n", dest, src, size);
     const bool success = adin_memcpy(dest, src, size);
     if(success == false){
         errorAppear();
@@ -308,7 +308,7 @@ extern "C" void __adin_memmove_(llvm_pass_addr dest, const llvm_pass_addr src, c
 #endif
 extern "C" void __adin_memset_(llvm_pass_addr dest, const llvm_pass_arg val, const llvm_pass_arg size)
 {
-    ADIN_PRINTF(__INFO, "memset : addr %p, value %x, size %d\n", dest, val, size);
+    ADIN_PRINTF(__DEBUG, "memset : addr %p, value %x, size %d\n", dest, val, size);
     const bool success = adin_memset(dest, val, size);
     if(success == false){
         errorAppear();
