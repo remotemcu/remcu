@@ -7,15 +7,7 @@
 #include <iostream>
 #include <cstring>
 #include <assert.h>
-/*
-#include "netwrapper.h"
-#include "AddressInterceptPass.h"
-#include "exports.h"
-#include "logger.h"
-#include "assertion.h"
-#include "obusfaction.h"
-#include "logofun.h"
-*/
+
 #include "Ir.h"
 #include "remcu.h"
 
@@ -94,6 +86,7 @@ void standartTestAddr(uintptr_t address){
     assert(remcu_store2mem(address, testMessage, MAX_MEM_OPERATION_SIZE) == true);
     assert(remcu_store2mem(address, testMessage, MAX_MEM_OPERATION_SIZE + 1) == false);
 
+    testStoreLoadAllType(address);
 
     assert(remcu_store2mem(address, testMessage, MIN_MEM_OPERATION_SIZE) == true);
     assert(remcu_store2mem(address, testMessage, MIN_MEM_OPERATION_SIZE - 1) == false);
@@ -112,28 +105,27 @@ int main(int argc, char** argv)
     assert(remcu_getVersion());
     std::cout << "version : " << remcu_getVersion() << endl;
 
-    if(argc < 3){
-        printf("test requare 2 arguments: host and verbose level\n");
-        printf("optional 3-d arg: testOpenocd(bool)\n");
+    if(argc <= 4){
+        printf("test requare 2 arguments: host, port of TCL(OpenOCD), port GDB, test hex address, verbose\n");
+        printf("if port 0 then no test this port\n");
         return -1;
     }
 
     int ret = 0;
 
     const string host(argv[1]);
-    const uintptr_t address = 0x20000000;
-    const LevelDebug level = static_cast<LevelDebug>(atoi(argv[2]) & 0xF);
-    bool testOpenocd = true;
+    const uint16_t portTCL = (atoi(argv[2]) & 0xFFFF);
+    const uint16_t portGDB = (atoi(argv[3]) & 0xFFFF);
 
-    printf("argc: %d '%s'\n", argc, argv[3]);
+    const uintptr_t address = stoi( argv[4], 0, 16 ); //0x20000000;
+    const LevelDebug level = static_cast<LevelDebug>(atoi(argv[5]) & 0xF);
 
-    if(argc > 3){
-        if(string(argv[3]).compare("no") == 0){
-            testOpenocd = false;
-        }
-    }
+    printf("argc: %d \n", argc);
+
 
     cout << "host: " << host << endl;
+    cout << "portTCL: " << portTCL << endl;
+    cout << "portGDB: " << portGDB << endl;
     cout << "address: 0x" << hex << address << endl;
     cout << "Verbose Level: " << level << endl;
     remcu_setVerboseLevel(level);
@@ -142,10 +134,10 @@ int main(int argc, char** argv)
 
     assert(remcu_isConnected() == false);
 
-    if(testOpenocd){
+    if(portTCL != 0){
         std::cout << "\n----------------------- Test OpenOCD client -----------------------\n" << endl;
 
-        assert(remcu_connect2OpenOCD(host.c_str(), PORT_TCL, DEFAULT_TIMEOUT));
+        assert(remcu_connect2OpenOCD(host.c_str(), portTCL, DEFAULT_TIMEOUT));
 
         assert(remcu_resetRemoteUnit(__RUN));
 
@@ -154,17 +146,22 @@ int main(int argc, char** argv)
         standartTestAddr(address);
     }
 
-    std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
+    if(portGDB != 0){
 
-    assert(remcu_connect2GDB(host.c_str(), PORT_GDB, DEFAULT_TIMEOUT));
+        std::cout << "\n----------------------- Test RSP GDB client -----------------------\n" << endl;
 
-    assert(remcu_resetRemoteUnit(__HALT));
+        assert(remcu_connect2GDB(host.c_str(), portGDB, DEFAULT_TIMEOUT));
 
-    assert(remcu_resetRemoteUnit(__RUN) == false);
+        assert(remcu_resetRemoteUnit(__HALT));
 
-    standartTestAddr(address);
+        assert(remcu_resetRemoteUnit(__RUN) == false);
 
-    std::cout << "\n----------------------- SUCCESS TEST -----------------------\n" << endl;
+        standartTestAddr(address);
+    } else {
+        cout << "pass Test RSP GDB client" << endl;
+    }
+
+    std::cout << "\n----------------------- SUCCESS ALL TEST -----------------------\n" << endl;
 
     
 }
