@@ -50,3 +50,7 @@ jobs:
       - name: Build
         # Build your program with the given configuration
         run: cmake --build ${{github.workspace}}/build 
+
+      - name: Test
+        # Build your program with the given configuration
+        run: bash test/test.sh ${{github.workspace}}/build 
