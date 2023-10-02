@@ -1,6 +1,6 @@
 # REMCU Library
 
-[![U1buntu|Build|Tests)](https://github.com/remotemcu/remcu/actions/workflows/Ubuntu.yml/badge.svg)](https://github.com/remotemcu/remcu/actions/workflows/Ubuntu.yml)
+[![Ubunt1](https://github.com/remotemcu/remcu/actions/workflows/Ubuntu.yml/badge.svg)](https://github.com/remotemcu/remcu/actions/workflows/Ubuntu.yml)
 
 ![logo](img/logo.png)
 
