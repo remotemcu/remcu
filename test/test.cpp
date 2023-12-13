@@ -20,14 +20,6 @@ using namespace std;
 
 static bool error = false;
 
-static void callback(){
-    cout << "callback()" << endl;
-    error = true;
-}
-
-#ifdef NDEBUG
-    #define assert
-#endif
 
 static const uint16_t PORT_TCL = 6666;
 static const uint16_t PORT_GDB = 3333;
@@ -38,7 +30,6 @@ static const int DEFAULT_TIMEOUT = 1;
 void assertErrorTest(uint32_t address){
     std::cout << "\n----------------------- Test Error -----------------------\n" << endl;
 
-    //remcu_setErrorSignalFunc(callback);
     assert(remcu_getErrorCount() == 0);
     assert(error == false);
     simpleTest(reinterpret_cast<int*>(address));
