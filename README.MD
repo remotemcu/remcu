@@ -16,7 +16,7 @@ More detailed in [Memfault Article](https://interrupt.memfault.com/blog/mcu-peri
 
 ## How to Use
 
-Examples to use in [Examples](https://github.com/remotemcu/remcu_examples) and the [Tutorials](https://remotemcu.com/tutorials)
+Examples to use in [Examples](https://github.com/remotemcu/remcu_examples) and the [Tutorials](https://remotemcu.github.io/tutorials)
 
 ## How to Build
 
